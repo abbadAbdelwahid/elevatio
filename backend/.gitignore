@@ -1,0 +1,24 @@
+# 🔧 JetBrains Rider / IntelliJ
+.idea/
+
+# 🔨 Build Artifacts
+**/bin/
+**/obj/
+
+# 📦 User & Temp Files
+*.user
+*.suo
+*.swp
+*.tmp
+
+# 🧪 Test Results
+TestResults/
+*.trx
+
+
+
+
+
+# ⚙️ VS / Rider Settings
+*.vs/
+*.vscode/
