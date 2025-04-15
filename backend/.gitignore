@@ -16,7 +16,7 @@ TestResults/
 *.trx
 
 
-
+.env
 
 
 # ⚙️ VS / Rider Settings
