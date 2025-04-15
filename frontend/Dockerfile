@@ -1,4 +1,4 @@
-# 🧱 Stage 1: Build the Next.js app
+# 🧱 Stage 1: Build the app
 FROM node:18-alpine AS builder
 
 # Set working directory
@@ -8,29 +8,29 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the source code
+# Copy the rest of the app
 COPY . .
 
 # Build the app for production
 RUN npm run build
 
-# 🏁 Stage 2: Run the app in production mode
+# 🏁 Stage 2: Run the app with minimal image
 FROM node:18-alpine AS runner
 
-# Set environment to production
+# Set NODE_ENV to production
 ENV NODE_ENV=production
 
-# Set working directory
+# Create app directory
 WORKDIR /app
 
-# Copy the build artifacts from the builder stage
-COPY --from=builder /app/.next ./.next
+# Copy built app from builder stage
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
-# Expose port 3000
+# Expose port
 EXPOSE 3000
 
-# Start the Next.js app
+# Start the app
 CMD ["npm", "start"]
