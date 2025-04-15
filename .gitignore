@@ -1,0 +1,7 @@
+
+.idea/
+
+
+# ⚙️ VS / Rider Settings
+*.vs/
+*.vscode/
