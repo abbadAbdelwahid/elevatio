@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link"
+import ImageCarousel from "@/components/navBar";
+
 
 export default function Home() {
     return (
         <main className="min-h-screen">
             {/* Header/Navigation */}
-            <header className="bg-white shadow-sm">
+            <header className="bg-amber-50 shadow-sm">
                 <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-purple-800 rounded-md flex items-center justify-center">
@@ -131,44 +133,33 @@ export default function Home() {
             </section>
 
             {/* Platform Preview Section */}
-            <section className="py-16 bg-amber-50">
+            <section className="py-16 ">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold mb-2">Plateform Preview</h2>
+                    <h2 className="text-3xl font-bold mb-2">Plateform Preview hhh</h2>
                     <p className="text-gray-500 mb-8">Lorem ipsum is simply dummy text of the printing.</p>
 
-                    <div className="max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg">
-                        <Image
-                            src="/placeholder.svg?height=400&width=800"
-                            alt="Platform preview"
-                            width={800}
-                            height={400}
-                            className="w-full"
-                        />
-                    </div>
+                    <ImageCarousel />
+
                 </div>
             </section>
 
             {/* Smart Evaluation Section */}
-            <section className="py-16 bg-white">
-                <div className="container mx-auto px-4">
-                    <div className="grid md:grid-cols-2 gap-8 items-center">
-                        <div className="relative">
+            <section className="  bg-amber-50">
+                <div className="container mx-auto">
+                    <div className="grid md:grid-cols-2  items-center">
+                        <div className="relative flex justify-center ">
                             <Image
-                                src="/placeholder.svg?height=400&width=500"
+                                src="/images/acceuil/second.svg"
                                 alt="Smart evaluation illustration"
-                                width={500}
-                                height={400}
+                                width={300}
+                                height={200}
                                 className="object-contain"
                             />
-                            <div className="absolute -bottom-10 -left-10 w-20 h-20 text-purple-600">
-                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                                    <path d="M30,10 Q10,50 30,90 Q50,70 70,90 Q90,50 70,10 Q50,30 30,10 Z" />
-                                </svg>
-                            </div>
+
                         </div>
 
                         <div>
-                            <h2 className="text-3xl font-bold mb-6">
+                            <h2 className="text-3xl font-bold mb-8">
                                 <span>Smart & Transparent</span>
                                 <br />
                                 <span className="text-orange-500">Evaluation</span> Experience
@@ -176,24 +167,8 @@ export default function Home() {
 
                             <div className="space-y-4">
                                 <div className="flex gap-4">
-                                    <div className="bg-pink-100 p-2 rounded-lg">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="text-pink-600"
-                                        >
-                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                                            <circle cx="9" cy="7" r="4" />
-                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                        </svg>
+                                    <div className="bg-[#4D2C5E] p-2 rounded-lg">
+                                        <img src="/images/acceuil/cube.svg"  className="w-6 h-6" />
                                     </div>
                                     <div>
                                         <h3 className="font-semibold">Easily Accessible</h3>
@@ -202,22 +177,8 @@ export default function Home() {
                                 </div>
 
                                 <div className="flex gap-4">
-                                    <div className="bg-pink-100 p-2 rounded-lg">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="text-pink-600"
-                                        >
-                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                                        </svg>
+                                    <div className="bg-[#4D2C5E] p-2 rounded-lg">
+                                        <img src="/images/acceuil/heart.svg"  className="w-6 h-6" />
                                     </div>
                                     <div>
                                         <h3 className="font-semibold">Fun learning page</h3>
@@ -231,52 +192,56 @@ export default function Home() {
             </section>
 
             {/* Testimonials Section */}
-            <section className="py-16 bg-white">
-                <div className="container mx-auto px-4 text-center">
+            <section className="py-20 bg-white">
+                <div className="container  px-4 mx-auto text-center">
                     <h2 className="text-3xl font-bold mb-2">Testimonials</h2>
                     <p className="text-gray-500 mb-12">Lorem ipsum is simply dummy text of the printing.</p>
 
-                    <div className="grid md:grid-cols-3 gap-6">
+                    <div className="grid md:grid-cols-3 gap-4 ">
+                        {/* Premier témoignage */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
-                            <p className="text-gray-600 mb-4">
-                                "QualiTrack helped us streamline our evaluation process and made it much more efficient."
+                            <p className="text-gray-600 mb-4 italic">
+                                &quot;I received detailed feedback on my teaching. Ewthoma is a game changer.&quot;
                             </p>
-                            <div className="flex items-center">
+                            <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
                                 <div className="text-left">
-                                    <p className="font-semibold">Dr. Mark</p>
-                                    <p className="text-sm text-gray-500">University Professor</p>
+                                    <p className="font-semibold">M. Said</p>
+                                    <p className="text-sm text-gray-500">Professor</p>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Deuxième témoignage */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
-                            <p className="text-gray-600 mb-4">
-                                "The analytics provided by QualiTrack have been invaluable for improving our courses."
+                            <p className="text-gray-600 mb-4 italic">
+                                &quot;Complete account of the system and expound the actual Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots&quot;
                             </p>
-                            <div className="flex items-center">
+                            <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
                                 <div className="text-left">
-                                    <p className="font-semibold">Jane</p>
-                                    <p className="text-sm text-gray-500">Department Coordinator</p>
+                                    <p className="font-semibold">Zhebe</p>
+                                    <p className="text-sm text-gray-500">Sinhane University Student</p>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Troisième témoignage */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
-                            <p className="text-gray-600 mb-4">
-                                "As a student, I appreciate how easy it is to provide feedback through QualiTrack."
+                            <p className="text-gray-600 mb-4 italic">
+                                &quot;There are many variations of passages of Lorem ipsum available, but the majority have suffered alteration in some form, by injected humour.&quot;
                             </p>
-                            <div className="flex items-center">
+                            <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
                                 <div className="text-left">
-                                    <p className="font-semibold">Jessica Williams</p>
-                                    <p className="text-sm text-gray-500">Engineering Student</p>
+                                    <p className="font-semibold">Claro R. Almon</p>
+                                    <p className="text-sm text-gray-500">Ullam Design</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* Indicateurs de pagination */}
                     <div className="flex justify-center mt-8 gap-1">
                         <div className="w-8 h-2 bg-purple-800 rounded-full"></div>
                         <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
@@ -294,19 +259,20 @@ export default function Home() {
             </section>
 
             {/* Benefits Section */}
-            <section className="py-16 bg-white">
+            <section className="py-16 mb-20 bg-amber-50">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-2 gap-8 items-center">
-                        <div>
-                            <Image
-                                src="/placeholder.svg?height=400&width=500"
+                        {/* Image div */}
+                        <div className="ms-5">
+                            <img
+                                src="/images/acceuil/about.svg"
                                 alt="Education professionals"
-                                width={500}
-                                height={400}
-                                className="rounded-lg"
+                                className="rounded-3xl w-full max-w-sm h-[300px] object-cover shadow-lg"
                             />
                         </div>
 
+
+                        {/* Text content */}
                         <div>
                             <h2 className="text-3xl font-bold mb-6">
                                 <span>Benefit From Our Online</span>
@@ -318,9 +284,9 @@ export default function Home() {
 
                             <div className="grid grid-cols-2 gap-6 mb-8">
                                 <div>
-                                    <p className="text-sm text-gray-600 mb-4">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                                        et dolore magna aliqua.
+                                    <p className="text-sm text-gray-600 mb-4 w-70">
+                                        <strong className="block mb-2">OUR MISSION:</strong>
+                                        Suspendisse ultrice gravida dictum fusce placerat ultricies integer quis auctor elit sed vulputate mi sit.
                                     </p>
                                     <div className="flex items-center gap-2">
                                         <svg
@@ -342,8 +308,9 @@ export default function Home() {
                                 </div>
 
                                 <div>
-                                    <p className="text-sm text-gray-600 mb-4">
-                                        Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                    <p className="text-sm text-gray-600 mb-4 w-70">
+                                        <strong className="block mb-2">OUR VISSION:</strong>
+                                        Suspendisse ultrice gravida dictum fusce placerat ultricies integer quis auctor elit sed vulputate mi sit.
                                     </p>
                                     <div className="flex items-center gap-2">
                                         <svg
@@ -366,7 +333,7 @@ export default function Home() {
                             </div>
 
                             <button className="bg-teal-500 hover:bg-teal-600 text-white rounded-full px-6 py-2 flex items-center">
-                                Learn More
+                                Admission Open
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -383,9 +350,11 @@ export default function Home() {
                                 </svg>
                             </button>
                         </div>
+
                     </div>
                 </div>
             </section>
+
 
             {/* Footer */}
             <footer className="bg-purple-900 text-white py-12">
@@ -398,3 +367,5 @@ export default function Home() {
         </main>
     )
 }
+
+
