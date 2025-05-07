@@ -1,49 +1,51 @@
 import Image from "next/image";
 import Link from "next/link"
-import ImageCarousel from "@/components/navBar";
+import ImageCarousel from "@/components/carouselComponent";
+import NavComponent from "@/components/navComponent";
 
 
 export default function Home() {
     return (
         <main className="min-h-screen">
             {/* Header/Navigation */}
-            <header className="bg-amber-50 shadow-sm">
-                <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-purple-800 rounded-md flex items-center justify-center">
-                            <span className="text-white font-bold">Q</span>
-                        </div>
-                        <span className="font-bold text-purple-800">QualiTrack</span>
-                    </div>
+            {/*<header className="bg-amber-50 shadow-sm">*/}
+            {/*    <div className="container mx-auto px-4 py-4 flex items-center justify-between">*/}
+            {/*        <div className="flex items-center gap-2">*/}
+            {/*            <div className="w-8 h-8 bg-purple-800 rounded-md flex items-center justify-center">*/}
+            {/*                <span className="text-white font-bold">Q</span>*/}
+            {/*            </div>*/}
+            {/*            <span className="font-bold text-purple-800">QualiTrack</span>*/}
+            {/*        </div>*/}
 
-                    <nav className="hidden md:flex items-center gap-8">
-                        <Link href="/" className="text-sm font-medium">
-                            Home
-                        </Link>
-                        <Link href="/about" className="text-sm font-medium">
-                            About us
-                        </Link>
-                        <Link href="/courses" className="text-sm font-medium">
-                            Courses
-                        </Link>
-                        <Link href="/stories" className="text-sm font-medium">
-                            Our Stories
-                        </Link>
-                    </nav>
+            {/*        <nav className="hidden md:flex items-center gap-8">*/}
+            {/*            <Link href="/" className="text-sm font-medium">*/}
+            {/*                Home*/}
+            {/*            </Link>*/}
+            {/*            <Link href="/about" className="text-sm font-medium">*/}
+            {/*                About us*/}
+            {/*            </Link>*/}
+            {/*            <Link href="/courses" className="text-sm font-medium">*/}
+            {/*                Courses*/}
+            {/*            </Link>*/}
+            {/*            <Link href="/stories" className="text-sm font-medium">*/}
+            {/*                Our Stories*/}
+            {/*            </Link>*/}
+            {/*        </nav>*/}
 
-                    <div className="flex items-center gap-3">
-                        <Link href="/signup" className="text-sm font-medium">
-                            Sign up
-                        </Link>
-                        <Link
-                            href="/login"
-                            className="bg-purple-800 hover:bg-purple-900 text-white rounded-full px-6 py-2 text-sm font-medium"
-                        >
-                            Sign in
-                        </Link>
-                    </div>
-                </div>
-            </header>
+            {/*        <div className="flex items-center gap-3">*/}
+            {/*            <Link href="/signup" className="text-sm font-medium">*/}
+            {/*                Sign up*/}
+            {/*            </Link>*/}
+            {/*            <Link*/}
+            {/*                href="/login"*/}
+            {/*                className="bg-purple-800 hover:bg-purple-900 text-white rounded-full px-6 py-2 text-sm font-medium"*/}
+            {/*            >*/}
+            {/*                Sign in*/}
+            {/*            </Link>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</header>*/}
+            <NavComponent />
 
             {/* Hero Section */}
             <section className="bg-amber-50 py-16 relative overflow-hidden">
@@ -87,7 +89,7 @@ export default function Home() {
                 {/* Contenu complet de la section */}
                 <div className="relative py-16">
                     <div className="max-w-7xl mx-auto px-6">
-                        <div className="bg-purple-900 rounded-xl py-12 px-8 grid md:grid-cols-3 gap-8 text-white">
+                        <div className="bg-[#4D2C5E] rounded-xl py-12 px-8 grid md:grid-cols-3 gap-8 text-white">
                             {/* Block 1 */}
                             <div className="flex items-start gap-4">
                                 <div className="flex-shrink-0 mt-4 bg-[#7151A3] p-3 rounded-xl">
@@ -357,7 +359,7 @@ export default function Home() {
 
 
             {/* Footer */}
-            <footer className="bg-purple-900 text-white py-12">
+            <footer className="bg-[#4D2C5E] text-white py-12">
                 <div className="container mx-auto px-4">
                     <div className="text-center">
                         <p>© 2023 QualiTrack. All rights reserved.</p>

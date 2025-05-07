@@ -1,5 +1,13 @@
 @import "tailwindcss";
-
+@layer utilities {
+    .nav-link::after {
+        content: '';
+        @apply block w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transition-all duration-300;
+    }
+    .nav-link:hover::after {
+        @apply w-full;
+    }
+}
 /*:root {*/
 /*  --background: #ffffff;*/
 /*  --foreground: #171717;*/
