@@ -1,11 +1,11 @@
+/** @type {import('tailwindcss').Config} */
 const config = {
     darkMode: ["class"],
     content: [
-        "./pages/**/*.{ts,tsx}",
-        "./components/**/*.{ts,tsx}",
-        "./app/**/*.{ts,tsx}",
-        "./src/**/*.{ts,tsx}",
-        "*.{js,ts,jsx,tsx,mdx}",
+        "./pages/**/*.{js,jsx,ts,tsx,mdx}",
+        "./components/**/*.{js,jsx,ts,tsx,mdx}",
+        "./app/**/*.{js,jsx,ts,tsx,mdx}",
+        "./src/**/*.{js,jsx,ts,tsx,mdx}",
     ],
     prefix: "",
     theme: {
@@ -52,8 +52,8 @@ const config = {
                     foreground: "hsl(var(--card-foreground))",
                 },
             },
-            fontFamily:{
-                roboto: ['Roboto', 'sans-serif'],
+            fontFamily: {
+                roboto: ["Roboto", "sans-serif"], // Ajout de la police Roboto si elle est nécessaire
             },
             borderRadius: {
                 lg: "var(--radius)",

@@ -32,3 +32,25 @@
 /*  color: var(--foreground);*/
 /*  font-family: Arial, Helvetica, sans-serif;*/
 /*}*/
+
+.profil-card .details input{
+    height: 50px;
+    background-color: #cccccc;
+    border: 1px solid #d1d5db;       /* border-gray-300 */
+    border-radius: 8px;              /* rounded-sm = 0.125rem */
+
+}
+.profil-card .password input{
+
+     height: 50px;
+     /*background-color: #cccccc;*/
+     border: 1px solid #d1d5db;       /* border-gray-300 */
+     border-radius: 8px;
+
+ }
+
+
+.profil-card input:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #4a2a5a;   /* focus:ring-1 + ring color */
+}

@@ -7,44 +7,6 @@ import NavComponent from "@/components/navComponent";
 export default function Home() {
     return (
         <main className="min-h-screen">
-            {/* Header/Navigation */}
-            {/*<header className="bg-amber-50 shadow-sm">*/}
-            {/*    <div className="container mx-auto px-4 py-4 flex items-center justify-between">*/}
-            {/*        <div className="flex items-center gap-2">*/}
-            {/*            <div className="w-8 h-8 bg-purple-800 rounded-md flex items-center justify-center">*/}
-            {/*                <span className="text-white font-bold">Q</span>*/}
-            {/*            </div>*/}
-            {/*            <span className="font-bold text-purple-800">QualiTrack</span>*/}
-            {/*        </div>*/}
-
-            {/*        <nav className="hidden md:flex items-center gap-8">*/}
-            {/*            <Link href="/" className="text-sm font-medium">*/}
-            {/*                Home*/}
-            {/*            </Link>*/}
-            {/*            <Link href="/about" className="text-sm font-medium">*/}
-            {/*                About us*/}
-            {/*            </Link>*/}
-            {/*            <Link href="/courses" className="text-sm font-medium">*/}
-            {/*                Courses*/}
-            {/*            </Link>*/}
-            {/*            <Link href="/stories" className="text-sm font-medium">*/}
-            {/*                Our Stories*/}
-            {/*            </Link>*/}
-            {/*        </nav>*/}
-
-            {/*        <div className="flex items-center gap-3">*/}
-            {/*            <Link href="/signup" className="text-sm font-medium">*/}
-            {/*                Sign up*/}
-            {/*            </Link>*/}
-            {/*            <Link*/}
-            {/*                href="/login"*/}
-            {/*                className="bg-purple-800 hover:bg-purple-900 text-white rounded-full px-6 py-2 text-sm font-medium"*/}
-            {/*            >*/}
-            {/*                Sign in*/}
-            {/*            </Link>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</header>*/}
             <NavComponent />
 
             {/* Hero Section */}
@@ -93,7 +55,13 @@ export default function Home() {
                             {/* Block 1 */}
                             <div className="flex items-start gap-4">
                                 <div className="flex-shrink-0 mt-4 bg-[#7151A3] p-3 rounded-xl">
-                                    <img src="/images/acceuil/computer.svg" alt="Give Feedback" className="w-8 h-8" />
+                                    <Image
+                                        src="/images/acceuil/computer.svg"
+                                        alt="Give Feedback"
+                                        width={32}
+                                        height={32}
+                                        className="w-8 h-8"
+                                    />
                                 </div>
                                 <div>
                                     <h2 className="text-lg font-semibold mb-2">Give Feedback Easily</h2>
@@ -107,7 +75,13 @@ export default function Home() {
                             {/* Block 2 */}
                             <div className="flex items-start gap-4">
                                 <div className="flex-shrink-0 mt-4 bg-[#7151A3] p-3 rounded-xl">
-                                    <img src="/images/acceuil/note.svg" alt="Get Ready" className="w-8 h-8" />
+                                    <Image
+                                        src="/images/acceuil/note.svg"
+                                        alt="Get Ready"
+                                        width={32}
+                                        height={32}
+                                        className="w-8 h-8"
+                                    />
                                 </div>
                                 <div>
                                     <h2 className="text-lg font-semibold mb-2">Get Ready For a Career</h2>
@@ -120,7 +94,13 @@ export default function Home() {
                             {/* Block 3 */}
                             <div className="flex items-start gap-4">
                                 <div className="flex-shrink-0 mt-4 bg-[#7151A3] p-3 rounded-xl">
-                                    <img src="/images/acceuil/cert.svg" alt="Drive Excellence" className="w-8 h-8" />
+                                    <Image
+                                        src="/images/acceuil/cert.svg"
+                                        alt="Drive Excellence"
+                                        width={32}
+                                        height={32}
+                                        className="w-8 h-8"
+                                    />
                                 </div>
                                 <div>
                                     <h2 className="text-lg font-semibold mb-2">Drive Institutional Excellence</h2>

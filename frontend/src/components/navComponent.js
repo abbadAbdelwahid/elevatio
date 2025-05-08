@@ -42,7 +42,7 @@ function NavComponent() {
                         <Link href="#" className="text-sm font-medium text-purple-600 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-full px-5 py-2.5 transition">
                             Sign Up
                         </Link>
-                        <Link href="#" className="text-sm font-medium bg-gradient-to-r from-purple-600 to-blue-500 text-white px-6 py-2.5 rounded-full hover:from-purple-700 hover:to-blue-600 transition">
+                        <Link href="/login" className="text-sm font-medium bg-gradient-to-r from-purple-600 to-blue-500 text-white px-6 py-2.5 rounded-full hover:from-purple-700 hover:to-blue-600 transition">
                             Login
                         </Link>
                     </div>
