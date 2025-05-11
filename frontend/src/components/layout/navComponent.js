@@ -10,7 +10,7 @@ function NavComponent() {
             <div className="container mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center space-x-2">
+                    <Link href="/frontend/public" className="flex items-center space-x-2">
                         <img
                             src="https://flowbite.com/docs/images/logo.svg"
                             className="h-8 w-8"

@@ -1,8 +1,8 @@
-import { Calendar } from "@/components/dashboard/calendar"
-import { RecentEvaluations } from "@/components/dashboard/recent-evaluations"
-import { StatsCards } from "@/components/dashboard/stats-cards"
-import { WelcomeBanner } from "@/components/dashboard/welcome-banner"
-import {SearchHeader} from "@/components/search-header";
+import { Calendar } from "@/components/student/dashboard/calendar"
+import { RecentEvaluations } from "@/components/student/dashboard/recent-evaluations"
+import { StatsCards } from "@/components/student/dashboard/stats-cards"
+import { WelcomeBanner } from "@/components/student/dashboard/welcome-banner"
+import {SearchHeader} from "@/components/layout/search-header";
 
 export default function DashboardPage() {
 

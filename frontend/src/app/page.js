@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link"
-import ImageCarousel from "@/components/carouselComponent";
-import NavComponent from "@/components/navComponent";
+import ImageCarousel from "@/components/layout/carouselComponent";
+import NavComponent from "@/components/layout/navComponent";
 
 
 export default function Home() {

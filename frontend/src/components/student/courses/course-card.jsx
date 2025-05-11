@@ -4,7 +4,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Modal, {DialogDemo} from "@/components/modalComponent";
+import Modal, {DialogDemo} from "@/components/student/courses/modalComponent";
 
 export function CourseCard({ course }) {
     const [showEvaluationForm, setShowEvaluationForm] = useState(false)

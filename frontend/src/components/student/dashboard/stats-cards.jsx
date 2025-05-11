@@ -1,9 +1,13 @@
+
 import { Building, School, Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
-export function StatsCards() {
+export  function StatsCards({stats}) {
+
+    console.log(stats.participationRate)
     return (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+           
             {/* Carte Participation */}
             <Card className="relative overflow-hidden border-0 bg-white shadow-[0px_6px_30px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0px_10px_40px_rgba(0,0,0,0.1)]">
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-400 to-red-300" />
@@ -16,7 +20,7 @@ export function StatsCards() {
                             OVERALL PARTICIPATION RATE
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">60%</span>
+                            <span className="text-3xl font-bold text-gray-800">{stats.participationRate}%</span>
 
                         </div>
                     </div>
@@ -35,7 +39,7 @@ export function StatsCards() {
                             AVERAGE RATING
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">4.2</span>
+                            <span className="text-3xl font-bold text-gray-800">{stats.averageRating}</span>
                             <span className="text-lg font-medium text-blue-600">/5</span>
                         </div>
                     </div>
@@ -54,8 +58,8 @@ export function StatsCards() {
                             EVALUATED COURSES
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">3</span>
-                            <span className="text-lg font-medium text-green-600">/8</span>
+                            <span className="text-3xl font-bold text-gray-800">{stats.evaluatedCourses}</span>
+                            <span className="text-lg font-medium text-green-600">/{stats.totalCourses}</span>
                         </div>
                     </div>
                 </CardContent>

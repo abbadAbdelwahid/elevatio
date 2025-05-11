@@ -1,30 +1,8 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-const evaluations = [
-    {
-        id: 1,
-        course: "C++",
-        professor: "Pr.Haddad",
-        time: "today",
-        bgColor: "bg-purple-100",
-    },
-    {
-        id: 2,
-        course: "Project Management",
-        professor: "Pr.Fissoune",
-        time: "10:30 AM",
-        bgColor: "bg-green-100",
-    },
-    {
-        id: 3,
-        course: "Introduction to Web Development",
-        professor: "Pr.amechnoue",
-        time: "01:00 PM",
-        bgColor: "bg-purple-100",
-    },
-]
+export function RecentEvaluations({evaluations}) {
 
-export function RecentEvaluations() {
     return (
         <Card className={' border-0'}>
             <CardHeader>

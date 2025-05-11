@@ -1,11 +1,11 @@
 import { UserSettingsForm } from "@/components/profil/user-setting-form"
 import { UserProfileCard } from "@/components/profil/user-profil-card"
 import { UserInfoCard } from "@/components/profil/user-info-card"
-import {SearchHeader} from "@/components/search-header";
+import {SearchHeader} from "@/components/layout/search-header";
 
 export default function SettingsPage() {
     return (
-        <div className="flex min-h-screen max-h-screen overflow-y-auto bg-amber-50">
+        <div className="flex min-h-screen max-h-screen overflow-y-auto bg-blue-50">
             <div className="container flex-1 p-8">
 
                 <SearchHeader />

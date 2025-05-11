@@ -33,6 +33,8 @@ export function SearchHeader() {
                     </Avatar>
                 </div>
             </div>
+
+
         </div>
     )
 }

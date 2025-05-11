@@ -1,6 +1,9 @@
-import { CourseCard } from "./course-card"
+// 'use client'
 
-// Mock data for courses
+// import { useState, useEffect } from 'react';
+// import { CourseFilters } from "@/components/student/courses/course-filters"
+import { CourseGrid } from "@/components/student/courses/course-grid"
+import { SearchHeader } from "@/components/layout/search-header"
 const courses = [
     {
         id: 1,
@@ -76,14 +79,34 @@ const courses = [
     },
 ]
 
-export function CourseGrid() {
+
+export default function CoursesPage() {
+
+
+    // const [courses, setCourses] = useState([]);
+    // useEffect(() => {
+    //     const fetchCourses = async () => {
+    //         try {
+    //             // Si tu utilises un fichier db.json, assure-toi que tu l'ouvres via un serveur ou un proxy local
+    //             const res = await fetch('http://localhost:3003/courses'); // URL de l'API ou fichier JSON
+    //             const data = await res.json();
+    //             setCourses(data); // Stocke les données dans l'état
+    //         } catch (error) {
+    //             console.error("Erreur de récupération des données", error);
+    //         }
+    //     };
+    //
+    //     fetchCourses(); // Appel de la fonction
+    // }, []);
+
     return (
-        <div className="p-14 max-h-[80vh] overflow-y-auto">
-            {/* Grid Layout avec gestion de la taille dynamique */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                {courses.map((course) => (
-                    <CourseCard key={course.id} course={course} />
-                ))}
+        <div className="flex min-h-screen max-h-screen overflow-y-auto bg-blue-50">
+            {/* Main content */}
+            <div className="flex-1 p-8 ms-4">
+                <SearchHeader />
+                {/*<CourseFilters  />*/}
+                <CourseGrid coursess={courses}  />
+
             </div>
         </div>
     )

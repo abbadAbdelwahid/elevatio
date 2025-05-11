@@ -1,0 +1,169 @@
+{
+  "courses":
+[
+  {
+    "id": 1,
+    "title": "Programming Language C++",
+    "image": "/images/acceuil/computer.svg",
+    "rating": 4.5,
+    "duration": "19h 30m",
+    "students": "50+ Student",
+    "professor": "Pr.fissoune"
+  },
+  {
+    "id": 2,
+    "title": "Data Science Basics",
+    "image": "/images/acceuil/note.svg",
+    "rating": 4.2,
+    "duration": "15h 0m",
+    "students": "30+ Student",
+    "professor": "Pr.amechnoune"
+  },
+  {
+    "id": 3,
+    "title": "Introduction to Web Development",
+    "image": "/images/acceuil/cert.svg",
+    "rating": 4.8,
+    "duration": "25h 0m",
+    "students": "60+ Student",
+    "professor": "Pr.Haddad"
+  }
+],
+
+
+"statistics": {
+    "participationRate": 60,
+    "averageRating": 4.2,
+    "evaluatedCourses": 3,
+    "totalCourses": 8
+  },
+  "recentEvaluations": [
+    { "id": 1,
+      "subject": "C++",
+      "professor": "Pr.Haddad",
+      "time": "today",
+      "bg": "bg-purple-100"
+    },
+    {
+      "id": 2,
+      "subject": "Project Management",
+      "professor": "Pr.Fissoune",
+      "time": "10:30 AM",
+      "bg": "bg-green-100"
+    },
+    {
+      "id": 3,
+      "subject": "Introduction to Web Development",
+      "professor": "Pr.amechnoue",
+      "time": "01:00 PM",
+      "bg": "bg-purple-100"
+    }
+  ],
+
+
+"plannings": [
+    {
+      "group": "GINF2",
+      "year": "2025",
+      "week": "21",
+      "courses": [
+        {
+          "id": 1,
+          "day": 0,
+          "startTime": "09:00",
+          "endTime": "10:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        }
+      ]
+    },
+    {
+      "group": "GINF2",
+      "year": "2025",
+      "week": "22",
+      "courses": [
+        {
+          "id": 1,
+          "day": 2,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "MATHEMATIQUES",
+          "instructor": "PROF X",
+          "room": "SALLE A1",
+          "type": "TD"
+        }
+      ]
+    },
+    {
+      "group": "GINF1",
+      "year": "2025",
+      "week": "21",
+      "courses": [
+        {
+          "id": 1,
+          "day": 1,
+          "startTime": "14:00",
+          "endTime": "15:30",
+          "name": "ALGORITHMIQUE",
+          "instructor": "PROF Y",
+          "room": "SALLE A2",
+          "type": "TP"
+        }
+      ]
+    }
+  ],
+  "login": [
+    {
+      "id": "5fbc",
+      "email": "oussama@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "7094",
+      "email": "batteoui@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "e7f5",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "7a1c",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "42d9",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "e362",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "2b89",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "f45c",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "033c",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "8062",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    }
+  ]
+}
