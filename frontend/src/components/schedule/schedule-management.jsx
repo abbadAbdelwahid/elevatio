@@ -16,16 +16,15 @@ export default function ScheduleManagement() {
   const [planningData, setPlanningData] = useState({})
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  // const [isClient, setIsClient] = useState(false)
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
 
   const currentKey = `${group}-${year}-${week}`
   const courses = planningData[currentKey] || []
+  const [windowWidth,setWindowWidth]=useState(null)
 
-  // useEffect(() => {
-  //   setIsClient(true)
-  // }, [])
+
 
   useEffect(() => {
     const today = new Date()
@@ -40,6 +39,7 @@ export default function ScheduleManagement() {
     const fetchData = async () => {
       const res = await fetch("http://localhost:3003/plannings")
       const data = await res.json()
+      console.log(data)
       const mapped = {}
       data.forEach(p => {
         const key = `${p.group}-${p.year}-${p.week}`

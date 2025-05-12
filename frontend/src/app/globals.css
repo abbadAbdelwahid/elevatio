@@ -8,6 +8,14 @@
         @apply w-full;
     }
 }
+@keyframes progress {
+    0% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+}
+
+.animate-progress {
+    animation: progress 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
 /*:root {*/
 /*  --background: #ffffff;*/
 /*  --foreground: #171717;*/

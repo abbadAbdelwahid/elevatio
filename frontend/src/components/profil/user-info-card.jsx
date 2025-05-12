@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export function UserInfoCard() {
+export function UserInfoCard({user}) {
     return (
         <Card className="border-0 bg-white">
             <CardHeader>
@@ -9,15 +9,15 @@ export function UserInfoCard() {
             <CardContent className="space-y-6 ms-3">
                 <div className="flex space-x-4">
                     <h3 className="text-md font-semibold">Name:</h3>
-                    <p className="text-sm text-muted-foreground">Name, Last Name</p>
+                    <p className="text-sm text-muted-foreground">{user.firstName}, {user.lastName}</p>
                 </div>
                 <div className="flex space-x-4">
                     <p className="text-md font-semibold">Email:</p>
-                    <p className="text-sm text-muted-foreground">user@gmail.com</p>
+                    <p className="text-sm text-muted-foreground">{user.email}</p>
                 </div>
                 <div className="flex space-x-4">
                     <p className="text-md font-semibold">Tel:</p>
-                    <p className="text-sm text-muted-foreground">+51 966 696 123</p>
+                    <p className="text-sm text-muted-foreground">{user.phone}</p>
                 </div>
             </CardContent>
         </Card>

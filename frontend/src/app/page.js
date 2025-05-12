@@ -150,7 +150,16 @@ export default function Home() {
                             <div className="space-y-4">
                                 <div className="flex gap-4">
                                     <div className="bg-[#4D2C5E] p-2 rounded-lg">
-                                        <img src="/images/acceuil/cube.svg"  className="w-6 h-6" />
+
+                                        <Image
+                                            src="/images/acceuil/cube.svg"
+                                            width={24}  // 24px = w-6 (tailwind)
+                                            height={24} // 24px = h-6
+                                            alt="Icône cube"
+
+                                            className="w-6 h-6"
+                                            priority // Si l'image est visible immédiatement au chargement
+                                        />
                                     </div>
                                     <div>
                                         <h3 className="font-semibold">Easily Accessible</h3>
@@ -160,7 +169,13 @@ export default function Home() {
 
                                 <div className="flex gap-4">
                                     <div className="bg-[#4D2C5E] p-2 rounded-lg">
-                                        <img src="/images/acceuil/heart.svg"  className="w-6 h-6" />
+                                        <Image
+                                            src="/images/acceuil/heart.svg"
+                                            width={24}
+                                            height={24}
+                                            alt="Icône cœur"
+                                            className="w-6 h-6"
+                                        />
                                     </div>
                                     <div>
                                         <h3 className="font-semibold">Fun learning page</h3>
@@ -246,9 +261,12 @@ export default function Home() {
                     <div className="grid md:grid-cols-2 gap-8 items-center">
                         {/* Image div */}
                         <div className="ms-5">
-                            <img
+                            <Image
                                 src="/images/acceuil/about.svg"
                                 alt="Education professionals"
+                                width={384} // max-w-sm = 384px (tailwind par défaut)
+                                height={300}
+
                                 className="rounded-3xl w-full max-w-sm h-[300px] object-cover shadow-lg"
                             />
                         </div>

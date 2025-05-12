@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Link from "next/link";
+import Image from "next/image";
 
 function NavComponent() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -11,10 +12,12 @@ function NavComponent() {
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/frontend/public" className="flex items-center space-x-2">
-                        <img
+                        <Image
                             src="https://flowbite.com/docs/images/logo.svg"
-                            className="h-8 w-8"
+                            width={32}  // Obligatoire (correspond à w-8 en Tailwind)
+                            height={32} // Obligatoire (correspond à h-8 en Tailwind)
                             alt="Flowbite Logo"
+                            className="relative h-8 w-8 object-contain" // Ajout de 'relative' pour le positionnement
                         />
                         <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
                             Flowbite

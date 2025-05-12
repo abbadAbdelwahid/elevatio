@@ -1,67 +1,145 @@
 {
-  "courses":
-[
-  {
-    "id": 1,
-    "title": "Programming Language C++",
-    "image": "/images/acceuil/computer.svg",
-    "rating": 4.5,
-    "duration": "19h 30m",
-    "students": "50+ Student",
-    "professor": "Pr.fissoune"
-  },
-  {
-    "id": 2,
-    "title": "Data Science Basics",
-    "image": "/images/acceuil/note.svg",
-    "rating": 4.2,
-    "duration": "15h 0m",
-    "students": "30+ Student",
-    "professor": "Pr.amechnoune"
-  },
-  {
-    "id": 3,
-    "title": "Introduction to Web Development",
-    "image": "/images/acceuil/cert.svg",
-    "rating": 4.8,
-    "duration": "25h 0m",
-    "students": "60+ Student",
-    "professor": "Pr.Haddad"
-  }
-],
-
-
-"statistics": {
+  "users": [
+    {
+      "id": "1",
+      "firstName": "Émilie",
+      "lastName": "Martin",
+      "email": "emilie.martin@example.com",
+      "phone": "+33 6 12 34 56 78",
+      "image": "images/profil.svg",
+      "password": "emilie123"
+    },
+    {
+      "id": "2",
+      "firstName": "Pierre",
+      "lastName": "Lefebvre",
+      "email": "pierre.lefebvre@test.com",
+      "phone": "+32 456 78 90 12",
+      "image": "",
+      "password": "pierre456"
+    },
+    {
+      "id": "3",
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "test.user@demo.com",
+      "phone": "+1 555-123-4567",
+      "image": null,
+      "password": "test789"
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "title": "Programming Language C++",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4.5,
+      "duration": "19h 30m",
+      "students": "50+ Students",
+      "professor": "Pr. Fissoune",
+      "evaluated": true,
+      "date": "2023-05-01"
+    },
+    {
+      "id": "2",
+      "title": "Data Science Basics",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4.2,
+      "duration": "15h 0m",
+      "students": "30+ Students",
+      "professor": "Pr. Amechnoune",
+      "evaluated": false,
+      "date": "2023-06-01"
+    },
+    {
+      "id": "3",
+      "title": "Introduction to Web Development",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4.8,
+      "duration": "25h 0m",
+      "students": "60+ Students",
+      "professor": "Pr. Haddad",
+      "evaluated": true,
+      "date": "2023-04-01"
+    },
+    {
+      "id": "4",
+      "title": "Introduction to Python",
+      "image": "/images/acceuil/about.svg",
+      "rating": 3.9,
+      "duration": "19h 30m",
+      "students": "40+ Students",
+      "professor": "Pr. Benali",
+      "evaluated": false,
+      "date": "2023-07-01"
+    },
+    {
+      "id": "5",
+      "title": "Advanced JavaScript",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4.3,
+      "duration": "18h 0m",
+      "students": "80+ Students",
+      "professor": "Pr. Dali",
+      "evaluated": true,
+      "date": "2023-05-15"
+    },
+    {
+      "id": "6",
+      "title": "Cloud Computing Basics",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4,
+      "duration": "20h 0m",
+      "students": "35+ Students",
+      "professor": "Pr. Lhafi",
+      "evaluated": false,
+      "date": "2023-06-20"
+    }
+  ],
+  "evaluations": [
+    {
+      "id": "4e35",
+      "course_id": 1,
+      "rating": 0,
+      "comment": "ddddeee"
+    },
+    {
+      "id": "504c",
+      "course_id": 1,
+      "rating": 4,
+      "comment": "ccccccccc"
+    }
+  ],
+  "statistics": {
     "participationRate": 60,
     "averageRating": 4.2,
     "evaluatedCourses": 3,
     "totalCourses": 8
   },
   "recentEvaluations": [
-    { "id": 1,
+    {
+      "id": "1",
       "subject": "C++",
       "professor": "Pr.Haddad",
       "time": "today",
       "bg": "bg-purple-100"
     },
     {
-      "id": 2,
+      "id": "2",
       "subject": "Project Management",
       "professor": "Pr.Fissoune",
       "time": "10:30 AM",
       "bg": "bg-green-100"
     },
     {
-      "id": 3,
+      "id": "3",
       "subject": "Introduction to Web Development",
       "professor": "Pr.amechnoue",
       "time": "01:00 PM",
       "bg": "bg-purple-100"
     }
   ],
-
-
-"plannings": [
+  "plannings": [
     {
       "group": "GINF2",
       "year": "2025",
@@ -76,8 +154,119 @@
           "instructor": "EL ALAMI",
           "room": "SALLE B2",
           "type": "CM"
+        },
+        {
+          "id": 2,
+          "day": 0,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 3,
+          "day": 0,
+          "startTime": "13:30",
+          "endTime": "15:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 4,
+          "day": 0,
+          "startTime": "15:30:00",
+          "endTime": "17:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 5,
+          "day": 1,
+          "startTime": "09:00",
+          "endTime": "10:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TD"
+        },
+        {
+          "id": 6,
+          "day": 1,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TD"
+        },
+        {
+          "id": 6,
+          "day": 1,
+          "startTime": "13:30",
+          "endTime": "15:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 8,
+          "day": 1,
+          "startTime": "15:30:00",
+          "endTime": "17:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 9,
+          "day": 2,
+          "startTime": "09:00",
+          "endTime": "10:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TP"
+        },
+        {
+          "id": 10,
+          "day": 2,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 11,
+          "day": 2,
+          "startTime": "13:30",
+          "endTime": "15:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TP"
+        },
+        {
+          "id": 12,
+          "day": 2,
+          "startTime": "15:30:00",
+          "endTime": "17:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
         }
-      ]
+      ],
+      "id": "7da2"
     },
     {
       "group": "GINF2",
@@ -94,7 +283,8 @@
           "room": "SALLE A1",
           "type": "TD"
         }
-      ]
+      ],
+      "id": "87e2"
     },
     {
       "group": "GINF1",
@@ -111,7 +301,8 @@
           "room": "SALLE A2",
           "type": "TP"
         }
-      ]
+      ],
+      "id": "ce0e"
     }
   ],
   "login": [
@@ -164,6 +355,36 @@
       "id": "8062",
       "email": "SS@gmail.com",
       "password": "SS@GMAI"
+    },
+    {
+      "id": "a993",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "6996",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "be4f",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "696e",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "6b21",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "34be",
+      "email": "a@gmail.com",
+      "password": "1234"
     }
   ]
 }

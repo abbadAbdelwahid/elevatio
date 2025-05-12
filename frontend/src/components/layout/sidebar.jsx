@@ -20,18 +20,18 @@ export function Sidebar() {
     const navigation = useMemo(() => {
         const allLinks = [
             // student routes
-            { name: "Dashboard", href: "/etu/dashboard", icon: "/images/dashboard-icon.svg", roles: ["student"] },
-            { name: "Courses", href: "/etu/courses", icon: "/images/coursesIcon.svg", roles: ["student"] },
+            { name: "Dashboard", href: "/etu/dashboard", icon: "/images/sidebar/dashboard-icon.svg", roles: ["student"] },
+            { name: "Courses", href: "/etu/courses", icon: "/images/sidebar/coursesIcon.svg", roles: ["student"] },
 
             // admin routes
-            { name: "Dashboard", href: "/admin/dashboard", icon: "/images/dashboard-icon.svg", roles: ["admin"] },
-            { name: "Professors", href: "/admin/professors", icon: "/images/profilIcon.svg", roles: ["admin"] },
-            { name: "Course", href: "/admin/courses", icon: "/images/profilIcon.svg", roles: ["admin"] },
-            { name: "Planning", href: "/admin/edt", icon: "/images/profilIcon.svg", roles: ["admin"] },
-            { name: "Forms", href: "/admin/forms", icon: "/images/profilIcon.svg", roles: ["admin"] },
+            { name: "Dashboard", href: "/admin/dashboard", icon: "/images/sidebar/dashboard-icon.svg", roles: ["admin"] },
+            { name: "Professors", href: "/admin/professors", icon: "/images/sidebar/profs.svg", roles: ["admin"] },
+            { name: "Course", href: "/admin/courses", icon: "/images/sidebar/coursesIcon.svg", roles: ["admin"] },
+            { name: "Planning", href: "/admin/edt", icon: "/images/sidebar/edt.svg", roles: ["admin"] },
+            { name: "Forms", href: "/admin/forms", icon: "/images/sidebar/form.svg", roles: ["admin"] },
 
             // common routes
-            { name: "Profil", href: "/profil", icon: "/images/profilIcon.svg", roles: ["student", "admin"] },
+            { name: "Profil", href: "/profil", icon: "/images/sidebar/profilIcon.svg", roles: ["student", "admin"] },
         ]
 
         if (!role) return []
@@ -54,11 +54,11 @@ export function Sidebar() {
                     return (
                         <div
                             key={item.name}
-                            className={`flex items-center space-x-2 rounded-md ps-5 py-3 text-md font-medium ${
+                            className={`flex items-center space-x-3 rounded-md ps-5 py-3 text-md font-medium ${
                                 isActive ? "bg-white text-[#4a2a5a]" : "text-white hover:bg-[#5a3a6a]"
                             }`}
                         >
-                            <Image src={item.icon} alt="Icon" width={24} height={24} />
+                            <Image src={item.icon} alt="Icon" width={22} height={22} />
                             <Link href={item.href}>
                                 <h3>{item.name}</h3>
                             </Link>

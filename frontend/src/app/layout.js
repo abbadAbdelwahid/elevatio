@@ -1,7 +1,13 @@
 import { Inter } from "next/font/google"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+// Configuration modifiée de la police avec fallback
+const inter = Inter({
+    subsets: ["latin"],
+    weight: ["400", "500", "700"], // Ajout des poids nécessaires
+    display: "swap", // Meilleure performance de chargement
+    fallback: ["system-ui", "Arial"] // Fallback système
+})
 
 export const metadata = {
     title: "QualiTrack - Enhance the Quality of Higher Education",
@@ -11,8 +17,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
-        <body  className={inter.className}>{children}</body>
+        <html lang="en" suppressHydrationWarning={true}>
+        <head>
+            {/* Préchargement de la police */}
+            <link
+                rel="preload"
+                href="/fonts/inter.ttf"
+                as="font"
+                type="font/woff2"
+                crossOrigin="anonymous"
+            />
+        </head>
+        <body className={inter.className}>
+        {children}
+        </body>
         </html>
     )
 }

@@ -1,11 +1,7 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-
-export function CourseFilters() {
-    const [activeFilter, setActiveFilter] = useState("All")
-
-    const filters = ["All", "Recent", "Evaluated", "Not evaluated"]
+export function CourseFilters({ activeFilter, setActiveFilter }) {
+    const filters = ["All", "Recent", "Evaluated", "NotEvaluated"]
 
     return (
         <div className="mb-8 flex flex-wrap gap-2">

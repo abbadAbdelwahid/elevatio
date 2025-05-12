@@ -1,112 +1,53 @@
-// 'use client'
+'use client'
 
-// import { useState, useEffect } from 'react';
-// import { CourseFilters } from "@/components/student/courses/course-filters"
+import { useState, useEffect } from 'react';
 import { CourseGrid } from "@/components/student/courses/course-grid"
 import { SearchHeader } from "@/components/layout/search-header"
-const courses = [
-    {
-        id: 1,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.5,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-    {
-        id: 2,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.2,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-    {
-        id: 3,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.3,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-    {
-        id: 4,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.3,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-    {
-        id: 5,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.2,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-    {
-        id: 6,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.3,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-    {
-        id: 7,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.3,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-    {
-        id: 8,
-        title: "Programming Language C++",
-        image: "/images/acceuil/about.svg",
-        rating: 4.5,
-        duration: "19h 30m",
-        students: "50+ Student",
-        professor: "Pr.fissoune",
-    },
-]
-
+import Loading from "@/components/loading/loading";
+import { CourseFilters } from "@/components/student/courses/course-filters";
 
 export default function CoursesPage() {
+    const [courses, setCourses] = useState([]);
+    const [filteredCourses, setFilteredCourses] = useState([]);
+    const [activeFilter, setActiveFilter] = useState("All");
+    const [isLoading, setIsLoading] = useState(true);
 
+    // Fonction pour récupérer les cours filtrés
+    const fetchCourses = async (filter) => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`http://localhost:3003/courses?filter=${filter}`);
+            const data = await res.json();
+            setCourses(data);
+            setFilteredCourses(data); // Initialisation des cours filtrés par défaut (All)
+        } catch (error) {
+            console.error("Erreur de récupération des données", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-    // const [courses, setCourses] = useState([]);
-    // useEffect(() => {
-    //     const fetchCourses = async () => {
-    //         try {
-    //             // Si tu utilises un fichier db.json, assure-toi que tu l'ouvres via un serveur ou un proxy local
-    //             const res = await fetch('http://localhost:3003/courses'); // URL de l'API ou fichier JSON
-    //             const data = await res.json();
-    //             setCourses(data); // Stocke les données dans l'état
-    //         } catch (error) {
-    //             console.error("Erreur de récupération des données", error);
-    //         }
-    //     };
-    //
-    //     fetchCourses(); // Appel de la fonction
-    // }, []);
+    // Charger les cours initialement et chaque fois que le filtre change
+    useEffect(() => {
+        fetchCourses(activeFilter);
+    }, [activeFilter]);
 
     return (
         <div className="flex min-h-screen max-h-screen overflow-y-auto bg-blue-50">
-            {/* Main content */}
             <div className="flex-1 p-8 ms-4">
                 <SearchHeader />
-                {/*<CourseFilters  />*/}
-                <CourseGrid coursess={courses}  />
+                <CourseFilters activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
 
+                <div className="relative mt-8 min-h-[500px]">
+                    {isLoading && (
+                        <div className="absolute inset-0 z-10">
+                            <Loading />
+                        </div>
+                    )}
+
+                    {/* Passer les cours filtrés à CourseGrid */}
+                    <CourseGrid courses={filteredCourses} />
+                </div>
             </div>
         </div>
     )
