@@ -11,6 +11,10 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Filiere> Filieres { get; set; }
     public DbSet<Module> Modules { get; set; }
+    
+    // /Data/ApplicationDbContext.cs
+    public DbSet<Note> Notes { get; set; }
+
 
     // Méthode pour configurer le modèle de données (si nécessaire)
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IFiliereService, FiliereService>();
 builder.Services.AddScoped<IModuleService, ModuleService>();
+builder.Services.AddScoped<INoteService,    NoteService>();   // 🟢 ← à ajouter
 
 
 var app = builder.Build();
