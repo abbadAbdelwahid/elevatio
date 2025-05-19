@@ -23,7 +23,7 @@ namespace EvaluationService.Controllers
             try
             {
                 var answers = await _answerService.GetAnswersByQuestionIdAsync(questionId);
-                return Ok();
+                return Ok(answers);
             }
             catch (Exception e)
             {

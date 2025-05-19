@@ -87,7 +87,6 @@ public class QuestionnaireService : IQuestionnaireService
         catch (Exception e)
         {
             Console.WriteLine($"Error in HandlingCascadeDeletion: {e.Message}");
-            throw;
         }
     }
 

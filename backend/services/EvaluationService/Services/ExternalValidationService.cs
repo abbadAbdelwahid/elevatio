@@ -63,8 +63,7 @@ public class ExternalValidationService : IExternalValidationService
         }
         catch (Exception ex) when(ex is HttpRequestException or TaskCanceledException)
         {
-            Console.WriteLine(ex.Message); // Par défaut, on considère que l'utilisateur existe en cas d'erreur
-            return new Dictionary<string, bool>();
+            throw new Exception("server is down or not reachable", ex);
         }
     }
 
@@ -96,8 +95,7 @@ public class ExternalValidationService : IExternalValidationService
         }
         catch (Exception ex) when(ex is HttpRequestException or TaskCanceledException)
         {
-            Console.WriteLine(ex.Message);
-            return new Dictionary<int, bool>();
+            throw new Exception("Server is down or unreachable");
         }
     }
     
@@ -134,8 +132,7 @@ public class ExternalValidationService : IExternalValidationService
         }
         catch (Exception ex) when(ex is HttpRequestException or TaskCanceledException)
         {
-            Console.WriteLine(ex.Message);
-            return new Dictionary<int, bool>();
+            throw new Exception("Server is down or unreachable", ex);
         }
     }
     
