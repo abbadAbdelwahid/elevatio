@@ -4,14 +4,14 @@ using AnalyticsService.ExternalClients.ClientInterfaces;
 using AnalyticsService.Models;
 using AnalyticsService.ExternalClients.DTO; 
 using AnalyticsService.Data;
-public class StatistiqueMFService : IStatistiqueMFService<StatistiqueModule>
+public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
 {
     private readonly IEvaluationClient _evalClient;
     private readonly IAnswerClient _ansClient;
     private readonly IQuestionClient _quesClient;
     private readonly IQuestionnaireClient _qClient;
     private readonly AnalyticsDbContext _db;
-    public StatistiqueMFService(
+    public StatistiqueModuleService(
         IEvaluationClient evalClient,
         IAnswerClient ansClient,
         IQuestionClient quesClient,

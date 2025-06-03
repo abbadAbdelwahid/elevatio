@@ -1,6 +1,6 @@
 namespace AnalyticsService.Services.Interfaces;
 using AnalyticsService.Models;
-public interface IStatistiqueMFService<T>
+public interface IStatistiqueService<T>
 {
     Task<T> CalculateStats(int Id);
 }

@@ -1,19 +1,20 @@
-using AnalyticsService.Data;
+﻿using AnalyticsService.Data;
 using AnalyticsService.ExternalClients.DTO;
 using AnalyticsService.ExternalClients.TestImplementations;
-using AnalyticsService.Services.Implementations; 
-using Microsoft.EntityFrameworkCore ; 
+using AnalyticsService.Services.Implementations;
+using Microsoft.EntityFrameworkCore; 
+using Microsoft.Extensions.Configuration;
 
-namespace AnalyticsService;
+namespace AnalyticsService.AnalyticsTestApp;
 
-public class TestProgram
+public class Program
 {
       static async Task Main()
         { 
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
+                .Build(); 
 
             var connStr = config.GetConnectionString("AnalyticsDb");
             var options = new DbContextOptionsBuilder<AnalyticsDbContext>()
