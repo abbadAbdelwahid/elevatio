@@ -11,5 +11,5 @@ public interface IQuestionsStandardService
     Task<StandardQuestion> DeleteStandardQuestionById(int id);
     Task<List<StandardQuestion>> DeleteStandardQuestionsByStatName(StatName statName);
     Task<StandardQuestion> AddStandardQuestion(CreateStandardQuestionDto createStandardQuestionDto);
-    Task<StandardQuestion> UpdateStandardQuestion(CreateStandardQuestionDto updateStandardQuestionDto);
+    Task<StandardQuestion> UpdateStandardQuestion(StandardQuestion updateStandardQuestion);
 }

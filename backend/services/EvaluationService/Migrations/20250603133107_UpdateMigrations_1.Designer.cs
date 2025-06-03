@@ -3,6 +3,7 @@ using System;
 using EvaluationService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EvaluationService.Migrations
 {
     [DbContext(typeof(EvaluationsDbContext))]
-    partial class EvaluationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603133107_UpdateMigrations_1")]
+    partial class UpdateMigrations_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,6 +104,9 @@ namespace EvaluationService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("StandardQuestionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("StatName")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")

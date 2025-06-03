@@ -171,8 +171,8 @@ public class QuestionnaireService : IQuestionnaireService
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire q)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(q.QuestionnaireId);
         await HandlingCascadeDeletion();
+        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(q.QuestionnaireId);
         return await _questionnaireRepository.UpdateQuestionnaireAsync(q);
     }
 

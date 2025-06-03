@@ -2,7 +2,14 @@ namespace EvaluationService.Models;
 
 public enum StatName
 {
-    StatistiquesNormales,
-    StatistiquesIso20009,
-    StatistiquesIso20008
+    MedianRating,
+    StdDevRating,
+    SatisfactionRate,
+    ParticipationRate,
+    NpsScore,
+    PositiveFeedbackPct,
+    NegativeFeedbackPct,
+    ActionPlanCount,
+    ImprovementTrend
+
 }
