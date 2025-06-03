@@ -4,6 +4,7 @@ namespace EvaluationService.DTOs;
 
 public class CreateQuestionDto
 {
+    [Required]
     public int QuestionnaireId { get; set; }
 
     /// Si question standard, référence StandardQuestionId

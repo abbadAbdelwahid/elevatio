@@ -13,8 +13,8 @@ public class MappingConfig
             config.CreateMap<Answer, AnswerSubmissionDto>();
             config.CreateMap<CreateQuestionDto, Question>();
             config.CreateMap<Question, CreateQuestionDto>();
-            config.CreateMap<EvaluationDto, Evaluation>();
-            config.CreateMap<Evaluation, EvaluationDto>();
+            config.CreateMap<CreateEvaluationDto, Evaluation>();
+            config.CreateMap<Evaluation, CreateEvaluationDto>();
             config.CreateMap<CreateQuestionnaireDto, Questionnaire>();
             config.CreateMap<Questionnaire, CreateQuestionnaireDto>();
             config.CreateMap<CreateStandardQuestionDto, StandardQuestion>();

@@ -6,7 +6,7 @@ namespace EvaluationService.Services;
 public interface IEvaluationService
 {
     Task HandlingCascadeDeletion();
-    Task<List<Evaluation>> AddRangeAsync(List<EvaluationDto> evaluationsDto);
+    Task<List<Evaluation>> AddRangeAsync(List<CreateEvaluationDto> evaluationsDto);
     Task<string> GetEvaluationType(int evaluationId);
     Task<List<Evaluation>> GetEvaluationsByFiliereIdAsync(int filiereId);
     Task<List<Evaluation>> GetEvaluationsByModuleIdAsync(int moduleId);
@@ -14,6 +14,6 @@ public interface IEvaluationService
     Task<List<Evaluation>> GetAllEvaluationsAsync();
     Task<Evaluation> GetEvaluationByIdAsync(int evaluationId);
     Task<Evaluation> DeleteEvaluationByIdAsync(int evaluationId);
-    Task<Evaluation> UpdateEvaluationAsync(EvaluationDto evaluationDto);
-    Task<Evaluation> AddEvaluationAsync(EvaluationDto evaluationDto);
+    Task<Evaluation> UpdateEvaluationAsync(Evaluation evaluationUpdateDto);
+    Task<Evaluation> AddEvaluationAsync(CreateEvaluationDto createEvaluationDto);
 }

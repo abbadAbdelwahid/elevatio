@@ -46,8 +46,8 @@ public class QuestionsStandardService : IQuestionsStandardService
         return await _questionsStandardRepository.AddStandardQuestion(_mapper.Map<StandardQuestion>(standardQuestionDto));
     }
 
-    public async Task<StandardQuestion> UpdateStandardQuestion(CreateStandardQuestionDto updateStandardQuestionDto)
+    public async Task<StandardQuestion> UpdateStandardQuestion(StandardQuestion updatedStandardQuestion)
     {
-        return await _questionsStandardRepository.UpdateStandardQuestion(_mapper.Map<StandardQuestion>(updateStandardQuestionDto));
+        return await _questionsStandardRepository.UpdateStandardQuestion(updatedStandardQuestion);
     }
 }

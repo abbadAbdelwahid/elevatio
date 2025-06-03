@@ -48,9 +48,9 @@ public class QuestionService : IQuestionService
         return await _questionRepository.DeleteQuestionAsync(questionId);
     }
 
-    public async Task<Question> UpdateQuestionAsync(CreateQuestionDto questionDto)
+    public async Task<Question> UpdateQuestionAsync(Question updatedQuestion)
     {
-        return await _questionRepository.UpdateQuestionAsync(_mapper.Map<Question>(questionDto));
+        return await _questionRepository.UpdateQuestionAsync(updatedQuestion);
     }
 
     public async Task<List<Question>> GetAllQuestionsAsync()

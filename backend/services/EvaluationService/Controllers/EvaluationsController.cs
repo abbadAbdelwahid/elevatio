@@ -1,4 +1,5 @@
 using EvaluationService.DTOs;
+using EvaluationService.Models;
 using EvaluationService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ public class EvaluationController : ControllerBase
     }
 
     [HttpPost("addEvaluations")]
-    public async Task<IActionResult> AddEvaluations([FromBody] List<EvaluationDto> evaluationsDto)
+    public async Task<IActionResult> AddEvaluations([FromBody] List<CreateEvaluationDto> evaluationsDto)
     {
         if (evaluationsDto == null || !evaluationsDto.Any())
         {
@@ -157,16 +158,16 @@ public class EvaluationController : ControllerBase
     }
 
     [HttpPut("updateEvaluation")]
-    public async Task<IActionResult> UpdateEvaluation([FromBody] EvaluationDto evaluationDto)
+    public async Task<IActionResult> UpdateEvaluation([FromBody] Evaluation evaluationUpdateDto)
     {
-        if (evaluationDto == null)
+        if (evaluationUpdateDto == null)
         {
             return BadRequest("Invalid data.");
         }
 
         try
         {
-            var updatedEvaluation = await _evaluationService.UpdateEvaluationAsync(evaluationDto);
+            var updatedEvaluation = await _evaluationService.UpdateEvaluationAsync(evaluationUpdateDto);
             return Ok(updatedEvaluation);
         }
         catch (Exception e)
@@ -176,16 +177,16 @@ public class EvaluationController : ControllerBase
     }
 
     [HttpPost("addEvaluation")]
-    public async Task<IActionResult> AddEvaluation([FromBody] EvaluationDto evaluationDto)
+    public async Task<IActionResult> AddEvaluation([FromBody] CreateEvaluationDto createEvaluationDto)
     {
-        if (evaluationDto == null)
+        if (createEvaluationDto == null)
         {
             return BadRequest("Invalid data.");
         }
 
         try
         {
-            var newEvaluation = await _evaluationService.AddEvaluationAsync(evaluationDto);
+            var newEvaluation = await _evaluationService.AddEvaluationAsync(createEvaluationDto);
             return CreatedAtAction(nameof(GetEvaluationById), new { evaluationId = newEvaluation.EvaluationId }, newEvaluation);
         }
         catch (Exception e)

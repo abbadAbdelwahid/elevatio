@@ -123,16 +123,16 @@ namespace EvaluationService.Controllers
         }
 
         [HttpPut("updateStandardQuestion")]
-        public async Task<IActionResult> UpdateStandardQuestion([FromBody] CreateStandardQuestionDto updateStandardQuestionDto)
+        public async Task<IActionResult> UpdateStandardQuestion([FromBody] StandardQuestion updatedStandardQuestion)
         {
-            if (updateStandardQuestionDto == null)
+            if (updatedStandardQuestion == null)
             {
                 return BadRequest("Invalid data.");
             }
 
             try
             {
-                var updatedQuestion = await _standardQuestionService.UpdateStandardQuestion(updateStandardQuestionDto);
+                var updatedQuestion = await _standardQuestionService.UpdateStandardQuestion(updatedStandardQuestion);
                 return Ok(updatedQuestion);
             }
             catch (Exception e)
