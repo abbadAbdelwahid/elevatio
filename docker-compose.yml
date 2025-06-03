@@ -3,6 +3,11 @@ version: '3.8'
 services:
   analytics-db:
     image: postgres:15
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_DB: analyticsdb
       POSTGRES_USER: analyticsuser
@@ -21,10 +26,16 @@ services:
       DB_USER: analyticsuser
       DB_PASSWORD: analyticspass
     depends_on:
-      - analytics-db
+      analytics-db:
+          condition: service_healthy
 
   auth-db:
     image: postgres:15
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_DB: auth_db
       POSTGRES_USER: postgres
@@ -41,7 +52,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: "Host=auth-db;Port=5432;Database=auth_db;Username=postgres;Password=S3cureP@ssw0rd!2025"
     depends_on:
-      - auth-db
+      auth-db:
+       condition: service_healthy
 
   course-management-db:
     image: postgres:15
@@ -73,6 +85,11 @@ services:
 
   evaluation-db:
     image: postgres:15
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_DB: evaluation_formations
       POSTGRES_USER: postgres
@@ -95,11 +112,12 @@ services:
       RabbitMQ__Pass: "guest"
       RabbitMQ__Exchange: "evaluations.exchange"
       AI__Endpoint: "https://api.groq.com/openai/v1/chat/completions"
-      AI__ApiKey: "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"
+      AI__ApiKey: "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"
       Other-Microservices-EndPoints__AuthService-EndPoint: "http://auth-service:5244"
       Other-Microservices-EndPoints__CoursesManagementService-EndPoint: "http://course-management-service:5201"
     depends_on:
-      - evaluation-db
+      evaluation-db:
+          condition: service_healthy
 
   frontend:
     build:
