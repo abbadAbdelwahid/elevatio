@@ -23,6 +23,8 @@ builder.Services.AddScoped<IModuleService, ModuleService>();
 
 var app = builder.Build();
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -41,5 +43,15 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
 
+ApplyMigration();  
+void ApplyMigration()
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (db.Database.GetPendingMigrations().Any())
+        db.Database.Migrate();
+}
 
 app.Run();
+
+

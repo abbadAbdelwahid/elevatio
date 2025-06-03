@@ -10,17 +10,17 @@ namespace CourseManagementService.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Modules_Filieres_FiliereId1",
-                table: "Modules");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Modules_FiliereId1",
-                table: "Modules");
-
-            migrationBuilder.DropColumn(
-                name: "FiliereId1",
-                table: "Modules");
+            // migrationBuilder.DropForeignKey(
+            //     name: "FK_Modules_Filieres_FiliereId1",
+            //     table: "Modules");
+            //
+            // migrationBuilder.DropIndex(
+            //     name: "IX_Modules_FiliereId1",
+            //     table: "Modules");
+            //
+            // migrationBuilder.DropColumn(
+            //     name: "FiliereId1",
+            //     table: "Modules");
 
             migrationBuilder.AlterColumn<string>(
                 name: "ModuleName",
