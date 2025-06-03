@@ -16,7 +16,5 @@ public class CreateQuestionnaireDto
 
     public int? ModuleId { get; set; }
 
-    [Required]
-    public int CreatorUserId { get; set; }  // Validé via Auth MS
 
 }
