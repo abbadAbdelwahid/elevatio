@@ -4,7 +4,7 @@ using EvaluationService.Models;
 
 namespace EvaluationService.DTOs;
 
-public class AnswerResponseDto
+public class AnswerResponseDto 
 {
     public int AnswerId { get; set; }
 

@@ -12,8 +12,8 @@ public class AnswerSubmissionDto
     // public int RespondentUserId { get; set; }
 
     [MaxLength(2000)]
-    public string? RawAnswer { get; set; }
+    public string? AnswerText { get; set; }
     
     [Range(1,5)]
-    public float? RatingAnswer { get; set; }
+    public int? AnswerValue { get; set; }
 }
