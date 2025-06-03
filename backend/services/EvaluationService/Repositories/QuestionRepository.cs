@@ -18,12 +18,17 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task<List<Question>> GetAllQuestionsAsync()
     {
-        return await _ctx.Questions.ToListAsync();
+        return await _ctx.Questions
+            .Include(q => q.StandardQuestion)
+            .ToListAsync();
     }
     
     public async Task<List<Question>> GetQuestionsByQuestionnaireIdAsync(int questionnaireId)
     {
-        return await _ctx.Questions.Where(q => q.QuestionnaireId == questionnaireId).ToListAsync();
+        return await _ctx.Questions
+            .Where(q => q.QuestionnaireId == questionnaireId)
+            .Include(q => q.StandardQuestion)
+            .ToListAsync();
     }
 
     public async Task<List<StandardQuestion>> GetStandardQuestionsAsync()
@@ -54,8 +59,9 @@ public class QuestionRepository : IQuestionRepository
     public async Task<Question> GetQuestionAsync(int questionId)
     {
         return await _ctx.Questions.AsNoTracking()
-                .FirstOrDefaultAsync(q => q.QuestionId == questionId)
-                 ?? throw new NullReferenceException();
+                   .Include(q => q.StandardQuestion)
+                   .FirstOrDefaultAsync(q => q.QuestionId == questionId)
+                    ?? throw new NullReferenceException();
     }
 
     public async Task<Question> DeleteQuestionAsync(int questionId)

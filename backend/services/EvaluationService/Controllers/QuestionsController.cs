@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using EvaluationService.DTOs;
+using EvaluationService.Models;
 using EvaluationService.Services;
 
 namespace EvaluationService.Controllers
@@ -130,7 +131,7 @@ namespace EvaluationService.Controllers
         }
 
         [HttpPut("updateQuestion")]
-        public async Task<IActionResult> UpdateQuestion([FromBody] CreateQuestionDto questionDto)
+        public async Task<IActionResult> UpdateQuestion([FromBody] Question questionDto)
         {
             if (questionDto == null)
             {

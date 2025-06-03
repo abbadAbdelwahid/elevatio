@@ -74,7 +74,7 @@ public class EvaluationService : IEvaluationService
         }
     }
     
-    public async Task<List<Evaluation>> AddRangeAsync(List<EvaluationDto> evaluationsDto)
+    public async Task<List<Evaluation>> AddRangeAsync(List<CreateEvaluationDto> evaluationsDto)
     {
         return await _evaluationRepository.AddRangeAsync(_mapper.Map<List<Evaluation>>(evaluationsDto));
     }
@@ -124,15 +124,15 @@ public class EvaluationService : IEvaluationService
         return await _evaluationRepository.DeleteEvaluationByIdAsync(evaluationId);
     }
 
-    public async Task<Evaluation> UpdateEvaluationAsync(EvaluationDto evaluationDto)
+    public async Task<Evaluation> UpdateEvaluationAsync(Evaluation evaluationUpdateDto)
     {
         await HandlingCascadeDeletion();
-        return await _evaluationRepository.UpdateEvaluationAsync(_mapper.Map<Evaluation>(evaluationDto));
+        return await _evaluationRepository.UpdateEvaluationAsync(_mapper.Map<Evaluation>(evaluationUpdateDto));
     }
 
-    public async Task<Evaluation> AddEvaluationAsync(EvaluationDto evaluationDto)
+    public async Task<Evaluation> AddEvaluationAsync(CreateEvaluationDto createEvaluationDto)
     {
         await HandlingCascadeDeletion();
-        return await _evaluationRepository.AddEvaluationAsync(_mapper.Map<Evaluation>(evaluationDto));   
+        return await _evaluationRepository.AddEvaluationAsync(_mapper.Map<Evaluation>(createEvaluationDto));   
     }
 }
