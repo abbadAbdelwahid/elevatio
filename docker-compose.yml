@@ -9,7 +9,7 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_DB: analyticsdb
+      POSTGRES_DB: analytics-db
       POSTGRES_USER: analyticsuser
       POSTGRES_PASSWORD: analyticspass
     volumes:
