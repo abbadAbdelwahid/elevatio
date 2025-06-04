@@ -59,6 +59,12 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            # Ensure the SSH key has the correct permissions
+            echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            
+            # Add EC2 IP to known hosts to avoid SSH warnings
+            ssh-keyscan -H ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
             # Change to the directory containing Docker Compose file
             cd /sys-eval
             
