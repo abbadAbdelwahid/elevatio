@@ -9,9 +9,9 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_DB: analytics-db
-      POSTGRES_USER: analyticsuser
-      POSTGRES_PASSWORD: analyticspass
+      POSTGRES_DB: analytics_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: S3cureP@ssw0rd!2025
     volumes:
       - analytics-data:/var/lib/postgresql/data
 
@@ -19,16 +19,14 @@ services:
     build:
       context: ./backend/services/AnalyticsService
     ports:
-      - "5202:8080"  # Expose analytics service
+      - "5202:8080"
     environment:
-      DB_HOST: analytics-db
-      DB_NAME: analyticsdb
-      DB_USER: analyticsuser
-      DB_PASSWORD: analyticspass
+      ConnectionStrings__AnalyticsDb: "Host=analytics-db;Port=5432;Database=analytics_db;Username=postgres;Password=S3cureP@ssw0rd!2025"
+      OpenAI__ApiKey: ""
+      EvaluationService__BaseUrl: "http://evaluation-service:8080/"
     depends_on:
       analytics-db:
-          condition: service_healthy
-
+        condition: service_healthy
   auth-db:
     image: postgres:15
     healthcheck:
@@ -113,8 +111,8 @@ services:
       RabbitMQ__Exchange: "evaluations.exchange"
       AI__Endpoint: "https://api.groq.com/openai/v1/chat/completions"
       AI__ApiKey: "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"
-      Other-Microservices-EndPoints__AuthService-EndPoint: "http://auth-service:5244"
-      Other-Microservices-EndPoints__CoursesManagementService-EndPoint: "http://course-management-service:5201"
+      Other-Microservices-EndPoints__AuthService-EndPoint: "http://auth-service:8080"
+      Other-Microservices-EndPoints__CoursesManagementService-EndPoint: "http://course-management-service:8080"
     depends_on:
       evaluation-db:
           condition: service_healthy
@@ -124,6 +122,12 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_AUTH_URL: "http://auth-service:8080"
+      NEXT_PUBLIC_API_COURSE_URL: "http://course-management-service:8080"
+      NEXT_PUBLIC_API_EVALUATION_URL: "http://evaluation-service:8080"
+      NEXT_PUBLIC_API_ANALYTICS_URL: "http://analytics-service:8080"
+
 
 volumes:
   analytics-data:
