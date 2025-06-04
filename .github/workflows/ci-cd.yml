@@ -66,7 +66,7 @@ jobs:
             # Add EC2 IP to known hosts to avoid SSH warnings
             ssh-keyscan -H ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
             # Change to the directory containing Docker Compose file
-            cd /sys-eval
+            cd sys-eval
             
             # Stop and remove the existing containers
             sudo docker-compose down
