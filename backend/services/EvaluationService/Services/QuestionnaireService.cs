@@ -92,130 +92,145 @@ public class QuestionnaireService : IQuestionnaireService
 
     public async Task<List<Question>> AddStandardQuestionsToQuestionnaireAsync(int questionnaireId, StatName statName)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.AddStandardQuestionsToQuestionnaireAsync(questionnaireId, statName);
     }
 
     public async Task<List<Question>> AddQuestionsToQuestionnaireAsync(int questionnaireId, List<Question> questions)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.AddQuestionsToQuestionnaireAsync(questionnaireId, questions);
     }
 
     public async Task<List<StandardQuestion>> GetStandardQuestionsAsync(int questionnaireId)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetStandardQuestionsAsync(questionnaireId);
     }
 
     public async Task<QuestionnaireType> GetQuestionnaireTypeExternalInternalAsync(int questionnaireId)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId); 
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnaireTypeExternalInternalAsync(questionnaireId);
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesTypeExternalAsync()
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnairesTypeExternalAsync();
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesTypeInternalAsync()
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnairesTypeInternalAsync();   
     }
 
     public async Task<string> GetQuestionnaireTypeModuleFiliereAsync(int questionnaireId)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnaireTypeModuleFiliereAsync(questionnaireId);
     }
 
     public async Task<Questionnaire?> GetQuestionnaireByIdAsync(int questionnaireId)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);   
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesByModuleIdAsync(int moduleId)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnairesByModuleIdAsync(moduleId);   
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesByFiliereIdAsync(int filiereId)
     {
-        HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnairesByFiliereIdAsync(filiereId);  
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesByCreatorUserIdAsync(string creatorUserId)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnairesByCreatorUserIdAsync(creatorUserId);  
     }
 
     public async Task<Questionnaire> DeleteQuestionnaireAsync(int questionnaireId)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.DeleteQuestionnaireAsync(questionnaireId); 
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByRespondentIdAsync(string respondentId)
+    {
+        // await HandlingCascadeDeletion();
+        return await _questionnaireRepository.DeleteQuestionnairesByRespondentIdAsync(respondentId);
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByModuleIdAsync(int moduleId)
+    {
+        // await HandlingCascadeDeletion();
+        return await _questionnaireRepository.DeleteQuestionnairesByModuleIdAsync(moduleId);
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByFiliereIdAsync(int filiereId)
+    {
+        // await HandlingCascadeDeletion();
+        return await _questionnaireRepository.DeleteQuestionnairesByFiliereIdAsync(filiereId);
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByCreatorIdAsync(string creatorId)
+    {
+        // await HandlingCascadeDeletion();
+        return await _questionnaireRepository.DeleteQuestionnairesByCreatorIdAsync(creatorId);
     }
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire q)
     {
-        await HandlingCascadeDeletion();
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(q.QuestionnaireId);
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.UpdateQuestionnaireAsync(q);
     }
 
     public async Task<Questionnaire> AddQuestionnaireAsync(CreateQuestionnaireDto q)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.AddQuestionnaireAsync(_mapper.Map<Questionnaire>(q));
     }
 
     public async Task<List<Questionnaire>> GetAllQuestionnairesAsync()
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetAllQuestionnairesAsync(); 
     }
 
     public async Task<List<Questionnaire>> GetAllQuestionnairesFiliereAsync()
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetAllQuestionnairesFiliereAsync();
     }
 
     public async Task<List<Questionnaire>> GetAllQuestionnairesModuleAsync()
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetAllQuestionnairesModuleAsync();
     }
 
     public async Task<List<Questionnaire>> GetAllQuestionnairesByCreatorUserIdAsync(string creatorUserId)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetAllQuestionnairesByCreatorUserIdAsync(creatorUserId);
     }
 
     public async Task<string?> GetRespondentIdByQuestionnaireIdAsync(int questionnaireId)
     {
-        var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetRespondentIdByQuestionnaireIdAsync(questionnaireId);
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesByRespondentIdAsync(string respondentId)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _questionnaireRepository.GetQuestionnairesByRespondentIdAsync(respondentId);
     }
 }

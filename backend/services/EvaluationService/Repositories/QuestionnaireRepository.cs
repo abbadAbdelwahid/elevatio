@@ -141,6 +141,38 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         throw new KeyNotFoundException("Questionnaire not found");
     }
 
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByRespondentIdAsync(string respondentId)
+    {
+        var questionnairesOfRespondent = await GetQuestionnairesByRespondentIdAsync(respondentId);
+        _ctx.Questionnaires.RemoveRange(questionnairesOfRespondent);
+        await _ctx.SaveChangesAsync();
+        return questionnairesOfRespondent;
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByModuleIdAsync(int moduleId)
+    {
+        var questionnairesOfModule = await GetQuestionnairesByModuleIdAsync(moduleId);
+        _ctx.Questionnaires.RemoveRange(questionnairesOfModule);
+        await _ctx.SaveChangesAsync();
+        return questionnairesOfModule;
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByFiliereIdAsync(int filiereId)
+    {
+        var questionnairesOfFiliere = await GetQuestionnairesByFiliereIdAsync(filiereId);
+        _ctx.Questionnaires.RemoveRange(questionnairesOfFiliere);
+        await _ctx.SaveChangesAsync();
+        return questionnairesOfFiliere;
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByCreatorIdAsync(string creatorId)
+    {
+        var questionnairesOfCreator = await GetQuestionnairesByCreatorUserIdAsync(creatorId);
+        _ctx.Questionnaires.RemoveRange(questionnairesOfCreator);
+        await _ctx.SaveChangesAsync();
+        return questionnairesOfCreator;
+    }
+
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire q)
     {
         _ctx.Questionnaires.Update(q);

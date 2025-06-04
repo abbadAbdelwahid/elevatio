@@ -197,6 +197,74 @@ namespace EvaluationService.Controllers
             try
             {
                 var questionnaire = await _questionnaireService.DeleteQuestionnaireAsync(questionnaireId);
+                if (questionnaire == null)
+                {
+                    return NotFound("Questionnaire not found for the given ID.");
+                }
+                return Ok(questionnaire);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting questionnaire: " + e.Message);
+            }
+        }
+        
+        [HttpDelete("deleteQuestionnaireByRespondentId/{respondentId}")]
+        public async Task<IActionResult> DeleteQuestionnairesByRespondentId(string respondentId)
+        {
+            try
+            {
+                var questionnaire = await _questionnaireService.DeleteQuestionnairesByRespondentIdAsync(respondentId);
+                if (questionnaire == null)
+                    return NotFound("Questionnaire not found for the given respondent ID.");
+                return Ok(questionnaire);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting questionnaire: " + e.Message);
+            }
+        }
+        
+        [HttpDelete("deleteQuestionnaireByCreatorId/{creatorId}")]
+        public async Task<IActionResult> DeleteQuestionnairesByCreatorId(string creatorId)
+        {
+            try
+            {
+                var questionnaire = await _questionnaireService.DeleteQuestionnairesByCreatorIdAsync(creatorId);
+                if (questionnaire == null)
+                    return NotFound("Questionnaire not found for the given creator ID.");
+                return Ok(questionnaire);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting questionnaire: " + e.Message);
+            }
+        }
+        
+        [HttpDelete("deleteQuestionnaireByFiliereId/{filiereId:int}")]
+        public async Task<IActionResult> DeleteQuestionnairesByFiliereId(int filiereId)
+        {
+            try
+            {
+                var questionnaire = await _questionnaireService.DeleteQuestionnairesByFiliereIdAsync(filiereId);
+                if (questionnaire == null)
+                    return NotFound("Questionnaire not found for the given filiere ID.");
+                return Ok(questionnaire);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting questionnaire: " + e.Message);
+            }
+        }
+
+        [HttpDelete("deleteQuestionnairesByModuleId/{moduleId:int}")]
+        public async Task<IActionResult> DeleteQuestionnairesByModuleId(int moduleId)
+        {
+            try
+            {
+                var questionnaire = await _questionnaireService.DeleteQuestionnairesByModuleIdAsync(moduleId);
+                if (questionnaire == null)
+                    return NotFound("Questionnaire not found for the given module ID.");
                 return Ok(questionnaire);
             }
             catch (Exception e)

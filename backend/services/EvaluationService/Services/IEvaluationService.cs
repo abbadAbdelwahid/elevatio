@@ -16,4 +16,7 @@ public interface IEvaluationService
     Task<Evaluation> DeleteEvaluationByIdAsync(int evaluationId);
     Task<Evaluation> UpdateEvaluationAsync(Evaluation evaluationUpdateDto);
     Task<Evaluation> AddEvaluationAsync(CreateEvaluationDto createEvaluationDto);
+    Task<List<Evaluation>> DeleteEvaluationsByRespondentIdAsync(string respondentId);
+    Task<List<Evaluation>> DeleteEvaluationsByFiliereIdAsync(int filiereId);
+    Task<List<Evaluation>> DeleteEvaluationsByModuleIdAsync(int moduleId);
 }

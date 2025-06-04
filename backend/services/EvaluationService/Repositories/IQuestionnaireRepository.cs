@@ -16,6 +16,10 @@ public interface IQuestionnaireRepository
     Task<List<Questionnaire>> GetQuestionnairesByFiliereIdAsync(int filiereId);
     Task<List<Questionnaire>> GetQuestionnairesByCreatorUserIdAsync(string creatorUserId);
     Task<Questionnaire> DeleteQuestionnaireAsync(int questionnaireId);
+    Task<List<Questionnaire>> DeleteQuestionnairesByRespondentIdAsync(string respondentId);
+    Task<List<Questionnaire>> DeleteQuestionnairesByModuleIdAsync(int moduleId);
+    Task<List<Questionnaire>> DeleteQuestionnairesByFiliereIdAsync(int filiereId);
+    Task<List<Questionnaire>> DeleteQuestionnairesByCreatorIdAsync(string creatorId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire q);
     Task<Questionnaire> AddQuestionnaireAsync(Questionnaire q);
     Task<List<Questionnaire>> GetAllQuestionnairesAsync();

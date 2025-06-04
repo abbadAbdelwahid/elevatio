@@ -13,6 +13,9 @@ public interface IEvaluationRepository
     Task<List<Evaluation>> GetAllEvaluationsAsync();
     Task<Evaluation> GetEvaluationByIdAsync(int evaluationId);
     Task<Evaluation> DeleteEvaluationByIdAsync(int evaluationId);
+    Task<List<Evaluation>> DeleteEvaluationsByRespondentIdAsync(string respondentId);
+    Task<List<Evaluation>> DeleteEvaluationsByFiliereIdAsync(int filiereId);
+    Task<List<Evaluation>> DeleteEvaluationsByModuleIdAsync(int moduleId);
     Task<Evaluation> UpdateEvaluationAsync(Evaluation evaluation);
     Task<Evaluation> AddEvaluationAsync(Evaluation evaluation);
     Task<List<Evaluation>> DeleteRangeAsync(List<Evaluation> evaluations);

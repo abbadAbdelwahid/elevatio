@@ -64,6 +64,30 @@ public class EvaluationRepository : IEvaluationRepository
         return evaluation;
     }
 
+    public async Task<List<Evaluation>> DeleteEvaluationsByRespondentIdAsync(string respondentId)
+    {
+        var evaluationsOfRespondent = await GetEvaluationsByRespondentIdAsync(respondentId);
+        _ctx.Evaluations.RemoveRange(evaluationsOfRespondent);
+        await _ctx.SaveChangesAsync();
+        return evaluationsOfRespondent;
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByFiliereIdAsync(int filiereId)
+    {
+       var evaluationsOfFiliere = await GetEvaluationsByFiliereIdAsync(filiereId);
+       _ctx.Evaluations.RemoveRange(evaluationsOfFiliere);
+       await _ctx.SaveChangesAsync();
+       return evaluationsOfFiliere;
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByModuleIdAsync(int evaluationId)
+    {
+        List<Evaluation> evaluations = await GetEvaluationsByModuleIdAsync(evaluationId);
+        _ctx.Evaluations.RemoveRange(evaluations);
+        await _ctx.SaveChangesAsync();
+        return evaluations;
+    }
+
     public async Task<Evaluation> UpdateEvaluationAsync(Evaluation evaluation)
     {
         _ctx.Evaluations.Update(evaluation);
