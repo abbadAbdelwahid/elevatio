@@ -21,6 +21,7 @@ services:
     ports:
       - "5202:8080"
     environment:
+      ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__AnalyticsDb: "Host=analytics-db;Port=5432;Database=analytics_db;Username=postgres;Password=S3cureP@ssw0rd!2025"
       OpenAI__ApiKey: ""
       EvaluationService__BaseUrl: "http://evaluation-service:8080/"
