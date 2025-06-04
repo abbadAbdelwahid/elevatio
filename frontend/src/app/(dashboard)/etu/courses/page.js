@@ -16,7 +16,8 @@ export default function CoursesPage() {
     const fetchCourses = async (filter) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`http://localhost:3003/courses?filter=${filter}`);
+            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const res = await fetch(`${baseUrl}/courses?filter=${filter}`);
             const data = await res.json();
             setCourses(data);
             setFilteredCourses(data); // Initialisation des cours filtrés par défaut (All)

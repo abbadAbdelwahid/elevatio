@@ -17,10 +17,11 @@ export default function DashboardPage() {
   const  fullName="oussama"
     useEffect(() => {
         const fetchData = async () => {
-            const resStats = await fetch('http://localhost:3003/statistics')
+            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const resStats = await fetch(`${baseUrl}/statistics`)
             const statsData = await resStats.json()
 
-            const resEval = await fetch('http://localhost:3003/recentEvaluations')
+            const resEval = await fetch(`${baseUrl}/recentEvaluations`)
             const evalData = await resEval.json()
 
             setStats(statsData)

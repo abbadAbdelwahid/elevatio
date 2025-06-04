@@ -40,17 +40,13 @@ export function CourseCard({ course }) {
                         <ClockIcon />
                         <span>{course.duration}</span>
                     </div>
-                    {/*<div className="flex items-center gap-1">*/}
-                    {/*    <UserIcon />*/}
-                    {/*    <span>{course.students}</span>*/}
-                    {/*</div>*/}
                 </div>
                 <div className="relative">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src="/placeholder-user.jpg" />
-                                <AvatarFallback>PF</AvatarFallback>
+                                <AvatarFallback>{}</AvatarFallback>
                             </Avatar>
                             <span className="text-sm text-gray-600">{course.professor}</span>
                         </div>

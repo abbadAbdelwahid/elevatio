@@ -28,6 +28,129 @@
       "password": "test789"
     }
   ],
+
+  "login": [
+    {
+      "id": "5fbc",
+      "email": "oussama@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "7094",
+      "email": "batteoui@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "e7f5",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "7a1c",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "42d9",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "e362",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "2b89",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "f45c",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "033c",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "8062",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
+    },
+    {
+      "id": "a993",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "6996",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "be4f",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "696e",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "6b21",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "34be",
+      "email": "a@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "a481",
+      "email": "oussama@gmail.com",
+      "password": "ZT@303625"
+    },
+    {
+      "id": "0856",
+      "email": "ff@gmail.com",
+      "password": "ff@"
+    }
+  ],
+
+  "statistics": {
+    "participationRate": 60,
+    "averageRating": 4.2,
+    "evaluatedCourses": 3,
+    "totalCourses": 8
+  },
+  "recentEvaluations": [
+    {
+      "id": "1",
+      "subject": "C++",
+      "professor": "Pr.Haddad",
+      "time": "today"
+
+    },
+    {
+      "id": "2",
+      "subject": "Project Management",
+      "professor": "Pr.Fissoune",
+      "time": "10:30 AM"
+
+    },
+    {
+      "id": "3",
+      "subject": "Introduction to Web Development",
+      "professor": "Pr.amechnoue",
+      "time": "01:00 PM"
+    }
+  ],
+
   "courses": [
     {
       "id": "1",
@@ -35,7 +158,6 @@
       "image": "/images/acceuil/about.svg",
       "rating": 4.5,
       "duration": "19h 30m",
-      "students": "50+ Students",
       "professor": "Pr. Fissoune",
       "evaluated": true,
       "date": "2023-05-01"
@@ -46,7 +168,7 @@
       "image": "/images/acceuil/about.svg",
       "rating": 4.2,
       "duration": "15h 0m",
-      "students": "30+ Students",
+
       "professor": "Pr. Amechnoune",
       "evaluated": false,
       "date": "2023-06-01"
@@ -108,37 +230,22 @@
       "course_id": 1,
       "rating": 4,
       "comment": "ccccccccc"
-    }
-  ],
-  "statistics": {
-    "participationRate": 60,
-    "averageRating": 4.2,
-    "evaluatedCourses": 3,
-    "totalCourses": 8
-  },
-  "recentEvaluations": [
-    {
-      "id": "1",
-      "subject": "C++",
-      "professor": "Pr.Haddad",
-      "time": "today",
-      "bg": "bg-purple-100"
     },
     {
-      "id": "2",
-      "subject": "Project Management",
-      "professor": "Pr.Fissoune",
-      "time": "10:30 AM",
-      "bg": "bg-green-100"
+      "id": "331e",
+      "course_id": "1",
+      "rating": 3,
+      "comment": ""
     },
     {
-      "id": "3",
-      "subject": "Introduction to Web Development",
-      "professor": "Pr.amechnoue",
-      "time": "01:00 PM",
-      "bg": "bg-purple-100"
+      "id": "6e41",
+      "course_id": "1",
+      "rating": 3,
+      "comment": "hhh"
     }
   ],
+
+
   "plannings": [
     {
       "group": "GINF2",
@@ -304,87 +411,6 @@
       ],
       "id": "ce0e"
     }
-  ],
-  "login": [
-    {
-      "id": "5fbc",
-      "email": "oussama@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "7094",
-      "email": "batteoui@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "e7f5",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "7a1c",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "42d9",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "e362",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "2b89",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "f45c",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "033c",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "8062",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "a993",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "6996",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "be4f",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "696e",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "6b21",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "34be",
-      "email": "a@gmail.com",
-      "password": "1234"
-    }
   ]
+
 }

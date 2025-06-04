@@ -22,6 +22,7 @@ export function Sidebar() {
             // student routes
             { name: "Dashboard", href: "/etu/dashboard", icon: "/images/sidebar/dashboard-icon.svg", roles: ["student"] },
             { name: "Courses", href: "/etu/courses", icon: "/images/sidebar/coursesIcon.svg", roles: ["student"] },
+            { name: "Planning", href: "/etu/edt", icon: "/images/sidebar/edt.svg", roles: ["student"] },
 
             // admin routes
             { name: "Dashboard", href: "/admin/dashboard", icon: "/images/sidebar/dashboard-icon.svg", roles: ["admin"] },
