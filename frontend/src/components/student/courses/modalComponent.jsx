@@ -13,8 +13,9 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 
 export function DialogDemo({ title, course }) {
-    const [rating, setRating] = useState(0)
-    const [comment, setComment] = useState("")
+    const [rating, setRating] = useState(course.evaluation?.rating || 0)
+    const [comment, setComment] = useState(course.evaluation?.comment || "")
+
     const [successMessage, setSuccessMessage] = useState("") // Nouveau state pour message de succès
     const [isSubmitting, setIsSubmitting] = useState(false) // Nouveau state pour la soumission en cours
     const triggerRef = useRef(null)
@@ -57,31 +58,30 @@ export function DialogDemo({ title, course }) {
         e.preventDefault()
         setIsSubmitting(true)
 
-        // Soumettre l'évaluation et le commentaire
         const evaluationData = {
-            course_id: course.id, // ID du cours
-            rating: rating,
-            comment: comment,
+            course_id: course.id,
+            rating,
+            comment,
         }
 
         try {
-            const res = await fetch("http://localhost:3003/evaluations", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(evaluationData),
-            })
+            const res = await fetch(
+                `http://localhost:3003/evaluations${course.evaluation ? `/${course.evaluation.id}` : ''}`,
+                {
+                    method: course.evaluation ? "PUT" : "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(evaluationData),
+                }
+            )
 
             if (res.ok) {
-                setSuccessMessage("Évaluation soumise avec succès !") // Message de succès
+                setSuccessMessage(course.evaluation ? "Évaluation modifiée avec succès !" : "Évaluation soumise avec succès !")
                 setTimeout(() => {
                     setSuccessMessage("")
-                    setRating(0)
-                    setComment("")
                     setIsSubmitting(false)
                 }, 3000)
-
             } else {
                 console.error("Erreur lors de la soumission de l'évaluation")
             }
@@ -89,6 +89,7 @@ export function DialogDemo({ title, course }) {
             console.error("Erreur réseau:", error)
         }
     }
+
 
     return (
         <Dialog>

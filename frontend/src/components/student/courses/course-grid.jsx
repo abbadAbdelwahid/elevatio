@@ -3,7 +3,7 @@ import {Suspense, useEffect, useState} from "react";
 import { CourseCard } from "./course-card";
 
 export function CourseGrid({ courses }) {
-
+  console.log(courses)
     return (
         <div className="p-14 max-h-[80vh] overflow-y-auto">
 

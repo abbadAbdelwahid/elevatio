@@ -15,10 +15,7 @@ export function UserInfoCard({user}) {
                     <p className="text-md font-semibold">Email:</p>
                     <p className="text-sm text-muted-foreground">{user.email}</p>
                 </div>
-                <div className="flex space-x-4">
-                    <p className="text-md font-semibold">Tel:</p>
-                    <p className="text-sm text-muted-foreground">{user.phone}</p>
-                </div>
+
             </CardContent>
         </Card>
     )
