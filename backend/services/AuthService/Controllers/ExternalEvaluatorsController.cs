@@ -1,4 +1,6 @@
 ﻿// Controllers/ExternalEvaluatorsController.cs
+
+using System.Security.Claims;
 using AuthService.Dtos;
 using AuthService.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -52,6 +54,18 @@ public class ExternalEvaluatorsController : ControllerBase
         var success = await _svc.DeleteAsync(id);
         return success ? NoContent() : NotFound();
     }
+    
+    [Authorize(Roles = "Admin,ExternalEvaluator")]
+    [HttpGet("me")] // Route pour obtenir les informations de l'évaluateur externe connecté
+    public async Task<IActionResult> GetMe()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Récupérer l'ID de l'utilisateur connecté
+
+        var evaluator = await _svc.GetByIdAsync(userId);  // Utiliser l'ID pour obtenir les informations de l'évaluateur externe
+
+        return evaluator is null ? NotFound() : Ok(evaluator);  // Retourner les données ou 404 si l'évaluateur n'existe pas
+    }
+
 
     
 }

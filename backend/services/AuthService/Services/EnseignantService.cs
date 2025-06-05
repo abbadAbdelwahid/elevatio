@@ -70,5 +70,30 @@ public class EnseignantService : IEnseignantService
         await _db.SaveChangesAsync();
         return true;
     }
+    
+    public async Task<string> UploadProfileImage(IFormFile file)
+    {
+        // Vérifier si le fichier est nul ou a une taille invalide
+        if (file == null || file.Length == 0)
+            throw new Exception("Aucune image n'a été téléchargée.");
+
+        // Générer un nom de fichier unique
+        var fileName = Path.GetFileName(Guid.NewGuid().ToString() + Path.GetExtension(file.FileName));
+        var filePath = Path.Combine("wwwroot", "uploads", "profile_images", fileName);
+
+        // Créer le dossier si nécessaire
+        var directoryPath = Path.GetDirectoryName(filePath);
+        if (!Directory.Exists(directoryPath))
+            Directory.CreateDirectory(directoryPath);
+
+        // Sauvegarder l'image
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        return $"/uploads/profile_images/{fileName}"; // Retourner l'URL de l'image
+    }
+
 
 }

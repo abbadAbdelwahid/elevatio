@@ -1,4 +1,7 @@
 ﻿// Controllers/EtudiantsController.cs
+
+using System.Security.Claims;
+using AuthService.Data;
 using AuthService.Dtos;
 using AuthService.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +14,12 @@ namespace AuthService.Controllers;
 public class EtudiantsController : ControllerBase
 {
     private readonly IEtudiantService _svc;
-    public EtudiantsController(IEtudiantService svc) => _svc = svc;
+    private readonly AuthDbContext _db;
+    
+    public EtudiantsController(IEtudiantService svc, AuthDbContext db){
+        _svc = svc;
+        _db = db; // Injection de AuthDbContext
+    }
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
@@ -28,4 +36,50 @@ public class EtudiantsController : ControllerBase
         var etu = await _svc.GetByIdAsync(id);
         return etu is null ? NotFound() : Ok(etu);
     }
+    
+    [Authorize(Roles = "Admin,Etudiant")]
+    [HttpGet("me")] // Route pour obtenir les informations de l'étudiant connecté
+    public async Task<IActionResult> GetMe()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Récupérer l'ID de l'utilisateur connecté
+
+        var etudiant = await _svc.GetByIdAsync(userId);  // Utiliser l'ID pour obtenir les informations de l'étudiant
+
+        return etudiant is null ? NotFound() : Ok(etudiant);  // Retourner les données ou 404 si l'étudiant n'existe pas
+    }
+
+    [Authorize(Roles = "Admin,Etudiant")]
+    [HttpPut("me/profile-image")]
+    public async Task<IActionResult> UpdateProfileImage(IFormFile file)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Récupérer l'ID de l'utilisateur connecté
+
+        var etudiant = await _svc.GetByIdAsync(userId);  // Récupérer l'étudiant connecté
+
+        if (etudiant == null)
+            return NotFound("Étudiant non trouvé.");
+
+        try
+        {
+            // Télécharger et sauvegarder l'image
+            var imageUrl = await _svc.UploadProfileImage(file);
+
+            // Vérifier si l'URL de l'image de profil est bien mise à jour
+            etudiant.ProfileImageUrl = imageUrl;
+
+            // Sauvegarder l'URL de l'image dans la base de données
+            _db.Etudiants.Update(etudiant);  // Assurez-vous d'utiliser Update() si nécessaire
+            await _db.SaveChangesAsync();  // Appliquer les modifications dans la base de données
+
+            return Ok(new { imageUrl = imageUrl }); // Retourner l'URL de l'image
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Erreur de téléchargement de l'image : {ex.Message}");
+        }
+    }
+
+
+ 
+    
 }
