@@ -14,7 +14,7 @@ public class Module
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
     public string Status { get; set; } = "active"; // État du module
-    public bool IsMandatory { get; set; } = true; // Optionnel: module obligatoire ou non
+    public bool Evaluated  { get; set; } = false; // Optionnel: module obligatoire ou non
 
     // Relation avec la table Filiere
     public Filiere Filiere { get; set; }
