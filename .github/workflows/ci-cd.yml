@@ -67,7 +67,13 @@ jobs:
             ssh-keyscan -H ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
             # Change to the directory containing Docker Compose file
             cd sys-eval
-            
+            # Login to ECR for all 5 repositories
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_ANALYTICS_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_AUTH_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_COURSE_MANAGEMENT_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_EVALUATION_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_FRONTEND_URI }}
+      
             # Stop and remove the existing containers
             sudo docker-compose down
             
@@ -75,4 +81,4 @@ jobs:
             sudo docker-compose pull
             
             # Rebuild and restart the containers with the latest images
-            sudo docker-compose up -d --build --no-cache
+            sudo docker-compose up -d --build
