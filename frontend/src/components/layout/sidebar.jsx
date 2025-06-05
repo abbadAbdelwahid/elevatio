@@ -9,7 +9,7 @@ import { getRoleFromCookie } from "@/lib/utils"
 
 export function Sidebar() {
     const pathname = usePathname()
-    const [role, setRole] = useState('')
+    const [role, setRole] = useState('student')
 
     useEffect(() => {
         const roleFromCookie = getRoleFromCookie()
