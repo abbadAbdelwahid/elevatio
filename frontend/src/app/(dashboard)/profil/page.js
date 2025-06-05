@@ -17,7 +17,8 @@ export default function SettingsPage() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const res = await fetch("http://localhost:3003/users?id=1"); // Remplacer par l'API backend
+                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+                const res = await fetch(`${baseUrl}/profil`); // Remplacer par l'API backend
                 const data = await res.json();
                 console.log('profil: ',data[0])
                 setUserDetails(data[0]);

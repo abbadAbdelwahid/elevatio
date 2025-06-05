@@ -15,7 +15,7 @@ export default function Home() {
                     <div className="space-y-6 z-10">
                         <div className="space-y-3">
                             <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                                Enhance the Quality of <br />
+                                Abbad is goinig to deploy our APP <br />
                                 Higher Education
                             </h2>
                             <h2 className="text-4xl md:text-5xl font-bold text-orange-500">QualiTrack</h2>

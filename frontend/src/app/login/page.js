@@ -1,8 +1,11 @@
 'use client'
+// Add this import
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+
 export default function LoginPage() {
     const router = useRouter();
 
@@ -15,6 +18,8 @@ export default function LoginPage() {
         const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return pattern.test(value);
     };
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,36 +41,63 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const response = await fetch("http://localhost:3003/login", {
+            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const response = await fetch(`${baseUrl}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
             });
-            const data = await response.json();
 
+            const data = await response.json();
+            console.log(data); // Log pour vérifier la réponse
 
             if (response.ok) {
-                // ✅ Enregistrer le rôle dans un cookie
-                // document.cookie = `role=${data.role}; path=/; secure; samesite=strict`;
-                document.cookie = `role=admin; path=/; secure; samesite=strict`;
-                data.role="student";
-                // ✅ Rediriger selon le rôle
-                if (data.role === "admin") {
-                    router.push("/admin/dashboard");
-                } else {
-                    router.push("/etu/dashboard");
+                console.log("I received a response!");
+
+                // Vérifie si le token a un préfixe "Bearer"
+                const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTIzNDU2Nzg5Iiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE2MTIyMzQyNjAsImV4cGlyZWRfc3RhcnRfdGltZSI6MTYxMjIzNDI2MH0.jZoNB2DP61ZZGbVQQRLmczcZJbqFlTxTBKTkyS4HD7k";  // Supprimer le préfixe "Bearer "
+                console.log("AccessToken:", accessToken); // Log pour vérifier le token sans "Bearer"
+
+                try {
+                    // Décoder le token
+                    const decoded = jwtDecode(accessToken);
+                    console.log("Decoded JWT:", decoded);  // Vérifie que le token est bien décodé
+
+                    const role = decoded.role;  // Extraction du rôle du payload
+                    console.log("Role:", role);  // Log pour vérifier le rôle extrait du token
+
+                    // Stocker le token dans localStorage
+                    localStorage.setItem("accessToken", accessToken);
+
+                    // Enregistrer le rôle dans un cookie
+                    document.cookie = `role=${role}; path=/; secure; samesite=strict`;
+
+                    // Redirection selon le rôle
+                    if (role === "admin") {
+                        router.push("/admin/dashboard");
+                    } else {
+                        router.push("/etu/dashboard");
+                    }
+                } catch (error) {
+                    console.error("Error decoding JWT:", error);
+                    setErrors({ form: "Erreur lors du décodage du token." });
                 }
+
             } else {
                 setErrors({ form: data.message || "Erreur de connexion." });
             }
         } catch (error) {
+            console.error("Error during login:", error);
             setErrors({ form: "Erreur serveur. Réessayez plus tard." });
         } finally {
             setLoading(false);
         }
     };
+
+
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br  flex items-center justify-center px-4">

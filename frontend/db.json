@@ -28,7 +28,6 @@
       "password": "test789"
     }
   ],
-
   "login": [
     {
       "id": "5fbc",
@@ -119,9 +118,13 @@
       "id": "0856",
       "email": "ff@gmail.com",
       "password": "ff@"
+    },
+    {
+      "id": "58be",
+      "email": "SS@gmail.com",
+      "password": "SS@GMAI"
     }
   ],
-
   "statistics": {
     "participationRate": 60,
     "averageRating": 4.2,
@@ -134,14 +137,12 @@
       "subject": "C++",
       "professor": "Pr.Haddad",
       "time": "today"
-
     },
     {
       "id": "2",
       "subject": "Project Management",
       "professor": "Pr.Fissoune",
       "time": "10:30 AM"
-
     },
     {
       "id": "3",
@@ -150,17 +151,22 @@
       "time": "01:00 PM"
     }
   ],
-
   "courses": [
     {
       "id": "1",
       "title": "Programming Language C++",
       "image": "/images/acceuil/about.svg",
-      "rating": 4.5,
+
       "duration": "19h 30m",
       "professor": "Pr. Fissoune",
       "evaluated": true,
-      "date": "2023-05-01"
+      "date": "2023-05-01",
+      "evaluation": {
+        "id": "4e35",
+        "course_id": 1,
+        "rating": 4,
+        "comment": "ddddeee"
+      }
     },
     {
       "id": "2",
@@ -168,10 +174,15 @@
       "image": "/images/acceuil/about.svg",
       "rating": 4.2,
       "duration": "15h 0m",
-
       "professor": "Pr. Amechnoune",
       "evaluated": false,
-      "date": "2023-06-01"
+      "date": "2023-06-01",
+      "evaluation": {
+        "id": "4e35",
+        "course_id": 2,
+        "rating": 2,
+        "comment": "ddddeee"
+      }
     },
     {
       "id": "3",
@@ -182,7 +193,13 @@
       "students": "60+ Students",
       "professor": "Pr. Haddad",
       "evaluated": true,
-      "date": "2023-04-01"
+      "date": "2023-04-01",
+      "evaluation": {
+        "id": "4e35",
+        "course_id": 3,
+        "rating": 3,
+        "comment": "ddddeee"
+      }
     },
     {
       "id": "4",
@@ -193,7 +210,13 @@
       "students": "40+ Students",
       "professor": "Pr. Benali",
       "evaluated": false,
-      "date": "2023-07-01"
+      "date": "2023-07-01",
+      "evaluation": {
+        "id": "4e35",
+        "course_id": 4,
+        "rating": 3,
+        "comment": "ddddeee"
+      }
     },
     {
       "id": "5",
@@ -204,7 +227,13 @@
       "students": "80+ Students",
       "professor": "Pr. Dali",
       "evaluated": true,
-      "date": "2023-05-15"
+      "date": "2023-05-15",
+      "evaluation": {
+        "id": "4e35",
+        "course_id": 5,
+        "rating": 4,
+        "comment": "ddddeee"
+      }
     },
     {
       "id": "6",
@@ -215,15 +244,21 @@
       "students": "35+ Students",
       "professor": "Pr. Lhafi",
       "evaluated": false,
-      "date": "2023-06-20"
+      "date": "2023-06-20",
+      "evaluation": {
+        "id": "4e35",
+        "course_id": 6,
+        "rating": 5,
+        "comment": "ddddeee"
+      }
     }
   ],
   "evaluations": [
     {
-      "id": "4e35",
-      "course_id": 1,
-      "rating": 0,
-      "comment": "ddddeee"
+      "course_id": "1",
+      "rating": 2,
+      "comment": "just now",
+      "id": "4e35"
     },
     {
       "id": "504c",
@@ -242,10 +277,20 @@
       "course_id": "1",
       "rating": 3,
       "comment": "hhh"
+    },
+    {
+      "id": "7e60",
+      "course_id": "1",
+      "rating": 2,
+      "comment": ""
+    },
+    {
+      "id": "cc8d",
+      "course_id": "1",
+      "rating": 4,
+      "comment": ""
     }
   ],
-
-
   "plannings": [
     {
       "group": "GINF2",
@@ -412,5 +457,4 @@
       "id": "ce0e"
     }
   ]
-
 }

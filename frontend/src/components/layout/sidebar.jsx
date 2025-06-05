@@ -9,12 +9,12 @@ import { getRoleFromCookie } from "@/lib/utils"
 
 export function Sidebar() {
     const pathname = usePathname()
-    const [role, setRole] = useState('student')
+    const [role, setRole] = useState('')
 
     useEffect(() => {
-        // const roleFromCookie = getRoleFromCookie()
-        // console.log("Role from cookie:", roleFromCookie)
-        // setRole(roleFromCookie)
+        const roleFromCookie = getRoleFromCookie()
+        console.log("Role from cookie:", roleFromCookie)
+        setRole(roleFromCookie)
     }, [])
 
     const navigation = useMemo(() => {

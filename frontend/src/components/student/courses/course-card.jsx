@@ -7,7 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import  {DialogDemo} from "@/components/student/courses/modalComponent";
 
 export function CourseCard({ course }) {
-    const [rating, setRating] = useState(course.rating)
+
+    const [rating, setRating] = useState(course.evaluation?.rating || 0)
     const [hoverRating, setHoverRating] = useState(0)
 
     // Générer les étoiles
@@ -52,7 +53,7 @@ export function CourseCard({ course }) {
                         </div>
 
                         <DialogDemo
-                            title="Evaluate"
+                            title={course.evaluation ? "Reevalue" : "Evaluate"}
                             course={course}
                         />
                     </div>
