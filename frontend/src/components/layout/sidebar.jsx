@@ -11,11 +11,11 @@ export function Sidebar() {
     const pathname = usePathname()
     const [role, setRole] = useState('student')
 
-    useEffect(() => {
-        const roleFromCookie = getRoleFromCookie()
-        console.log("Role from cookie:", roleFromCookie)
-        setRole(roleFromCookie)
-    }, [])
+    // useEffect(() => {
+    //     const roleFromCookie = getRoleFromCookie()
+    //     console.log("Role from cookie:", roleFromCookie)
+    //     setRole(roleFromCookie)
+    // }, [])
 
     const navigation = useMemo(() => {
         const allLinks = [
