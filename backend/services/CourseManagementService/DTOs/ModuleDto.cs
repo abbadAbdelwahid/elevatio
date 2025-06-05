@@ -11,5 +11,8 @@ namespace CourseManagementService.DTOs
         public int TeacherId { get; set; }  // ID de l'enseignant
         public DateTime CreatedAt { get; set; }  // Date de création
         public DateTime UpdatedAt { get; set; }  // Date de mise à jour
+    
+        public bool Evaluated { get; set; }  // Ajout de la propriété Evaluated
+
     }
 }

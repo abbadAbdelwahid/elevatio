@@ -163,6 +163,55 @@ namespace CourseManagementService.Services.Implementations
                 UpdatedAt = m.UpdatedAt
             });
         }
+        
+        public async Task<IEnumerable<ModuleDto>> GetFilteredModulesAsync(string filter)
+        {
+            IQueryable<Module> query = _context.Modules.AsQueryable();
+
+            switch (filter.ToLower())
+            {
+                case "all":
+                    // Retourne tous les modules
+                    query = query.AsNoTracking();
+                    break;
+            
+                case "recent":
+                    // Retourne les 8 derniers modules créés
+                    query = query.OrderByDescending(m => m.CreatedAt).Take(8);
+                    break;
+
+                case "evaluated":
+                    // Retourne tous les modules avec Evaluated = true
+                    query = query.Where(m => m.Evaluated == true);
+                    break;
+
+                case "notevaluated":
+                    // Retourne tous les modules avec Evaluated = false
+                    query = query.Where(m => m.Evaluated == false);
+                    break;
+
+                default:
+                    return Enumerable.Empty<ModuleDto>(); // Si un filtre invalide est passé
+            }
+
+            var modules = await query
+                .Include(m => m.Filiere) // Inclure les données de la filière associée
+                .ToListAsync();
+
+            return modules.Select(m => new ModuleDto
+            {
+                ModuleId = m.ModuleId,
+                ModuleName = m.ModuleName,
+                ModuleDescription = m.ModuleDescription,
+                ModuleDuration = m.ModuleDuration,
+                FiliereName = m.Filiere.FiliereName,
+                TeacherId = m.TeacherId,
+                CreatedAt = m.CreatedAt,
+                UpdatedAt = m.UpdatedAt,
+                Evaluated = m.Evaluated // Inclure la nouvelle propriété Evaluated
+            });
+        }
+
     
     }
 }

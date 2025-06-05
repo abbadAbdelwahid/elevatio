@@ -8,4 +8,6 @@ public interface IEtudiantService
 {
     Task<(bool Ok, IEnumerable<string> Errors, Etudiant? Data)> CreateAsync(CreateEtudiantDto dto);
     Task<Etudiant?> GetByIdAsync(string id);
+    public Task<string> UploadProfileImage(IFormFile file);
+
 }

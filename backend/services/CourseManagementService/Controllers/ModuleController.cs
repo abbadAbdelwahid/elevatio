@@ -35,14 +35,16 @@ namespace CourseManagementService.Controllers
 
             return Ok(module); // 200
         }
-
-        // GET api/module
+        
+        
+        // GET api/module?filter={filter}
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ModuleDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ModuleDto>>> GetAll([FromQuery] string filter)
         {
-            var modules = await _service.GetAllModulesAsync();
+            var modules = await _service.GetFilteredModulesAsync(filter);
             return Ok(modules); // 200
         }
+
 
         // PUT api/module/{id}
         [HttpPut("{id}")]
