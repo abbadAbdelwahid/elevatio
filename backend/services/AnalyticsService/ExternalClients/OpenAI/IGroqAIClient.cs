@@ -1,6 +1,6 @@
 namespace AnalyticsService.ExternalClients.OpenAI;
-
-public interface IOpenAIClient
+using System;
+public interface IGroqAIClient
 {
     Task<string> SendChatAsync(string prompt); 
     

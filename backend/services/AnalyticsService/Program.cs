@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore ;
 using Microsoft.OpenApi.Models; 
 using AnalyticsService.ExternalClients.ClientInterfaces;
 using AnalyticsService.ExternalClients.Http;
+using AnalyticsService.ExternalClients.OpenAI;
+using AnalyticsService.Models;
+using AnalyticsService.Services.Implementations;
+using AnalyticsService.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,30 +16,22 @@ var conn = builder.Configuration.GetConnectionString("AnalyticsDb");
 builder.Services.AddDbContext<AnalyticsDbContext>(opts =>
     opts.UseNpgsql(conn));
 
-// Charger la configuration des URLs depuis le fichier appsettings.json
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Charger la section "External" dans une variable de configuration
-var config = builder.Configuration.GetSection("External");
+var config = builder.Configuration.GetSection("EvaluationService");
+// 3) Enregistrement du service de statistiques pour le module
+builder.Services.AddScoped<IStatistiqueService<StatistiqueModule>, StatistiqueModuleService>();
+// 3) Enregistrement du service de statistiques pour le module
+builder.Services.AddScoped<IStatistiqueService<StatistiqueFiliere>, StatistiqueFiliereService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+
 
 // Ajouter les services HTTP avec l'URL de base
-builder.Services.AddHttpClient<IQuestionnaireClient, HttpQuestionnaireClient>(c =>
-{
-    // Utiliser l'URL du Mock Server
-    c.BaseAddress = new Uri(config["MockServerUrl"]);
-});
-
-builder.Services.AddHttpClient<IAnswerClient, HttpAnswerClient>(c =>
-{
-    // Utiliser l'URL du Mock Server
-    c.BaseAddress = new Uri(config["MockServerUrl"]);
-}); 
-builder.Services.AddHttpClient<IQuestionClient, HttpQuestionClient>(c =>
-{
-    // Utiliser l'URL du Mock Server
-    c.BaseAddress = new Uri(config["MockServerUrl"]);
-});
-
+builder.Services.AddHttpClient<IQuestionnaireClient, HttpQuestionnaireClient>();
+builder.Services.AddHttpClient<IAnswerClient, HttpAnswerClient>(); 
+builder.Services.AddHttpClient<IQuestionClient, HttpQuestionClient>(); 
+builder.Services.AddHttpClient<IEvaluationClient, HttpEvaluationClient>();
+builder.Services.AddHttpClient<IGroqAIClient, GroqAIClient>();
 // … tes autres services (HttpClients, ReportService, etc.)
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -44,8 +40,14 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-
+void ApplyMigration()
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AnalyticsDbContext>();
+    if (db.Database.GetPendingMigrations().Any())
+        db.Database.Migrate();
+}
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
-app.Run();
+app.Run();  

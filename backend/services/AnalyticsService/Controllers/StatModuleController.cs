@@ -10,7 +10,7 @@ public class StatModuleController : ControllerBase
     
             public StatModuleController(IStatistiqueService<StatistiqueModule> service)
             {
-                _service = service;
+                _service = service; 
             }
     
             [HttpGet("{id}/stats")]

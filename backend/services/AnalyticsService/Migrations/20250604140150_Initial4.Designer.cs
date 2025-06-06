@@ -3,6 +3,7 @@ using System;
 using AnalyticsService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalyticsService.Migrations
 {
     [DbContext(typeof(AnalyticsDbContext))]
-    partial class AnalyticsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250604140150_Initial4")]
+    partial class Initial4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,10 +142,10 @@ namespace AnalyticsService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ActionPlanCount")
+                    b.Property<int>("ActionPlanCount")
                         .HasColumnType("integer");
 
-                    b.Property<double?>("AverageRating")
+                    b.Property<double>("AverageRating")
                         .HasColumnType("double precision");
 
                     b.Property<DateTime>("CreatedAt")
@@ -151,31 +154,31 @@ namespace AnalyticsService.Migrations
                     b.Property<int>("FiliereId")
                         .HasColumnType("integer");
 
-                    b.Property<double?>("ImprovementTrend")
+                    b.Property<double>("ImprovementTrend")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("MedianRating")
+                    b.Property<double>("MedianRating")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("NegativeFeedbackPct")
+                    b.Property<double>("NegativeFeedbackPct")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("NpsScore")
+                    b.Property<double>("NpsScore")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("ParticipationRate")
+                    b.Property<double>("ParticipationRate")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("PositiveFeedbackPct")
+                    b.Property<double>("PositiveFeedbackPct")
                         .HasColumnType("double precision");
 
                     b.Property<byte[]>("RapportPdf")
                         .HasColumnType("bytea");
 
-                    b.Property<double?>("SatisfactionRate")
+                    b.Property<double>("SatisfactionRate")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("StdDevRating")
+                    b.Property<double>("StdDevRating")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
