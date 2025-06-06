@@ -6,11 +6,11 @@ using AnalyticsService.Models;
 [Route("api/analytics/filieres")]
 public class StatFiliereController:ControllerBase
 {
-    private readonly IStatistiqueService<StatistiqueModule> _service;
-    public StatFiliereController(IStatistiqueService<StatistiqueModule> svc)
+    private readonly IStatistiqueService<StatistiqueFiliere> _service;
+    public StatFiliereController(IStatistiqueService<StatistiqueFiliere> svc)
         => _service = svc;
 
     [HttpGet("{id}/stats")]
-    public Task<StatistiqueModule> GetStats(int id)
-        => _service.CalculateStats(id); 
+    public Task<StatistiqueFiliere> GetStats(int id)
+        => _service.CalculateStats(id);  
 }

@@ -34,27 +34,28 @@ private readonly IEvaluationClient _evalClient;
         var allQuestions   = new List<QuestionDto>();
         foreach (var q in questionnaires)
         {
-            var questions = await _quesClient.GetByQuestionnaireAsync(q.Id);
+            var questions = await _quesClient.GetByQuestionnaireAsync(q.QuestionnaireId);
             allQuestions.AddRange(questions);
         }
 
         // 2. Récupérer toutes les réponses aux questions
-        var allAnswers = new List<AnswerDto>();
+        var allAnswers = new List<AnswerDto>(); 
+         
         foreach (var question in allQuestions)
         {
-            var answers = await _ansClient.GetByQuestionAsync(question.Id);
+            var answers = await _ansClient.GetByQuestionAsync(question.QuestionId);
             allAnswers.AddRange(answers);
         }
 
         // 3. Filtrer les questions sur lesquelles on calcule une stat
         var statQuestions = allQuestions
-          .Where(q => !string.IsNullOrWhiteSpace(q.StatName))
+          .Where(q => !string.IsNullOrEmpty(q.StatName))
           .ToList();
 
         // 4. Préparer l’objet StatistiqueModule (on réutilise ce modèle)
         var stat = new StatistiqueFiliere()
         {
-            Id = filiereId,
+            FiliereId = filiereId,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -62,30 +63,28 @@ private readonly IEvaluationClient _evalClient;
         foreach (var question in statQuestions)
         {
             var values = allAnswers
-                .Where(a => a.QuestionId == question.Id)
-                .Select(a => a.AnswerValue)
+                .Where(a => a.QuestionId == question.QuestionId && a.RatingAnswer.HasValue)
+                .Select(a => a.RatingAnswer.Value)
                 .ToList();
-
+            Console.WriteLine($"Total answers: {allAnswers.Count}"); 
             if (!values.Any()) continue;
 
-            double statValue = question.StatName switch
+            double? statValue = question.StatName switch
             {
-                nameof(stat.AverageRating) => values.Average(),
-                nameof(stat.MedianRating)  => CalculateMedian(values),
-                nameof(stat.StdDevRating)  => CalculateStdDev(values),
-                nameof(stat.NpsScore)      => CalculateNps(values),
-                _ => 0
+                
+                "MedianRating"  => CalculateMedian(values),
+                "StdDev"=> CalculateStdDev(values),
+                "NpsScore"     => CalculateNps(values),
+                _ => null 
             };
 
             switch (question.StatName)
             {
-                case "AverageRating":
-                    stat.AverageRating = statValue;
-                    break;
+                
                 case "MedianRating":
                     stat.MedianRating = statValue;
                     break;
-                case "StdDevRating":
+                case "StdDev":
                     stat.StdDevRating = statValue;
                     break;
                 case "NpsScore":
@@ -100,7 +99,7 @@ private readonly IEvaluationClient _evalClient;
         return stat;
     }
 
-    private double CalculateMedian(List<int> values)
+    private double CalculateMedian(List<float> values)
     {
         var sorted = values.OrderBy(v => v).ToList();
         int mid   = sorted.Count / 2;
@@ -109,16 +108,16 @@ private readonly IEvaluationClient _evalClient;
              : sorted[mid];
     }
 
-    private double CalculateStdDev(List<int> values)
+    private double CalculateStdDev(List<float> values)
     {
         var avg = values.Average();
         return Math.Sqrt(values.Average(v => Math.Pow(v - avg, 2)));
     }
 
-    private double CalculateNps(List<int> values)
+    private double CalculateNps(List<float> values)
     {
-        int promoters  = values.Count(v => v >= 9);
-        int detractors = values.Count(v => v <= 6);
+        int promoters  = values.Count(v => v >= 4.5);
+        int detractors = values.Count(v => v <= 3);
         int total      = values.Count;
         return 100.0 * promoters  / total
              - 100.0 * detractors / total;

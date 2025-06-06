@@ -1,7 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace AnalyticsService.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 public class StatistiqueEnseignant
-{
+{ 
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
     public int      Id{ get; set; }  // PK
     public int      TeacherId             { get; set; }  // Référence métier
     public double   AverageRating         { get; set; }  // Moyenne des notes 

@@ -32,7 +32,7 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
                 var allQuestions = new List<QuestionDto>();
                 foreach (var q in questionnaires)
                 {
-                    var questions = await _quesClient.GetByQuestionnaireAsync(q.Id);
+                    var questions = await _quesClient.GetByQuestionnaireAsync(q.QuestionnaireId);
                     allQuestions.AddRange(questions);
                 }
     
@@ -40,12 +40,12 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
                 var allAnswers = new List<AnswerDto>();
                 foreach (var question in allQuestions)
                 {
-                    var answers = await _ansClient.GetByQuestionAsync(question.Id);
+                    var answers = await _ansClient.GetByQuestionAsync(question.QuestionId);
                     allAnswers.AddRange(answers);
                 }
     
                 // 3. Filtrer les questions avec StatName non null
-                var statQuestions = allQuestions.Where(q => !string.IsNullOrWhiteSpace(q.StatName)).ToList();
+                var statQuestions = allQuestions.Where(q => !string.IsNullOrEmpty(q.StatName)).ToList();
     
                 // 4. Initialiser l'objet StatistiqueModule
                 var stat = new StatistiqueModule { ModuleId = moduleId, CreatedAt = DateTime.UtcNow };
@@ -54,31 +54,30 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
                 foreach (var question in statQuestions)
                 {
                     var values = allAnswers
-                        .Where(a => a.QuestionId == question.Id)
-                        .Select(a => a.AnswerValue)
+                        .Where(a => a.QuestionId == question.QuestionId   && a.RatingAnswer.HasValue)
+                        .Select(a => a.RatingAnswer.Value)
                         .ToList();
     
                     if (values.Any())
-                    {
-                        double statValue = question.StatName switch
+                    {    
+                        double? statValue = question.StatName switch
                         {
-                            nameof(stat.AverageRating) => values.Average(),
-                            nameof(stat.MedianRating) => CalculateMedian(values),
-                            nameof(stat.StdDevRating) => CalculateStdDev(values),
-                            nameof(stat.NpsScore) => CalculateNps(values),
-                            _ => 0
+                            
+                            "MedianRating"=> CalculateMedian(values),
+                            "StdDev"=> CalculateStdDev(values),
+                            "NpsScore"=> CalculateNps(values),
+                            _ => null 
                         };
     
                         // Remplir la propriété correspondante dans StatistiqueModule
                         switch (question.StatName)
                         {
-                            case "AverageRating":
-                                stat.AverageRating = statValue;
-                                break;
+                            
+                                
                             case "MedianRating":
                                 stat.MedianRating = statValue;
                                 break;
-                            case "StdDevRating":
+                            case "StdDev":
                                 stat.StdDevRating = statValue;
                                 break;
                             case "NpsScore":
@@ -94,7 +93,7 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
                 return stat;
             }
      // Méthode de calcul de la médiane
-            private double CalculateMedian(List<int> values)
+            private double CalculateMedian(List<float> values)
             {
                 var sortedValues = values.OrderBy(v => v).ToList();
                 int mid = sortedValues.Count / 2;
@@ -104,17 +103,17 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
             }
     
             // Méthode de calcul de l'écart-type
-            private double CalculateStdDev(List<int> values)
+            private double CalculateStdDev(List<float> values)
             {
                 var avg = values.Average();
                 return Math.Sqrt(values.Average(v => Math.Pow(v - avg, 2)));
             }
     
-            // Méthode de calcul du NPS
-            private double CalculateNps(List<int> values)
+            // Méthode de calcul du NPS 
+            private double CalculateNps(List<float> values)
             {
-                var promoters = values.Count(v => v >= 9);
-                var detractors = values.Count(v => v <= 6);
+                var promoters = values.Count(v => v >= 4.5);
+                var detractors = values.Count(v => v <= 3);
                 return 100.0 * promoters / values.Count - 100.0 * detractors / values.Count;
             }
 }

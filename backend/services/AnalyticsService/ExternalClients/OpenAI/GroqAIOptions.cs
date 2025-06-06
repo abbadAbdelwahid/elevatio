@@ -1,6 +1,6 @@
 namespace AnalyticsService.ExternalClients.OpenAI;
 
-public class OpenAIOptions
+public class GroqAIOptions
 {
     public string ApiKey { get; set; } 
     
