@@ -47,6 +47,8 @@ void ApplyMigration()
     if (db.Database.GetPendingMigrations().Any())
         db.Database.Migrate();
 }
+
+ApplyMigration(); 
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();

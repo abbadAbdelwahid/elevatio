@@ -20,7 +20,7 @@ public class StatistiqueModule
     public double?  NegativeFeedbackPct    { get; set; }  // % négatifs
     public double?   ImprovementTrend       { get; set; }  // Δ moyenne entre sessions
     public DateTime CreatedAt              { get; set; }  // Date de génération   
-    public String Rapport       { get; set; } 
+    public String? Rapport       { get; set; } 
     [Column(TypeName = "bytea")] 
-    public byte[] RapportPdf { get; set; } 
+    public byte[]? RapportPdf { get; set; } 
 }

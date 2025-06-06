@@ -6,7 +6,7 @@ namespace AnalyticsService.ExternalClients.DTO;
 public class EvaluationDto
 {
         public int      EvaluationId                   { get; set; }    // PK
-        public int RespondentUserId { get; set; }
+        public int? RespondentUserId { get; set; }
         public int?     ModuleId             { get; set; }    // Évaluation de module
         public int?     FiliereId            { get; set; }    // Évaluation de filière
         
