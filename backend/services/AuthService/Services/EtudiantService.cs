@@ -64,6 +64,19 @@ public class EtudiantService : IEtudiantService
 
         return $"/uploads/profile_images/{fileName}"; // Retourner l'URL de l'image
     }
+    
+    public async Task<string?> GetFullNameByIdAsync(string id)
+    {
+        var etudiant = await _db.Etudiants
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+        if (etudiant == null)
+            return null;
+
+        return $"{etudiant.FirstName} {etudiant.LastName}";
+    }
+
 
     
 }

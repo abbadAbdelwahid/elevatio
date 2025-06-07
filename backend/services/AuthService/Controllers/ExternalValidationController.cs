@@ -31,4 +31,6 @@ public class ExternalValidationController : ControllerBase
         var result = distinctUsersIds.ToDictionary(id => id, id => existingUsersIds.Contains(id));
         return Ok(result);
     }
+    
+
 }

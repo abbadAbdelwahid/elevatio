@@ -45,15 +45,38 @@ namespace AuthService.Controllers
         }
         
         [Authorize]
-        [HttpGet("getRoles")]
+        [HttpGet("getIdAndRole")]
         public async Task<IActionResult> GetRoles()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Récupérer l'ID à partir du token JWT
+
             var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("Utilisateur non trouvé");
+
             var roles = await _userManager.GetRolesAsync(user);
 
-            return Ok(new { roles });
+            return Ok(new
+            {
+                userId = user.Id,    // Ajout de l'ID dans la réponse
+                roles = roles        // Liste des rôles de l'utilisateur
+            });
         }
+        
+        [Authorize]
+        [HttpGet("isTokenValid")]
+        public IActionResult IsTokenValid()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Si l'ID utilisateur est présent dans le token, le token est valide
+            if (!string.IsNullOrEmpty(userId))
+                return Ok(new { isValid = true, userId });
+
+            return Ok(new { isValid = false });
+        }
+
+
 
         
     }

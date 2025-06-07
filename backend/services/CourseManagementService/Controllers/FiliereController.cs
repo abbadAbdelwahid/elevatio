@@ -64,6 +64,15 @@ namespace CourseManagementService.Controllers
 
             return Ok(filiere); // 200
         }
+        
+        // GET api/filiere/mini
+        [HttpGet("mini")]
+        public async Task<ActionResult<IEnumerable<FiliereMiniDto>>> GetIdsAndNames()
+        {
+            var list = await _service.GetFiliereIdsAndNamesAsync();
+            return Ok(list);
+        }
+
 
         
     }

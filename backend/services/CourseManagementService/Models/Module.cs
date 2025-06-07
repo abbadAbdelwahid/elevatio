@@ -16,6 +16,8 @@ public class Module
     public string Status { get; set; } = "active"; // État du module
     public bool Evaluated  { get; set; } = false; // Optionnel: module obligatoire ou non
 
+    public string? ProfileImageUrl { get; set; } // Nouveau champ pour stocker l'URL de l'image de profil
+
     // Relation avec la table Filiere
     public Filiere Filiere { get; set; }
 

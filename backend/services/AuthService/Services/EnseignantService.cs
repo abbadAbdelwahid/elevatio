@@ -94,6 +94,19 @@ public class EnseignantService : IEnseignantService
 
         return $"/uploads/profile_images/{fileName}"; // Retourner l'URL de l'image
     }
+    
+    public async Task<string?> GetFullNameByIdAsync(string id)
+    {
+        var enseignant = await _db.Enseignants
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+        if (enseignant == null)
+            return null;
+
+        return $"{enseignant.FirstName} {enseignant.LastName}";
+    }
+
 
 
 }

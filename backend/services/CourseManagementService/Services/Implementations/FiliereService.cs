@@ -124,6 +124,19 @@ namespace CourseManagementService.Services.Implementations
                 UpdatedAt   = filiere.UpdatedAt
             };
         }
+        
+        public async Task<IEnumerable<FiliereMiniDto>> GetFiliereIdsAndNamesAsync()
+        {
+            return await _context.Filieres
+                .AsNoTracking()
+                .Select(f => new FiliereMiniDto
+                {
+                    FiliereId = f.FiliereId,
+                    FiliereName = f.FiliereName
+                })
+                .ToListAsync();
+        }
+
 
         
     }

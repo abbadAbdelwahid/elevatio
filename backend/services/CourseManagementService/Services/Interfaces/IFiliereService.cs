@@ -9,5 +9,7 @@ public interface IFiliereService
     Task<FiliereDto?> UpdateFiliereAsync(int id, UpdateFiliereDto dto);
     Task<bool> DeleteFiliereAsync(int id);
     Task<FiliereDto?> GetFiliereByIdAsync(int id);
+    Task<IEnumerable<FiliereMiniDto>> GetFiliereIdsAndNamesAsync();
+
     
 }

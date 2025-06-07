@@ -10,4 +10,6 @@ public interface IEtudiantService
     Task<Etudiant?> GetByIdAsync(string id);
     public Task<string> UploadProfileImage(IFormFile file);
 
+    Task<string?> GetFullNameByIdAsync(string id);
+
 }

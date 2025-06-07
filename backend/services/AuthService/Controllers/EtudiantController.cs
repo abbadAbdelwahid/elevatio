@@ -78,8 +78,16 @@ public class EtudiantsController : ControllerBase
             return BadRequest($"Erreur de téléchargement de l'image : {ex.Message}");
         }
     }
+    
+    [HttpGet("{id}/fullname")]
+    public async Task<IActionResult> GetFullName(string id)
+    {
+        var fullName = await _svc.GetFullNameByIdAsync(id);
+    
+        if (fullName == null)
+            return NotFound("Étudiant introuvable.");
 
-
- 
+        return Ok(new { fullName });
+    }
     
 }
