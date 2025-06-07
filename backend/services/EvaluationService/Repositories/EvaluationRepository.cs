@@ -28,6 +28,7 @@ public class EvaluationRepository : IEvaluationRepository
     {
         return await _ctx.Evaluations.AsNoTracking()
             .Where(e => e.FiliereId == filiereId)
+            .OrderBy(e => e.EvaluatedAt)
             .ToListAsync<Evaluation>();
     }
 
@@ -35,6 +36,7 @@ public class EvaluationRepository : IEvaluationRepository
     {
         return await _ctx.Evaluations.AsNoTracking()
             .Where(e => e.ModuleId == moduleId)
+            .OrderBy(e => e.EvaluatedAt)
             .ToListAsync();
     }
 
@@ -43,6 +45,7 @@ public class EvaluationRepository : IEvaluationRepository
         return await _ctx.Evaluations.AsNoTracking()
             .Where(e=> e.RespondentUserId != null &&
                        e.RespondentUserId.ToLower() == respondentId.ToLower())
+            .OrderBy(e => e.EvaluatedAt)
             .ToListAsync<Evaluation>();    
     }
 
@@ -50,6 +53,7 @@ public class EvaluationRepository : IEvaluationRepository
     {
         return await _ctx.Evaluations.AsNoTracking()
             .Where(e => e.Type == TypeModuleFiliere.Filiere)
+            .OrderBy(e => e.EvaluatedAt)
             .ToListAsync<Evaluation>();
     }
 
@@ -57,12 +61,13 @@ public class EvaluationRepository : IEvaluationRepository
     {
         return await _ctx.Evaluations.AsNoTracking()
             .Where(e => e.Type == TypeModuleFiliere.Module)
+            .OrderBy(e => e.EvaluatedAt)
             .ToListAsync<Evaluation>();
     }
 
     public async Task<List<Evaluation>> GetAllEvaluationsAsync()
     {
-        return await _ctx.Evaluations.AsNoTracking().ToListAsync();
+        return await _ctx.Evaluations.AsNoTracking().OrderBy(e => e.EvaluatedAt).ToListAsync();
     }
 
     public async Task<Evaluation> GetEvaluationByIdAsync(int evaluationId)
