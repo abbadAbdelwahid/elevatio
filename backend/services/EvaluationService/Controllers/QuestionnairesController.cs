@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EvaluationService.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/questionnaires")]
     public class QuestionnaireController : ControllerBase
     {
         private readonly IQuestionnaireService _questionnaireService;
@@ -16,7 +16,7 @@ namespace EvaluationService.Controllers
             _questionnaireService = questionnaireService;
         }
 
-        [HttpPost("addStandardQuestionsToQuestionnaire/{questionnaireId:int}")]
+        [HttpPost("addStandardQuestions/{questionnaireId:int}")]
         public async Task<IActionResult> AddStandardQuestionsToQuestionnaire(int questionnaireId, [FromQuery] StatName statName)
         {
             try
@@ -30,18 +30,16 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpPost("addQuestionsToQuestionnaire/{questionnaireId:int}")]
-        public async Task<IActionResult> AddQuestionsToQuestionnaire(int questionnaireId, [FromBody] List<Question> questions)
+        [HttpPost("addQuestions/{questionnaireId:int}")]
+        public async Task<IActionResult> AddQuestionsToQuestionnaire(int questionnaireId, [FromBody] List<CreateQuestionWithQuestionnaire> questionsDto)
         {
-            if (questions == null || !questions.Any())
-            {
+            if (questionsDto == null || !questionsDto.Any())
                 return BadRequest("Invalid data.");
-            }
 
             try
             {
-                var addedQuestions = await _questionnaireService.AddQuestionsToQuestionnaireAsync(questionnaireId, questions);
-                return Ok(addedQuestions);
+                var added = await _questionnaireService.AddQuestionsToQuestionnaireAsync(questionnaireId, questionsDto);
+                return Ok(added);
             }
             catch (Exception e)
             {
@@ -49,13 +47,13 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpGet("getStandardQuestions/{questionnaireId:int}")]
+        [HttpGet("standardQuestions/{questionnaireId:int}")]
         public async Task<IActionResult> GetStandardQuestions(int questionnaireId)
         {
             try
             {
-                var questions = await _questionnaireService.GetStandardQuestionsAsync(questionnaireId);
-                return Ok(questions);
+                var list = await _questionnaireService.GetStandardQuestionsAsync(questionnaireId);
+                return Ok(list);
             }
             catch (Exception e)
             {
@@ -63,13 +61,15 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpGet("getQuestionnaireTypeExternalInternal/{questionnaireId:int}")]
+        [HttpGet("type/external-internal/{questionnaireId:int}")]
         public async Task<IActionResult> GetQuestionnaireTypeExternalInternal(int questionnaireId)
         {
             try
             {
-                var questionnaireType = await _questionnaireService.GetQuestionnaireTypeExternalInternalAsync(questionnaireId);
-                return Ok(questionnaireType);
+                var type = await _questionnaireService.GetQuestionnaireTypeExternalInternalAsync(questionnaireId);
+                if (type == null)
+                    return NotFound($"No external/internal type for questionnaire {questionnaireId}.");
+                return Ok(new {  typeInternalExternal = type });
             }
             catch (Exception e)
             {
@@ -77,13 +77,29 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpGet("getQuestionnairesTypeExternal")]
+        [HttpGet("type/module-filiere/{questionnaireId:int}")]
+        public async Task<IActionResult> GetQuestionnaireTypeModuleFiliere(int questionnaireId)
+        {
+            try
+            {
+                var type = await _questionnaireService.GetQuestionnaireTypeModuleFiliereAsync(questionnaireId);
+                if (type == null)
+                    return NotFound($"No module/filière type for questionnaire {questionnaireId}.");
+                return Ok(new {  typeModuleFiliere = type });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error fetching questionnaire type: " + e.Message);
+            }
+        }
+
+        [HttpGet("type/external")]
         public async Task<IActionResult> GetQuestionnairesTypeExternal()
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetQuestionnairesTypeExternalAsync();
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetQuestionnairesTypeExternalAsync();
+                return Ok(list);
             }
             catch (Exception e)
             {
@@ -91,13 +107,13 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpGet("getQuestionnairesTypeInternal")]
+        [HttpGet("type/internal")]
         public async Task<IActionResult> GetQuestionnairesTypeInternal()
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetQuestionnairesTypeInternalAsync();
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetQuestionnairesTypeInternalAsync();
+                return Ok(list);
             }
             catch (Exception e)
             {
@@ -105,31 +121,15 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpGet("getQuestionnaireTypeModuleFiliere/{questionnaireId:int}")]
-        public async Task<IActionResult> GetQuestionnaireTypeModuleFiliere(int questionnaireId)
-        {
-            try
-            {
-                var questionnaireType = await _questionnaireService.GetQuestionnaireTypeModuleFiliereAsync(questionnaireId);
-                return Ok(questionnaireType);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Error fetching questionnaire type for module or filière: " + e.Message);
-            }
-        }
-
-        [HttpGet("getQuestionnaireById/{questionnaireId:int}")]
+        [HttpGet("{questionnaireId:int}")]
         public async Task<IActionResult> GetQuestionnaireById(int questionnaireId)
         {
             try
             {
-                var questionnaire = await _questionnaireService.GetQuestionnaireByIdAsync(questionnaireId);
-                if (questionnaire == null)
-                {
-                    return NotFound("Questionnaire not found for the given ID.");
-                }
-                return Ok(questionnaire);
+                var q = await _questionnaireService.GetQuestionnaireByIdAsync(questionnaireId);
+                if (q == null)
+                    return NotFound($"Questionnaire {questionnaireId} not found.");
+                return Ok(q);
             }
             catch (Exception e)
             {
@@ -137,119 +137,61 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpGet("getQuestionnairesByModuleId/{moduleId:int}")]
-        public async Task<IActionResult> GetQuestionnairesByModuleId(int moduleId)
+        [HttpGet("by-module/{moduleId:int}")]
+        public async Task<IActionResult> GetByModule(int moduleId)
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetQuestionnairesByModuleIdAsync(moduleId);
-                if (questionnaires == null || !questionnaires.Any())
-                {
-                    return NotFound("No questionnaires found for the given module ID.");
-                }
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetQuestionnairesByModuleIdAsync(moduleId);
+                if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for module {moduleId}.");
+                return Ok(list);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching questionnaires by module ID: " + e.Message);
+                return StatusCode(500, "Error fetching by module: " + e.Message);
             }
         }
 
-        [HttpGet("getQuestionnairesByFiliereId/{filiereId:int}")]
-        public async Task<IActionResult> GetQuestionnairesByFiliereId(int filiereId)
+        [HttpGet("by-filiere/{filiereId:int}")]
+        public async Task<IActionResult> GetByFiliere(int filiereId)
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetQuestionnairesByFiliereIdAsync(filiereId);
-                if (questionnaires == null || !questionnaires.Any())
-                {
-                    return NotFound("No questionnaires found for the given filière ID.");
-                }
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetQuestionnairesByFiliereIdAsync(filiereId);
+                if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for filière {filiereId}.");
+                return Ok(list);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching questionnaires by filière ID: " + e.Message);
+                return StatusCode(500, "Error fetching by filière: " + e.Message);
             }
         }
 
-        [HttpGet("getQuestionnairesByCreatorUserId/{creatorUserId}")]
-        public async Task<IActionResult> GetQuestionnairesByCreatorUserId(string creatorUserId)
+        [HttpGet("by-creator/{creatorUserId}")]
+        public async Task<IActionResult> GetByCreator(string creatorUserId)
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetQuestionnairesByCreatorUserIdAsync(creatorUserId);
-                if (questionnaires == null || !questionnaires.Any())
-                {
-                    return NotFound("No questionnaires found for the given creator user ID.");
-                }
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetQuestionnairesByCreatorUserIdAsync(creatorUserId);
+                if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for creator {creatorUserId}.");
+                return Ok(list);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching questionnaires by creator user ID: " + e.Message);
+                return StatusCode(500, "Error fetching by creator: " + e.Message);
             }
         }
 
-        [HttpDelete("deleteQuestionnaire/{questionnaireId:int}")]
-        public async Task<IActionResult> DeleteQuestionnaire(int questionnaireId)
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                var questionnaire = await _questionnaireService.DeleteQuestionnaireAsync(questionnaireId);
-                return Ok(questionnaire);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Error deleting questionnaire: " + e.Message);
-            }
-        }
-
-        [HttpPut("updateQuestionnaire")]
-        public async Task<IActionResult> UpdateQuestionnaire([FromBody] Questionnaire questionnaire)
-        {
-            if (questionnaire == null)
-            {
-                return BadRequest("Invalid data.");
-            }
-
-            try
-            {
-                var updatedQuestionnaire = await _questionnaireService.UpdateQuestionnaireAsync(questionnaire);
-                return Ok(updatedQuestionnaire);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Error updating questionnaire: " + e.Message);
-            }
-        }
-
-        [HttpPost("addQuestionnaire")]
-        public async Task<IActionResult> AddQuestionnaire([FromBody] CreateQuestionnaireDto createQuestionnaireDto)
-        {
-            if (createQuestionnaireDto == null)
-            {
-                return BadRequest("Invalid data.");
-            }
-
-            try
-            {
-                var newQuestionnaire = await _questionnaireService.AddQuestionnaireAsync(createQuestionnaireDto);
-                return CreatedAtAction(nameof(GetQuestionnaireById), new { questionnaireId = newQuestionnaire.QuestionnaireId }, newQuestionnaire);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Error adding questionnaire: " + e.Message);
-            }
-        }
-
-        [HttpGet("getAllQuestionnaires")]
-        public async Task<IActionResult> GetAllQuestionnaires()
-        {
-            try
-            {
-                var questionnaires = await _questionnaireService.GetAllQuestionnairesAsync();
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetAllQuestionnairesAsync();
+                return Ok(list);
             }
             catch (Exception e)
             {
@@ -257,73 +199,189 @@ namespace EvaluationService.Controllers
             }
         }
 
-        [HttpGet("getAllQuestionnairesFiliere")]
-        public async Task<IActionResult> GetAllQuestionnairesFiliere()
+        [HttpGet("all/filiere")]
+        public async Task<IActionResult> GetAllFiliere()
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetAllQuestionnairesFiliereAsync();
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetAllQuestionnairesFiliereAsync();
+                return Ok(list);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching questionnaires by filière: " + e.Message);
+                return StatusCode(500, "Error fetching filière questionnaires: " + e.Message);
             }
         }
 
-        [HttpGet("getAllQuestionnairesModule")]
-        public async Task<IActionResult> GetAllQuestionnairesModule()
+        [HttpGet("all/module")]
+        public async Task<IActionResult> GetAllModule()
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetAllQuestionnairesModuleAsync();
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetAllQuestionnairesModuleAsync();
+                return Ok(list);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching questionnaires by module: " + e.Message);
+                return StatusCode(500, "Error fetching module questionnaires: " + e.Message);
             }
         }
 
-        [HttpGet("getAllQuestionnairesByCreatorUserId/{creatorUserId}")]
-        public async Task<IActionResult> GetAllQuestionnairesByCreatorUserId(string creatorUserId)
+        [HttpGet("all/by-creator/{creatorUserId}")]
+        public async Task<IActionResult> GetAllByCreator(string creatorUserId)
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetAllQuestionnairesByCreatorUserIdAsync(creatorUserId);
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetAllQuestionnairesByCreatorUserIdAsync(creatorUserId);
+                return Ok(list);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching questionnaires by creator user ID: " + e.Message);
+                return StatusCode(500, "Error fetching by creator: " + e.Message);
             }
         }
 
-        [HttpGet("getRespondentIdByQuestionnaireId/{questionnaireId:int}")]
-        public async Task<IActionResult> GetRespondentIdByQuestionnaireId(int questionnaireId)
+        [HttpGet("respondents/{questionnaireId:int}")]
+        public async Task<IActionResult> GetRespondents(int questionnaireId)
         {
             try
             {
-                var respondentId = await _questionnaireService.GetRespondentIdByQuestionnaireIdAsync(questionnaireId);
-                return Ok(respondentId);
+                var ids = await _questionnaireService.GetRespondentsIdsByQuestionnaireIdAsync(questionnaireId);
+                if (ids == null || !ids.Any())
+                    return NotFound($"No respondents for questionnaire {questionnaireId}.");
+                return Ok(ids);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching respondent ID: " + e.Message);
+                return StatusCode(500, "Error fetching respondents: " + e.Message);
             }
         }
 
-        [HttpGet("getQuestionnairesByRespondentId/{respondentId}")]
-        public async Task<IActionResult> GetQuestionnairesByRespondentId(string respondentId)
+        [HttpGet("by-respondent/{respondentId}")]
+        public async Task<IActionResult> GetByRespondent(string respondentId)
         {
             try
             {
-                var questionnaires = await _questionnaireService.GetQuestionnairesByRespondentIdAsync(respondentId);
-                return Ok(questionnaires);
+                var list = await _questionnaireService.GetQuestionnairesByRespondentIdAsync(respondentId);
+                if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for respondent {respondentId}.");
+                return Ok(list);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching questionnaires by respondent ID: " + e.Message);
+                return StatusCode(500, "Error fetching by respondent: " + e.Message);
+            }
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> AddQuestionnaire([FromBody] CreateQuestionnaireDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Invalid data.");
+
+            try
+            {
+                var created = await _questionnaireService.AddQuestionnaireAsync(dto);
+                return CreatedAtAction(nameof(GetQuestionnaireById), new { questionnaireId = created.QuestionnaireId }, created);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error adding questionnaire: " + e.Message);
+            }
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateQuestionnaire([FromBody] Questionnaire q)
+        {
+            if (q == null)
+                return BadRequest("Invalid data.");
+
+            try
+            {
+                var updated = await _questionnaireService.UpdateQuestionnaireAsync(q);
+                return Ok(updated);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error updating questionnaire: " + e.Message);
+            }
+        }
+
+        [HttpDelete("{questionnaireId:int}")]
+        public async Task<IActionResult> DeleteQuestionnaire(int questionnaireId)
+        {
+            try
+            {
+                var deleted = await _questionnaireService.DeleteQuestionnaireAsync(questionnaireId);
+                if (deleted == null)
+                    return NotFound($"Questionnaire {questionnaireId} not found.");
+                return Ok(deleted);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting questionnaire: " + e.Message);
+            }
+        }
+
+        [HttpDelete("by-creator/{creatorId}")]
+        public async Task<IActionResult> DeleteByCreator(string creatorId)
+        {
+            try
+            {
+                var list = await _questionnaireService.DeleteQuestionnairesByCreatorIdAsync(creatorId);
+                if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for creator {creatorId}.");
+                return Ok(list);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting by creator: " + e.Message);
+            }
+        }
+
+        [HttpDelete("by-filiere/{filiereId:int}")]
+        public async Task<IActionResult> DeleteByFiliere(int filiereId)
+        {
+            try
+            {
+                var list = await _questionnaireService.DeleteQuestionnairesByFiliereIdAsync(filiereId);
+                if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for filière {filiereId}.");
+                return Ok(list);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting by filière: " + e.Message);
+            }
+        }
+
+        [HttpDelete("by-module/{moduleId:int}")]
+        public async Task<IActionResult> DeleteByModule(int moduleId)
+        {
+            try
+            {
+                var list = await _questionnaireService.DeleteQuestionnairesByModuleIdAsync(moduleId);
+                if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for module {moduleId}.");
+                return Ok(list);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting by module: " + e.Message);
+            }
+        }
+
+        [HttpPost("cascade-delete")]
+        public async Task<IActionResult> HandlingCascadeDeletion()
+        {
+            try
+            {
+                await _questionnaireService.HandlingCascadeDeletion();
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error during cascade deletion: " + e.Message);
             }
         }
     }

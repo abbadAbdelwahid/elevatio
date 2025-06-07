@@ -19,8 +19,8 @@ public class MappingConfig
             config.CreateMap<Questionnaire, CreateQuestionnaireDto>();
             config.CreateMap<CreateStandardQuestionDto, StandardQuestion>();
             config.CreateMap<StandardQuestion, CreateStandardQuestionDto>();
-            config.CreateMap<AnswerResponseDto, Answer>();
-            config.CreateMap<Answer, AnswerResponseDto>();
+            config.CreateMap(typeof(CreateQuestionWithQuestionnaire), typeof(Question));
+            config.CreateMap<Questionnaire, CreateQuestionWithQuestionnaire>();
         });
         return mappingConfig;
     }

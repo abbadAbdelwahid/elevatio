@@ -16,11 +16,12 @@ public class EvaluationRepository : IEvaluationRepository
         return evaluations;
     }
 
-    public string GetEvaluationType(int evaluationId)
+    public async Task<TypeModuleFiliere?> GetEvaluationType(int evaluationId)
     {
-        if(_ctx.Evaluations.FindAsync(evaluationId).Result?.FiliereId != null) return "Filiere";
-        else if (_ctx.Evaluations.FindAsync(evaluationId).Result?.ModuleId != null) return "Module";
-        return "Invalid_Evaluation_Type";
+        return await _ctx.Evaluations.AsNoTracking()
+            .Where(e => e.EvaluationId == evaluationId)
+            .Select(e => e.Type)
+            .FirstOrDefaultAsync();
     }
     
     public async Task<List<Evaluation>> GetEvaluationsByFiliereIdAsync(int filiereId)
@@ -41,8 +42,22 @@ public class EvaluationRepository : IEvaluationRepository
     {
         return await _ctx.Evaluations.AsNoTracking()
             .Where(e=> e.RespondentUserId != null &&
-                       e.RespondentUserId.Equals(respondentId, StringComparison.CurrentCultureIgnoreCase))
+                       e.RespondentUserId.ToLower() == respondentId.ToLower())
             .ToListAsync<Evaluation>();    
+    }
+
+    public async Task<List<Evaluation>> GetEvaluationsFiliereAsync()
+    {
+        return await _ctx.Evaluations.AsNoTracking()
+            .Where(e => e.Type == TypeModuleFiliere.Filiere)
+            .ToListAsync<Evaluation>();
+    }
+
+    public async Task<List<Evaluation>> GetEvaluationsModuleAsync()
+    {
+        return await _ctx.Evaluations.AsNoTracking()
+            .Where(e => e.Type == TypeModuleFiliere.Module)
+            .ToListAsync<Evaluation>();
     }
 
     public async Task<List<Evaluation>> GetAllEvaluationsAsync()
@@ -62,6 +77,30 @@ public class EvaluationRepository : IEvaluationRepository
         _ctx.Evaluations.Remove(evaluation);
         await _ctx.SaveChangesAsync();
         return evaluation;
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByRespondentIdAsync(string respondentId)
+    {
+        var evaluationsOfRespondent = await GetEvaluationsByRespondentIdAsync(respondentId);
+        _ctx.Evaluations.RemoveRange(evaluationsOfRespondent);
+        await _ctx.SaveChangesAsync();
+        return evaluationsOfRespondent;
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByFiliereIdAsync(int filiereId)
+    {
+       var evaluationsOfFiliere = await GetEvaluationsByFiliereIdAsync(filiereId);
+       _ctx.Evaluations.RemoveRange(evaluationsOfFiliere);
+       await _ctx.SaveChangesAsync();
+       return evaluationsOfFiliere;
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByModuleIdAsync(int evaluationId)
+    {
+        List<Evaluation> evaluations = await GetEvaluationsByModuleIdAsync(evaluationId);
+        _ctx.Evaluations.RemoveRange(evaluations);
+        await _ctx.SaveChangesAsync();
+        return evaluations;
     }
 
     public async Task<Evaluation> UpdateEvaluationAsync(Evaluation evaluation)

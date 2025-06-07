@@ -5,6 +5,7 @@ using AuthService.Dtos;
 using AuthService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace AuthService.Controllers;
 
@@ -24,10 +25,26 @@ public class EnseignantsController : ControllerBase
         return ok ? Ok(new { ens!.Id, ens.Email }) : BadRequest(errors);
     }
 
+    [HttpGet("/test")]
+    [Authorize]
+    public OkObjectResult GetJwtInfos()
+    {
+        Request.Headers.TryGetValue("Authorization", out var authHeader);
+        var token = authHeader.ToString().Replace("Bearer ", "");
+        var handler = new JwtSecurityTokenHandler();
+        var jwt = handler.ReadJwtToken(token);
+        return Ok(new {
+            Header  = jwt.Header,
+            Payload = jwt.Payload,
+            Claims  = jwt.Claims.Select(c => new { c.Type, c.Value })
+        });
+    }
+
     [Authorize(Roles = "Admin,Enseignant")]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(string id)
     {
+        
         var ens = await _svc.GetByIdAsync(id);
         return ens is null ? NotFound() : Ok(ens);
         

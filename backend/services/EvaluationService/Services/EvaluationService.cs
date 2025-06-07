@@ -79,60 +79,86 @@ public class EvaluationService : IEvaluationService
         return await _evaluationRepository.AddRangeAsync(_mapper.Map<List<Evaluation>>(evaluationsDto));
     }
 
-    public async Task<string> GetEvaluationType(int evaluationId)
+    public async Task<TypeModuleFiliere?> GetEvaluationType(int evaluationId)
     {
-        var evaluation = await _evaluationRepository.GetEvaluationByIdAsync(evaluationId); 
-        await HandlingCascadeDeletion();
-        return _evaluationRepository.GetEvaluationType(evaluationId);
+        // await HandlingCascadeDeletion();
+        var evaluation = await _evaluationRepository.GetEvaluationByIdAsync(evaluationId);
+        return await _evaluationRepository.GetEvaluationType(evaluationId);
+    }
+
+    public async Task<List<Evaluation>> GetAllEvaluationsFiliereAsync()
+    {
+        return await _evaluationRepository.GetEvaluationsFiliereAsync();
+    }
+
+    public async Task<List<Evaluation>> GetEvaluationsModuleAsync()
+    {
+        return await _evaluationRepository.GetEvaluationsModuleAsync();
     }
 
     public async Task<List<Evaluation>> GetEvaluationsByFiliereIdAsync(int filiereId)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.GetEvaluationsByFiliereIdAsync(filiereId);
     }
 
     public async Task<List<Evaluation>> GetEvaluationsByModuleIdAsync(int moduleId)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.GetEvaluationsByModuleIdAsync(moduleId);   
     }
 
     public async Task<List<Evaluation>> GetEvaluationsByRespondentIdAsync(string respondentId)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.GetEvaluationsByRespondentIdAsync(respondentId);
     }
 
     public async Task<List<Evaluation>> GetAllEvaluationsAsync()
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.GetAllEvaluationsAsync();  
     }
 
     public async Task<Evaluation> GetEvaluationByIdAsync(int evaluationId)
     {
-        var evaluation = await _evaluationRepository.GetEvaluationByIdAsync(evaluationId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.GetEvaluationByIdAsync(evaluationId);
     }
 
     public async Task<Evaluation> DeleteEvaluationByIdAsync(int evaluationId)
     {
-        var evaluation = await _evaluationRepository.GetEvaluationByIdAsync(evaluationId);
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.DeleteEvaluationByIdAsync(evaluationId);
     }
 
     public async Task<Evaluation> UpdateEvaluationAsync(Evaluation evaluationUpdateDto)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.UpdateEvaluationAsync(_mapper.Map<Evaluation>(evaluationUpdateDto));
     }
 
     public async Task<Evaluation> AddEvaluationAsync(CreateEvaluationDto createEvaluationDto)
     {
-        await HandlingCascadeDeletion();
+        // await HandlingCascadeDeletion();
         return await _evaluationRepository.AddEvaluationAsync(_mapper.Map<Evaluation>(createEvaluationDto));   
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByRespondentIdAsync(string respondentId)
+    {
+        // await HandlingCascadeDeletion();
+        return await _evaluationRepository.DeleteEvaluationsByRespondentIdAsync(respondentId);
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByFiliereIdAsync(int filiereId)
+    {
+        // await HandlingCascadeDeletion();
+        return await _evaluationRepository.DeleteEvaluationsByFiliereIdAsync(filiereId);
+    }
+
+    public async Task<List<Evaluation>> DeleteEvaluationsByModuleIdAsync(int moduleId)
+    {
+        // await HandlingCascadeDeletion();
+        return await _evaluationRepository.DeleteEvaluationsByModuleIdAsync(moduleId);
     }
 }

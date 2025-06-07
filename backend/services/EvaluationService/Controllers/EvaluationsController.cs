@@ -45,7 +45,7 @@ public class EvaluationController : ControllerBase
             {
                 return NotFound("Evaluation type not found for the given evaluation ID.");
             }
-            return Ok(evaluationType);
+            return Ok(new { evaluationType = evaluationType});
         }
         catch (Exception e)
         {
@@ -149,11 +149,68 @@ public class EvaluationController : ControllerBase
             {
                 return NotFound("Evaluation not found for the given evaluation ID.");
             }
-            return NoContent();
+            return Ok(evaluation);
         }
         catch (Exception e)
         {
             return StatusCode(500, "Error deleting evaluation: " + e.Message);
+        }
+    }
+    
+    [HttpDelete("deleteEvaluationByRespondentId/{respondentId}")]
+    public async Task<IActionResult> DeleteEvaluationByRespondentId(string respondentId)
+    {
+        try
+        {
+            var evaluations = await _evaluationService.DeleteEvaluationsByRespondentIdAsync(respondentId);
+            if (evaluations == null || !evaluations.Any())
+            {
+                return NotFound("No evaluations found for the given respondent ID.");
+            }
+
+            return Ok(evaluations);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Error deleting evaluations: " + e.Message);
+        }
+    }    
+    
+    [HttpDelete("deleteEvaluationByFiliereId/{filiereId:int}")]
+    public async Task<IActionResult> DeleteEvaluationByFiliereId(int filiereId)
+    {
+        try
+        {
+            var evaluations = await _evaluationService.DeleteEvaluationsByFiliereIdAsync(filiereId);
+            if (evaluations == null || !evaluations.Any())
+            {
+                return NotFound("No evaluations found for the given filiere ID.");
+            }
+
+            return Ok(evaluations);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Error deleting evaluations: " + e.Message);
+        }
+    }   
+    
+    [HttpDelete("deleteEvaluationByModuleId/{moduleId:int}")]
+    public async Task<IActionResult> DeleteEvaluationByModuleId(int moduleId)
+    {
+        try
+        {
+            var evaluations = await _evaluationService.DeleteEvaluationsByModuleIdAsync(moduleId);
+            if (evaluations == null || !evaluations.Any())
+            {
+                return NotFound("No evaluations found for the given module ID.");
+            }
+
+            return Ok(evaluations);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Error deleting evaluations: " + e.Message);
         }
     }
 
@@ -194,5 +251,6 @@ public class EvaluationController : ControllerBase
             return StatusCode(500, "Error adding evaluation: " + e.Message);
         }
     }
+    
 }
 

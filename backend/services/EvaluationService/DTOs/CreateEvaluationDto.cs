@@ -5,8 +5,12 @@ namespace EvaluationService.DTOs;
 public class CreateEvaluationDto
 {
     [Required]
-    public int RespondentUserId { get; set; }
+    public string? RespondentUserId { get; set; } 
+    
+    public string? Comment { get; set; }
 
+    
+    
     public int? FiliereId { get; set; }
     public int? ModuleId { get; set; }
 

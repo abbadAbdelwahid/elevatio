@@ -8,12 +8,12 @@ public class AnswerSubmissionDto
     [Required]
     public int QuestionId { get; set; }
 
-    // [Required]
-    // public int RespondentUserId { get; set; }
+    [Required]
+    public int RespondentUserId { get; set; }
 
     [MaxLength(2000)]
-    public string? AnswerText { get; set; }
+    public string? RawAnswer { get; set; }
     
     [Range(1,5)]
-    public int? AnswerValue { get; set; }
+    public float? RatingAnswer { get; set; }
 }

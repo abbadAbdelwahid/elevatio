@@ -103,7 +103,7 @@ public class AIAnalyzer : IAIAnalyzer
     public async Task<Answer> CleanAnswerUpdateAsync(AnswerSubmissionDto updatedAnswerSubmissionDto)
     {
         var updatedAnswer = _mapper.Map<Answer>(updatedAnswerSubmissionDto);
-        var questionOfUpdatedAnswer = await _answerRepository.GetQuestionOfAnswer(updatedAnswer);
+        var questionOfUpdatedAnswer = await _answerRepository.GetQuestionOfAnswerById(updatedAnswer.AnswerId);
         var payload = new
         {
             instructions = """

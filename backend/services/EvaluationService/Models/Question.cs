@@ -21,18 +21,18 @@ public class Question
     [ForeignKey(nameof(StandardQuestion))]
     public int? StandardQuestionId { get; set; }
     
-    [JsonIgnore]
+    // [JsonIgnore]
     public StandardQuestion? StandardQuestion { get; set; }
 
     [NotMapped]
     public StatName? StatName => StandardQuestion?.StatName;
 
-    [Required, MaxLength(500)]
+    [MaxLength(500)]
     public string? Text { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [JsonIgnore]
+    // [JsonIgnore]
     public ICollection<Answer>? Answers { get; set; }
 
     /*

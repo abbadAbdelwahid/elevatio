@@ -18,30 +18,27 @@ public class AnswerRepository : IAnswerRepository
         return answers.ToList();
     }
 
-    public async Task<(int? FiliereId, int? ModuleId)> GetQuestionnaireIdsAsync(int answerId)
+    public async Task<TypeModuleFiliere?> GetQuestionnaireTypeFiliereModuleAsync(int answerId)
     {
-        var ids = await _ctx.Answers.Where(a => a.AnswerId == answerId)
-            .AsNoTracking()
+        var answer = await GetAnswerByIdAsync(answerId);
+        return await _ctx.Answers.Where(a => a.AnswerId == answer.AnswerId)
             .Include(a => a.Question)
             .ThenInclude(q => q!.Questionnaire)
-            .Select(a => new
-            {
-                filiereId = a.Question!.Questionnaire!.FiliereId,
-                moduleId = a.Question!.Questionnaire!.ModuleId
-            }).FirstOrDefaultAsync();
-        
-        if(ids == null) throw new KeyNotFoundException($"Answer {answerId} not found");
-        return (ids.filiereId, ids.moduleId);
+            .Select(q => q!.Question.Questionnaire.TypeModuleFiliere)
+            .FirstOrDefaultAsync();
     }
-    
 
-    public async Task<string> GetAnswerTypeFiliereModuleAsync(int answerId)
+    public async Task<TypeInternalExternal?> GetQuestionnaireTypeInternalExternalAsync(int answerId)
     {
-        var ids = await GetQuestionnaireIdsAsync(answerId);
-        if (ids.FiliereId != null && ids.ModuleId == null) return "Filiere";
-        if (ids.FiliereId == null && ids.ModuleId != null) return "Module";
-        return "Invalid_Questionnaire_Type";
-    }    
+        var answer = await GetAnswerByIdAsync(answerId);
+        return await _ctx.Answers
+            .AsNoTracking()
+            .Where(a => a.AnswerId == answer.AnswerId)
+            .Include(a => a.Question)
+            .ThenInclude(q => q!.Questionnaire)
+            .Select(q => q!.Question.Questionnaire.TypeInternalExternal)
+            .FirstOrDefaultAsync();
+    }
     
     public async Task<List<Answer>> GetAnswersFiliereAsync()
     {
@@ -49,8 +46,7 @@ public class AnswerRepository : IAnswerRepository
             .AsNoTracking()
             .Include(a => a.Question)
             .ThenInclude(q => q!.Questionnaire)
-            .Where(a => a.Question!.Questionnaire!.FiliereId != null
-                    && a.Question.Questionnaire.ModuleId == null)
+            .Where(a => a.Question!.Questionnaire!.TypeModuleFiliere == TypeModuleFiliere.Filiere)
             .ToListAsync();
     }    
     
@@ -60,21 +56,10 @@ public class AnswerRepository : IAnswerRepository
             .AsNoTracking()
             .Include(a => a.Question)
             .ThenInclude(q => q!.Questionnaire)
-            .Where(a => a.Question!.Questionnaire!.FiliereId == null
-                        && a.Question.Questionnaire.ModuleId != null)
+            .Where(a => a.Question!.Questionnaire!.TypeModuleFiliere == TypeModuleFiliere.Module)
             .ToListAsync();
     }
-
-    public Task<QuestionnaireType> GetQuestionnaireTypeInternalExternalAsync(int answerId)
-    {
-        return _ctx.Answers
-            .AsNoTracking()
-            .Where(a => a.AnswerId == answerId)
-            .Include(a=> a.Question)
-            .ThenInclude(q => q!.Questionnaire)
-            .Select(a => a.Question!.Questionnaire!.Type)
-            .FirstOrDefaultAsync();
-    }
+    
     
     public async Task<List<Answer>> GetAnswersByQuestionIdAsync(int questionId)
     {
@@ -100,8 +85,8 @@ public class AnswerRepository : IAnswerRepository
         return await _ctx.Answers.AsNoTracking()
             .Include(a=> a.Question)
             .ThenInclude(q => q!.Questionnaire)
-            .Where(a => a.Question!.Questionnaire!.RespondentUserId != null && 
-                        a.Question.Questionnaire.RespondentUserId.Equals(respondentId, StringComparison.CurrentCultureIgnoreCase))
+            .Where(a => a.RespondentUserId != null && 
+                        a.RespondentUserId.ToLower() == respondentId.ToLower())
             .ToListAsync<Answer>();
     }
 
@@ -144,26 +129,34 @@ public class AnswerRepository : IAnswerRepository
         return answers;   
     }
 
-    public async Task<List<Question>> GetQuestionsOfAnswersList(List<Answer> answers)
+    public async Task<List<Answer>> DeleteAnswersByRespondentId(string respondentId)
     {
-        List<Question> questions = new List<Question>();
-        foreach (var answer in answers)
-        {
-            var question = await GetQuestionOfAnswer(answer);
-            questions.Add(question);
-        }
-        return questions;
+        var answersToDelete = await GetAnswersByRespondentIdAsync(respondentId);
+        _ctx.Answers.RemoveRange(answersToDelete);
+        await _ctx.SaveChangesAsync();
+        return answersToDelete;
     }
 
-    public async Task<Question> GetQuestionOfAnswer(Answer answer)
+    public async Task<List<Question?>> GetQuestionsOfAnswersList(List<Answer> answers)
     {
-        var question = await _ctx.Answers.AsNoTracking()
-            .Where(q => q.QuestionId == answer.QuestionId)
-            .Include(q => q.Question)
-            .Select(q => q.Question)
-            .FirstOrDefaultAsync();
-        if(question == null) throw new NullReferenceException($"Question of answer {answer.AnswerId} not found");
-        return question;
+        if(answers == null || answers.Count == 0)
+            return new List<Question>();
+
+        var questionsTask = answers.Select(async a =>
+            {
+                try
+                {
+                    return await GetQuestionOfAnswerById(a.AnswerId);
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e);
+                    return null;
+                }
+            }
+        );
+        var questions = await Task.WhenAll(questionsTask);
+        return questions.Where(q => q != null).ToList();
     }
     
     public async Task<Question> GetQuestionOfAnswerById(int answerId)
@@ -175,5 +168,13 @@ public class AnswerRepository : IAnswerRepository
             .FirstOrDefaultAsync();
         if(question == null) throw new NullReferenceException($"Question of answer {answerId} not found");
         return question;
+    }
+
+    public async Task<List<string?>> GetAllRespondentsIdsAsync()
+    {
+        return await _ctx.Answers.AsNoTracking()
+            .Where(a => a.RespondentUserId != null)
+            .Select(a => a.RespondentUserId)
+            .ToListAsync();
     }
 }

@@ -17,11 +17,8 @@ public class Answer
     [JsonIgnore]
     public Question? Question { get; set; }
 
-    // [Required]
-    // public int RespondentUserId { get; set; } // Étudiant ou évaluateur externe
-
-    // public int? FiliereId { get; set; }
-    // public int? ModuleId  { get; set; }
+    [Required, MaxLength(100)]
+    public string? RespondentUserId { get; set; }
 
     [MaxLength(2000)]
     public string? RawAnswer { get; set; }
