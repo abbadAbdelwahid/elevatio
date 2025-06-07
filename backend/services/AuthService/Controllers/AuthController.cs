@@ -44,7 +44,7 @@ namespace AuthService.Controllers
             return BadRequest("Erreur lors de la réinitialisation du mot de passe");
         }
         
-        [Authorize]
+        // [Authorize]
         [HttpGet("getIdAndRole")]
         public async Task<IActionResult> GetRoles()
         {

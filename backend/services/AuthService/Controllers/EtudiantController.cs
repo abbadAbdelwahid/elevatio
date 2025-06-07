@@ -21,7 +21,7 @@ public class EtudiantsController : ControllerBase
         _db = db; // Injection de AuthDbContext
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateEtudiantDto dto)
     {
@@ -29,7 +29,7 @@ public class EtudiantsController : ControllerBase
         return ok ? Ok(new { etu!.Id, etu.Email }) : BadRequest(errors);
     }
 
-    [Authorize(Roles = "Admin,Etudiant")]
+    // [Authorize(Roles = "Admin,Etudiant")]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(string id)
     {
@@ -37,7 +37,7 @@ public class EtudiantsController : ControllerBase
         return etu is null ? NotFound() : Ok(etu);
     }
     
-    [Authorize(Roles = "Admin,Etudiant")]
+    // [Authorize(Roles = "Admin,Etudiant")]
     [HttpGet("me")] // Route pour obtenir les informations de l'étudiant connecté
     public async Task<IActionResult> GetMe()
     {
@@ -48,7 +48,7 @@ public class EtudiantsController : ControllerBase
         return etudiant is null ? NotFound() : Ok(etudiant);  // Retourner les données ou 404 si l'étudiant n'existe pas
     }
 
-    [Authorize(Roles = "Admin,Etudiant")]
+    // [Authorize(Roles = "Admin,Etudiant")]
     [HttpPut("me/profile-image")]
     public async Task<IActionResult> UpdateProfileImage(IFormFile file)
     {

@@ -15,7 +15,7 @@ public class ExternalEvaluatorsController : ControllerBase
     private readonly IExternalEvaluatorService _svc;
     public ExternalEvaluatorsController(IExternalEvaluatorService svc) => _svc = svc;
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateExternalEvaluatorDto dto)
     {
@@ -23,7 +23,7 @@ public class ExternalEvaluatorsController : ControllerBase
         return ok ? Ok(new { ext!.Id, ext.Email }) : BadRequest(errors);
     }
 
-    [Authorize(Roles = "Admin,ExternalEvaluator")]
+    // [Authorize(Roles = "Admin,ExternalEvaluator")]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(string id)
     {
@@ -31,7 +31,7 @@ public class ExternalEvaluatorsController : ControllerBase
         return ext is null ? NotFound() : Ok(ext);
     }
     
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] string? domaine = null)
     {
@@ -39,7 +39,7 @@ public class ExternalEvaluatorsController : ControllerBase
         return Ok(list);
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(string id, UpdateExternalEvaluatorDto dto)
     {
@@ -47,7 +47,7 @@ public class ExternalEvaluatorsController : ControllerBase
         return success ? NoContent() : NotFound();
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
@@ -55,7 +55,7 @@ public class ExternalEvaluatorsController : ControllerBase
         return success ? NoContent() : NotFound();
     }
     
-    [Authorize(Roles = "Admin,ExternalEvaluator")]
+    // [Authorize(Roles = "Admin,ExternalEvaluator")]
     [HttpGet("me")] // Route pour obtenir les informations de l'évaluateur externe connecté
     public async Task<IActionResult> GetMe()
     {
