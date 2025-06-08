@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace AnalyticsService.ExternalClients.DTO;
 
 public class ModuleDto
-{ public int ModuleId { get; set; }  // ID du module
+{ public int ModuleId { get; set; }  // ID du modulee
     public string ModuleName { get; set; }  // Nom du module
     public string ModuleDescription { get; set; }  // Description du module
     public int ModuleDuration { get; set; }  // Durée du module (en heures)

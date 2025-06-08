@@ -18,7 +18,19 @@ public class HttpQuestionnaireClient:IQuestionnaireClient
                                     throw new ArgumentException("EvaluationService BaseUrl is not configured");
     }
 
+    public async Task<IEnumerable<QuestionnaireDto>> GetByIdAsync(int Id)
+    {
+        var requestUri =  $"{_evaluationServiceBaseUrl}/api/Questionnaire/getQuestionnaireById/{Id}" ; 
+    
+       
+        var response = await _http.GetAsync(requestUri);
+        response.EnsureSuccessStatusCode();
+        
+        var quest = await response.Content.ReadFromJsonAsync<IEnumerable<QuestionnaireDto>>();
+        return quest; 
+    } 
     // Récupérer les questionnaires pour un module spécifique
+    
     public async Task<IEnumerable<QuestionnaireDto>> GetByModuleAsync(int moduleId)
     {
         var requestUri =  $"{_evaluationServiceBaseUrl}/api/Questionnaire/getQuestionnairesByModuleId/{moduleId}" ; 
@@ -74,5 +86,6 @@ public class HttpQuestionnaireClient:IQuestionnaireClient
             throw new Exception("Une erreur inattendue s'est produite.", ex);
         }
 
-        }
+        } 
+    
     } 

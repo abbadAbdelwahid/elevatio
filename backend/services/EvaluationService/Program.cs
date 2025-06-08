@@ -54,7 +54,7 @@ builder.Services.AddScoped<IAIAnalyzer, AIAnalyzer>();
 builder.Services.AddScoped<IEvaluationService, EvaluationService.Services.EvaluationService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IQuestionsStandardService, QuestionsStandardService>();
-
+builder.Services.AddScoped<DbContext,EvaluationsDbContext>(); 
 // MVC + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
