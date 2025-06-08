@@ -30,6 +30,8 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddHttpClient<IQuestionnaireClient, HttpQuestionnaireClient>();
 builder.Services.AddHttpClient<IAnswerClient, HttpAnswerClient>(); 
 builder.Services.AddHttpClient<IQuestionClient, HttpQuestionClient>(); 
+builder.Services.AddHttpClient<IFiliereClient, HttpFiliereClient>(); 
+builder.Services.AddHttpClient<IModuleClient, HttpModuleClient>(); 
 builder.Services.AddHttpClient<IEvaluationClient, HttpEvaluationClient>();
 builder.Services.AddHttpClient<IGroqAIClient, GroqAIClient>();
 // … tes autres services (HttpClients, ReportService, etc.)
