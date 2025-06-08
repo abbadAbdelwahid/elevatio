@@ -1,13 +1,12 @@
 using EvaluationService.DTOs;
 using EvaluationService.Models;
 using EvaluationService.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EvaluationService.Controllers
 {
-    [Route("api/answers")]
     [ApiController]
+    [Route("api/answers")]
     public class AnswerController : ControllerBase
     {
         private readonly IAnswerService _answerService;
@@ -23,11 +22,13 @@ namespace EvaluationService.Controllers
             try
             {
                 var answers = await _answerService.GetAnswersByQuestionIdAsync(questionId);
+                if (answers == null || !answers.Any())
+                    return NotFound($"No answers found for question ID {questionId}.");
                 return Ok(answers);
             }
             catch (Exception e)
             {
-                return NotFound("No answers found for the given question ID." + e.Message);
+                return StatusCode(500, "Error fetching answers by question ID: " + e.Message);
             }
         }
 
@@ -38,14 +39,12 @@ namespace EvaluationService.Controllers
             {
                 var answers = await _answerService.GetAnswersByQuestionnaireIdAsync(questionnaireId);
                 if (answers == null || !answers.Any())
-                {
-                    return NotFound("No answers found for the given questionnaire ID.");
-                }
+                    return NotFound($"No answers found for questionnaire ID {questionnaireId}.");
                 return Ok(answers);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching answers: " + e.Message);
+                return StatusCode(500, "Error fetching answers by questionnaire ID: " + e.Message);
             }
         }
 
@@ -56,15 +55,12 @@ namespace EvaluationService.Controllers
             {
                 var answers = await _answerService.GetAnswersByRespondentIdAsync(respondentId);
                 if (answers == null || !answers.Any())
-                {
-                    return NotFound("No answers found for the given respondent ID.");
-                }
-
+                    return NotFound($"No answers found for respondent ID {respondentId}.");
                 return Ok(answers);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching answers: " + e.Message);
+                return StatusCode(500, "Error fetching answers by respondent ID: " + e.Message);
             }
         }
 
@@ -78,20 +74,23 @@ namespace EvaluationService.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching answers: " + e.Message);
+                return StatusCode(500, "Error fetching all answers: " + e.Message);
             }
         }
 
         [HttpGet("getAnswerById/{answerId:int}")]
         public async Task<IActionResult> GetAnswerById(int answerId)
         {
-            try{
+            try
+            {
                 var answer = await _answerService.GetAnswerByIdAsync(answerId);
+                if (answer == null)
+                    return NotFound($"Answer not found for answer ID {answerId}.");
                 return Ok(answer);
             }
             catch (Exception e)
             {
-                return NotFound("No answer found for the given answer ID." + e.Message);
+                return StatusCode(500, "Error fetching answer by ID: " + e.Message);
             }
         }
 
@@ -99,18 +98,18 @@ namespace EvaluationService.Controllers
         public async Task<IActionResult> AddCleanAnswer([FromBody] AnswerSubmissionDto answerSubmissionDto)
         {
             if (answerSubmissionDto == null)
-            {
                 return BadRequest("Invalid data.");
-            }
 
             try
             {
                 var newAnswer = await _answerService.AddCleanAnswerAsync(answerSubmissionDto);
-                return CreatedAtAction(nameof(GetAnswerById), new { answerId = newAnswer.AnswerId }, newAnswer);
+                return CreatedAtAction(nameof(GetAnswerById),
+                                       new { answerId = newAnswer.AnswerId },
+                                       newAnswer);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "An error occurred while adding answers: " + e.Message);
+                return StatusCode(500, "An error occurred while adding the answer: " + e.Message);
             }
         }
 
@@ -118,41 +117,58 @@ namespace EvaluationService.Controllers
         public async Task<IActionResult> UpdateCleanAnswer([FromBody] Answer updatedAnswer)
         {
             if (updatedAnswer == null)
-            {
                 return BadRequest("Invalid data.");
-            }
 
             try
             {
                 var answer = await _answerService.UpdateCleanAnswerAsync(updatedAnswer);
+                if (answer == null)
+                    return NotFound($"Answer not found for answer ID {updatedAnswer.AnswerId}.");
                 return Ok(answer);
             }
             catch (Exception e)
             {
-                return NotFound("No answer found for the given answer ID." + e.Message);
+                return StatusCode(500, "Error updating answer: " + e.Message);
             }
         }
 
         [HttpDelete("deleteAnswerById/{answerId:int}")]
         public async Task<IActionResult> DeleteAnswerById(int answerId)
         {
-            try{
+            try
+            {
                 var answer = await _answerService.DeleteAnswerByIdAsync(answerId);
+                if (answer == null)
+                    return NotFound($"Answer not found for answer ID {answerId}.");
                 return Ok(answer);
             }
             catch (Exception e)
             {
-                return NotFound("No answer found for the given answer ID." + e.Message);
+                return StatusCode(500, "Error deleting answer: " + e.Message);
             }
         }
         
+        [HttpDelete("deleteAnswerByRespondentId/{respondentId}")]
+        public async Task<IActionResult> DeleteAnswersByRespondentId(string respondentId)
+        {
+            try
+            {
+                var answer = await _answerService.DeleteAnswersByRespondentId(respondentId);
+                if (answer == null || !answer.Any())
+                    return NotFound($"No answers found for the given respondent ID {respondentId}.");
+                return Ok(answer);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error deleting answer: " + e.Message);
+            }
+        }
+
         [HttpPost("addCleanRangeOfAnswers")]
         public async Task<IActionResult> AddCleanRangeOfAnswers([FromBody] List<AnswerSubmissionDto> dtoAnswerSubmissions)
         {
             if (dtoAnswerSubmissions == null || !dtoAnswerSubmissions.Any())
-            {
                 return BadRequest("Invalid data.");
-            }
 
             try
             {
@@ -170,30 +186,30 @@ namespace EvaluationService.Controllers
         {
             try
             {
-                var answerType = await _answerService.GetAnswerTypeFiliereModuleAsync(answerId);
-                if (answerType == "Invalid_Questionnaire_Type")
-                {
-                    return NotFound("Invalid Answer type for the given answer ID.");
-                }
-
-                return Ok(answerType);
+                var type = await _answerService.GetQuestionnaireTypeFiliereModuleAsync(answerId);
+                if (type == null)
+                    return NotFound($"TypeModuleFiliere not found for answer ID {answerId}.");
+                return Ok(type);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error Occured" + e.Message);
+                return StatusCode(500, "Error fetching answer type filiere/module: " + e.Message);
             }
         }
 
         [HttpGet("getQuestionnaireTypeInternalExternal/{answerId:int}")]
         public async Task<IActionResult> GetQuestionnaireTypeInternalExternal(int answerId)
         {
-            try{
-                var questionnaireType = await _answerService.GetQuestionnaireTypeInternalExternalAsync(answerId);
-                return Ok(questionnaireType);
+            try
+            {
+                var type = await _answerService.GetQuestionnaireTypeInternalExternalAsync(answerId);
+                if (type == null)
+                    return NotFound($"TypeInternalExternal not found for answer ID {answerId}.");
+                return Ok(type);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error Occured Or Invalid Questionnaire type for the given answer ID." + e.Message);
+                return StatusCode(500, "Error fetching questionnaire type internal/external: " + e.Message);
             }
         }
 
@@ -204,14 +220,12 @@ namespace EvaluationService.Controllers
             {
                 var answers = await _answerService.GetAnswersFiliereAsync();
                 if (answers == null || !answers.Any())
-                {
-                    return NotFound("No answers found for the given questionnaire ID.");
-                }
+                    return NotFound("No filiere answers found.");
                 return Ok(answers);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching answers: " + e.Message);
+                return StatusCode(500, "Error fetching filiere answers: " + e.Message);
             }
         }
 
@@ -222,29 +236,29 @@ namespace EvaluationService.Controllers
             {
                 var answers = await _answerService.GetAnswersModuleAsync();
                 if (answers == null || !answers.Any())
-                {
-                    return NotFound("No answers found for the given questionnaire ID.");
-                }
-
+                    return NotFound("No module answers found.");
                 return Ok(answers);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error fetching answers: " + e.Message);
+                return StatusCode(500, "Error fetching module answers: " + e.Message);
             }
         }
 
         [HttpPost("questions-of-answers")]
         public async Task<IActionResult> GetQuestionsOfAnswersList([FromBody] List<Answer> answers)
         {
+            if (answers == null || !answers.Any())
+                return BadRequest("Invalid answers list.");
+
             try
             {
-                var questionsOfAnswers = await _answerService.GetQuestionsOfAnswersList(answers);
-                return Ok(questionsOfAnswers);
+                var questions = await _answerService.GetQuestionsOfAnswersList(answers);
+                return Ok(questions);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return BadRequest("Error occured while fetching questions of answers: " + ex.Message);
+                return BadRequest("Error fetching questions of answers: " + e.Message);
             }
         }
 
@@ -253,28 +267,13 @@ namespace EvaluationService.Controllers
         {
             try
             {
-                var questionOfAnswer = await _answerService.GetQuestionOfAnswerById(answerId);
-                return Ok(questionOfAnswer);
+                var question = await _answerService.GetQuestionOfAnswerById(answerId);
+                return Ok(question);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return BadRequest("Error occured while fetching question of answer: " + ex.Message);
-            }
-        }      
-        
-        [HttpPost("question-of-answer")]
-        public async Task<IActionResult> GetQuestionOfAnswer([FromBody] Answer answer)
-        {
-            try
-            {
-                var questionOfAnswer = await _answerService.GetQuestionOfAnswer(answer);
-                return Ok(questionOfAnswer);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error occured while fetching question of answer: " + ex.Message);
+                return BadRequest("Error fetching question of answer: " + e.Message);
             }
         }
     }
 }
-

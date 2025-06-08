@@ -3,11 +3,76 @@
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings> 
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    </PropertyGroup> 
+    
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
+        <PackageReference Include="DinkToPdf" Version="1.0.8" />
+        <PackageReference Include="itext7" Version="9.2.0" />
+        <PackageReference Include="MigraDocCore.DocumentObjectModel" Version="1.3.67" />
+        <PackageReference Include="PdfSharpCore" Version="1.3.67" /> 
+        <PackageReference Include="QuestPDF" Version="2021.1.2" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Npgsql" Version="9.0.3" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+        <PackageReference Include="QuestPDF" Version="2021.1.2" />
+        <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+        <PackageReference Include="Select.HtmlToPdf.NetCore" Version="25.2.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="AnalyticsService.Tests\obj\AnalyticsService.Tests.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsService.Tests\obj\Debug\net8.0\AnalyticsService.Tests.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsService.Tests\obj\Debug\net8.0\MvcTestingAppManifest.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsService.Tests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsService.Tests\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\appsettings.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.deps.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.staticwebassets.endpoints.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp.deps.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\appsettings.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.deps.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.staticwebassets.endpoints.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp.deps.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.deps.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsService.staticwebassets.endpoints.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp.deps.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\AnalyticsTestApp.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\Debug\net9.0\AnalyticsTestApp.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\appsettings.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\AnalyticsTestApp.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\Debug\net9.0\AnalyticsTestApp.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\bin\Debug\net9.0\appsettings.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\AnalyticsTestApp.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\Debug\net9.0\AnalyticsTestApp.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\AnalyticsTestApp\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\bin\Debug\net9.0\appsettings.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\obj\AnalyticsTestApp.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\obj\Debug\net9.0\AnalyticsTestApp.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="AnalyticsTestApp\obj\project.assets.json" />
     </ItemGroup>
 
 </Project>

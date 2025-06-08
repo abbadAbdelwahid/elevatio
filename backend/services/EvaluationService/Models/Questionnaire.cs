@@ -15,8 +15,10 @@ public class Questionnaire
     public string Title { get; set; }
 
     [Required]
-    public QuestionnaireType Type { get; set; }
+    public TypeInternalExternal TypeInternalExternal { get; set; }
 
+    public TypeModuleFiliere TypeModuleFiliere { get; set; }
+    
     /// FK vers filière (si questionnaire de filière)
     public int? FiliereId { get; set; }
 
@@ -25,13 +27,10 @@ public class Questionnaire
 
     [Required, MaxLength(100)]
     public string? CreatorUserId { get; set; }  // Validé via Auth MS
-    
-    [Required, MaxLength(100)]
-    public string? RespondentUserId { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [JsonIgnore]
+    // [JsonIgnore]
     public ICollection<Question>? Questions { get; set; }
 }

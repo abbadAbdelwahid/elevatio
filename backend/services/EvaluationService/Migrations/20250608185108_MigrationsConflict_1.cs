@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EvaluationService.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateMigrations : Migration
+    public partial class MigrationsConflict_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,6 +19,8 @@ namespace EvaluationService.Migrations
                     EvaluationId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RespondentUserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Comment = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     FiliereId = table.Column<int>(type: "integer", nullable: true),
                     ModuleId = table.Column<int>(type: "integer", nullable: true),
                     Score = table.Column<float>(type: "real", nullable: false),
@@ -37,18 +39,18 @@ namespace EvaluationService.Migrations
                     QuestionnaireId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    TypeInternalExternal = table.Column<int>(type: "integer", nullable: false),
+                    TypeModuleFiliere = table.Column<int>(type: "integer", nullable: false),
                     FiliereId = table.Column<int>(type: "integer", nullable: true),
                     ModuleId = table.Column<int>(type: "integer", nullable: true),
                     CreatorUserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    RespondentUserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Questionnaires", x => x.QuestionnaireId);
-                    table.CheckConstraint("CK_Questionnaire_Type", "(\"FiliereId\" IS NOT NULL AND \"ModuleId\" IS NULL AND \"Type\" = 0) OR (\"ModuleId\" IS NOT NULL AND \"FiliereId\" IS NULL AND \"Type\" = 1)");
+                    table.CheckConstraint("CK_Questionnaire_Type", "NOT(\"FiliereId\" IS NULL AND \"ModuleId\" IS NULL)");
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +75,7 @@ namespace EvaluationService.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     QuestionnaireId = table.Column<int>(type: "integer", nullable: false),
                     StandardQuestionId = table.Column<int>(type: "integer", nullable: true),
-                    Text = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Text = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -85,6 +87,11 @@ namespace EvaluationService.Migrations
                         principalTable: "Questionnaires",
                         principalColumn: "QuestionnaireId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Questions_StandardQuestions_StandardQuestionId",
+                        column: x => x.StandardQuestionId,
+                        principalTable: "StandardQuestions",
+                        principalColumn: "StandardQuestionId");
                 });
 
             migrationBuilder.CreateTable(
@@ -94,6 +101,7 @@ namespace EvaluationService.Migrations
                     AnswerId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    RespondentUserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     RawAnswer = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
                     RatingAnswer = table.Column<float>(type: "real", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -119,6 +127,11 @@ namespace EvaluationService.Migrations
                 name: "IX_Questions_QuestionnaireId",
                 table: "Questions",
                 column: "QuestionnaireId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Questions_StandardQuestionId",
+                table: "Questions",
+                column: "StandardQuestionId");
         }
 
         /// <inheritdoc />
@@ -131,13 +144,13 @@ namespace EvaluationService.Migrations
                 name: "Evaluations");
 
             migrationBuilder.DropTable(
-                name: "StandardQuestions");
-
-            migrationBuilder.DropTable(
                 name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "Questionnaires");
+
+            migrationBuilder.DropTable(
+                name: "StandardQuestions");
         }
     }
 }

@@ -5,22 +5,22 @@ namespace EvaluationService.Services;
 
 public interface IAnswerService
 {
-    Task<List<AnswerResponseDto>> AddCleanRangeAsync(List<AnswerSubmissionDto> dtoAnswerSubmissions);
-    Task<string> GetAnswerTypeFiliereModuleAsync(int answerId);
-    Task<QuestionnaireType> GetQuestionnaireTypeInternalExternalAsync(int answerId);
-    Task<List<AnswerResponseDto>> GetAnswersFiliereAsync();
-    Task<List<AnswerResponseDto>> GetAnswersModuleAsync();
-    Task<List<AnswerResponseDto>> GetAnswersByQuestionIdAsync(int questionId);
-    Task<List<AnswerResponseDto>> GetAnswersByQuestionnaireIdAsync(int questionnaireId);
-    Task<List<AnswerResponseDto>> GetAnswersByRespondentIdAsync(string respondentId);
-    Task<List<AnswerResponseDto>> GetAllAnswersAsync();
-    Task<AnswerResponseDto> GetAnswerByIdAsync(int answerId);
-    Task<AnswerResponseDto> DeleteAnswerByIdAsync(int answerId);
-    Task<AnswerResponseDto> UpdateCleanAnswerAsync(Answer updatedAnswer);
-    Task<AnswerResponseDto> AddCleanAnswerAsync(AnswerSubmissionDto answerSubmissionDto);
-    Task<List<Question>> GetQuestionsOfAnswersList(List<Answer> answers);
-    Task<Question> GetQuestionOfAnswer(Answer answer);
+    Task<List<Answer>> AddCleanRangeAsync(List<AnswerSubmissionDto> dtoAnswerSubmissions);
+    Task<TypeInternalExternal?> GetQuestionnaireTypeInternalExternalAsync(int answerId);
+    Task<TypeModuleFiliere?> GetQuestionnaireTypeFiliereModuleAsync(int answerId);
+    Task<List<Answer>> GetAnswersFiliereAsync();
+    Task<List<Answer>> GetAnswersModuleAsync();
+    Task<List<Answer>> GetAnswersByQuestionIdAsync(int questionId);
+    Task<List<Answer>> GetAnswersByQuestionnaireIdAsync(int questionnaireId);
+    Task<List<Answer>> GetAnswersByRespondentIdAsync(string respondentId);
+    Task<List<Answer>> GetAllAnswersAsync();
+    Task<Answer> GetAnswerByIdAsync(int answerId);
+    Task<Answer> DeleteAnswerByIdAsync(int answerId);
+    Task<Answer> UpdateCleanAnswerAsync(Answer updatedAnswer);
+    Task<Answer> AddCleanAnswerAsync(AnswerSubmissionDto answerSubmissionDto);
+    Task<List<Question?>> GetQuestionsOfAnswersList(List<Answer> answers);
     Task<Question> GetQuestionOfAnswerById(int answerId);
+    Task<List<Answer>> DeleteAnswersByRespondentId(string respondentId);
 
 }
 

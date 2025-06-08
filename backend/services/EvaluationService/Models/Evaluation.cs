@@ -11,7 +11,13 @@ public class Evaluation
 
     [Required, MaxLength(100)]
     public string? RespondentUserId { get; set; }
+    
+    [Required]
+    public TypeModuleFiliere Type { get; set; }
 
+    [MaxLength(1000)]
+    public string? Comment { get; set; }
+    
     public int? FiliereId { get; set; }
     public int? ModuleId { get; set; }
 

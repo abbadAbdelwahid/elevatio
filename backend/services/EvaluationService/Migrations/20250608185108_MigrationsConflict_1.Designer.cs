@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EvaluationService.Migrations
 {
     [DbContext(typeof(EvaluationsDbContext))]
-    [Migration("20250515200647_UpdateMigrations")]
-    partial class UpdateMigrations
+    [Migration("20250608185108_MigrationsConflict_1")]
+    partial class MigrationsConflict_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,11 @@ namespace EvaluationService.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
+                    b.Property<string>("RespondentUserId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.HasKey("AnswerId");
 
                     b.HasIndex("QuestionId");
@@ -64,6 +69,10 @@ namespace EvaluationService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EvaluationId"));
 
+                    b.Property<string>("Comment")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
                     b.Property<DateTime>("EvaluatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -80,6 +89,9 @@ namespace EvaluationService.Migrations
 
                     b.Property<float>("Score")
                         .HasColumnType("real");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("EvaluationId");
 
@@ -107,13 +119,14 @@ namespace EvaluationService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
                     b.HasKey("QuestionId");
 
                     b.HasIndex("QuestionnaireId");
+
+                    b.HasIndex("StandardQuestionId");
 
                     b.ToTable("Questions");
                 });
@@ -140,17 +153,15 @@ namespace EvaluationService.Migrations
                     b.Property<int?>("ModuleId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("RespondentUserId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("TypeInternalExternal")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TypeModuleFiliere")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -160,7 +171,7 @@ namespace EvaluationService.Migrations
 
                     b.ToTable("Questionnaires", t =>
                         {
-                            t.HasCheckConstraint("CK_Questionnaire_Type", "(\"FiliereId\" IS NOT NULL AND \"ModuleId\" IS NULL AND \"Type\" = 0) OR (\"ModuleId\" IS NOT NULL AND \"FiliereId\" IS NULL AND \"Type\" = 1)");
+                            t.HasCheckConstraint("CK_Questionnaire_Type", "NOT(\"FiliereId\" IS NULL AND \"ModuleId\" IS NULL)");
                         });
                 });
 
@@ -204,7 +215,13 @@ namespace EvaluationService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EvaluationService.Models.StandardQuestion", "StandardQuestion")
+                        .WithMany()
+                        .HasForeignKey("StandardQuestionId");
+
                     b.Navigation("Questionnaire");
+
+                    b.Navigation("StandardQuestion");
                 });
 
             modelBuilder.Entity("EvaluationService.Models.Question", b =>

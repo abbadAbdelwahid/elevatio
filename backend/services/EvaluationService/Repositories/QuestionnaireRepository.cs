@@ -26,7 +26,6 @@ public class QuestionnaireRepository : IQuestionnaireRepository
     public async Task<List<Question>> AddStandardQuestionsToQuestionnaireAsync(int questionnaireId, StatName statName)
     {
         List<StandardQuestion> standardQuestions = await _questionsStandardRepository.GetQuestionsStandardsByStatName(statName);
-        Questionnaire? questionnaire = GetQuestionnaireByIdAsync(questionnaireId).Result;
         var nouvellesQuestionsStandards = new List<Question>();
         foreach (StandardQuestion sq in standardQuestions)
         {
@@ -40,20 +39,17 @@ public class QuestionnaireRepository : IQuestionnaireRepository
             });
         }
         List<Question> questionInseres = await _questionRepository.AddRangeAsync(nouvellesQuestionsStandards);
-        await AddQuestionsToQuestionnaireAsync(questionnaireId, questionInseres);
         return questionInseres;
     }
 
     public async Task<List<Question>> AddQuestionsToQuestionnaireAsync(int questionnaireId, List<Question> questions)
     {
-        List<Question> questionInseres = new List<Question>();
-        foreach (Question q in questions)
+        var q = questions.Select(q =>
         {
             q.QuestionnaireId = questionnaireId;
-            await _questionRepository.AddQuestionAsync(q);
-            questionInseres.Add(q);
-        }
-        return questionInseres;
+            return q;
+        }).ToList();
+        return await _questionRepository.AddRangeAsync(questions);
     }
 
     public async Task<List<StandardQuestion>> GetStandardQuestionsAsync(int questionnaireId)
@@ -62,47 +58,82 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         List<StandardQuestion> standardQuestions = new List<StandardQuestion>();
         foreach (var qStand in questionOfQuestionnaire)
         {
-            standardQuestions.Add(_questionsStandardRepository.GetStandardQuestionById((int)qStand.StandardQuestionId).Result);
+            standardQuestions.Add(await _questionsStandardRepository.GetStandardQuestionById((int)qStand!.StandardQuestionId));
         }
         return standardQuestions;
     }
 
-    public async Task<QuestionnaireType> GetQuestionnaireTypeExternalInternalAsync(int questionnaireId)
+    public async Task<TypeInternalExternal?> GetQuestionnaireTypeExternalInternalAsync(int questionnaireId)
     {
         return await _ctx.Questionnaires.AsNoTracking()
             .Where(q => q.QuestionnaireId == questionnaireId)
-            .Select(q => q.Type)
+            .Select(q => q.TypeInternalExternal)
             .FirstOrDefaultAsync();
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesTypeExternalAsync()
     {
         return await _ctx.Questionnaires.AsNoTracking()
-            .Where(q => q.Type == QuestionnaireType.External)
+            .Where(q => q.TypeInternalExternal == TypeInternalExternal.External)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesTypeInternalAsync()
     {
         return await _ctx.Questionnaires.AsNoTracking()
-            .Where(q => q.Type == QuestionnaireType.Internal)
+            .Where(q => q.TypeInternalExternal == TypeInternalExternal.Internal)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();    
     }
 
-    public async Task<string> GetQuestionnaireTypeModuleFiliereAsync(int questionnaireId)
+    public async Task<TypeModuleFiliere?> GetQuestionnaireTypeModuleFiliereAsync(int questionnaireId)
     {
         var questionnaireCherche = await GetQuestionnaireByIdAsync(questionnaireId);
-        if (questionnaireCherche.FiliereId != null && questionnaireCherche.ModuleId == null)
-            return "Filiere";
-        if(questionnaireCherche.FiliereId == null && questionnaireCherche.ModuleId != null)
-            return "Module";
-        return "Invalid_Questionnaire_Type";
+        return questionnaireCherche.TypeModuleFiliere;
+    }
+
+    public async Task<List<Questionnaire>> GetQuestionnairesTypeModuleAsync()
+    {
+        return await _ctx.Questionnaires.AsNoTracking()
+            .Where(q => q.TypeModuleFiliere == TypeModuleFiliere.Module)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
+            .ToListAsync();   
+    }
+
+    public async Task<List<Questionnaire>> GetQuestionnairesTypeFiliereAsync()
+    {
+        return await _ctx.Questionnaires.AsNoTracking()
+            .Where(q => q.TypeModuleFiliere == TypeModuleFiliere.Filiere)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
+            .ToListAsync();   
     }
 
     public async Task<Questionnaire> GetQuestionnaireByIdAsync(int questionnaireId)
     {
         return await _ctx.Questionnaires.AsNoTracking()
             .Where(q => q.QuestionnaireId == questionnaireId)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+                .AsSplitQuery()
             .FirstOrDefaultAsync()
             ?? throw new KeyNotFoundException("Questionnaire not found");
     }
@@ -111,6 +142,11 @@ public class QuestionnaireRepository : IQuestionnaireRepository
     {
         return await _ctx.Questionnaires.AsNoTracking()
             .Where(q => q.ModuleId == moduleId)
+            .Include(q => q!.Questions)
+            .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+            .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();
     }
 
@@ -118,6 +154,11 @@ public class QuestionnaireRepository : IQuestionnaireRepository
     {
         return await _ctx.Questionnaires.AsNoTracking()
             .Where(q => q.FiliereId == filiereId)
+            .Include(q => q!.Questions)
+            .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+            .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();
     }
 
@@ -126,12 +167,17 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         return await _ctx.Questionnaires.AsNoTracking()
             .Where(q => q.CreatorUserId != null &&
                         q.CreatorUserId.ToLower() == creatorUserId.ToLower())
+            .Include(q => q!.Questions)
+            .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+            .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();
     }
 
     public async Task<Questionnaire> DeleteQuestionnaireAsync(int questionnaireId)
     {
-        var questionnaireASupprimer = GetQuestionnaireByIdAsync(questionnaireId).Result;
+        var questionnaireASupprimer = await GetQuestionnaireByIdAsync(questionnaireId);
         if (questionnaireASupprimer != null)
         {
             _ctx.Questionnaires.Remove(questionnaireASupprimer);
@@ -141,36 +187,76 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         throw new KeyNotFoundException("Questionnaire not found");
     }
 
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByModuleIdAsync(int moduleId)
+    {
+        var questionnairesOfModule = await GetQuestionnairesByModuleIdAsync(moduleId);
+        _ctx.Questionnaires.RemoveRange(questionnairesOfModule);
+        await _ctx.SaveChangesAsync();
+        return questionnairesOfModule;
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByFiliereIdAsync(int filiereId)
+    {
+        var questionnairesOfFiliere = await GetQuestionnairesByFiliereIdAsync(filiereId);
+        _ctx.Questionnaires.RemoveRange(questionnairesOfFiliere);
+        await _ctx.SaveChangesAsync();
+        return questionnairesOfFiliere;
+    }
+
+    public async Task<List<Questionnaire>> DeleteQuestionnairesByCreatorIdAsync(string creatorId)
+    {
+        var questionnairesOfCreator = await GetQuestionnairesByCreatorUserIdAsync(creatorId);
+        _ctx.Questionnaires.RemoveRange(questionnairesOfCreator);
+        await _ctx.SaveChangesAsync();
+        return questionnairesOfCreator;
+    }
+
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire q)
     {
         _ctx.Questionnaires.Update(q);
         await _ctx.SaveChangesAsync();
-        return q;
+        return await GetQuestionnaireByIdAsync(q.QuestionnaireId);
     }
 
     public async Task<Questionnaire> AddQuestionnaireAsync(Questionnaire q)
     {
         await _ctx.Questionnaires.AddAsync(q);
         await _ctx.SaveChangesAsync();
-        return q;
+        return await GetQuestionnaireByIdAsync(q.QuestionnaireId);
     }
 
     public async Task<List<Questionnaire>> GetAllQuestionnairesAsync()
     {
-        return await _ctx.Questionnaires.AsNoTracking().ToListAsync();
+        return await _ctx.Questionnaires.AsNoTracking()
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
+            .ToListAsync();
     }
 
     public async Task<List<Questionnaire>> GetAllQuestionnairesFiliereAsync()
     {
         return await _ctx.Questionnaires.AsNoTracking()
-            .Where(q => q.FiliereId != null && q.ModuleId == null)
+            .Where(q => q.TypeModuleFiliere == TypeModuleFiliere.Filiere)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();
     }
 
     public async Task<List<Questionnaire>> GetAllQuestionnairesModuleAsync()
     {
         return await _ctx.Questionnaires.AsNoTracking()
-            .Where(q => q.FiliereId == null && q.ModuleId != null)
+            .Where(q => q.TypeModuleFiliere == TypeModuleFiliere.Module)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();
     }
 
@@ -179,24 +265,42 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         return await _ctx.Questionnaires.AsNoTracking()
             .Where(q => q.CreatorUserId != null &&
                         q.CreatorUserId.ToLower() == creatorUserId.ToLower())
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q!.StandardQuestion)
+            .Include(q => q!.Questions)
+                .ThenInclude(q => q.Answers)
+            .AsSplitQuery()
             .ToListAsync();
     }
 
-    public async Task<string?> GetRespondentIdByQuestionnaireIdAsync(int questionnaireId)
+    public async Task<List<string?>> GetRespondentsIdsByQuestionnaireIdAsync(int questionnaireId)
     {
-        return await _ctx.Questionnaires.AsNoTracking()
-            .Where(q => q.QuestionnaireId == questionnaireId)
-            .Select(q => q.RespondentUserId)
-            .FirstOrDefaultAsync();
+        var respondentsIds = await _ctx.Answers
+            .Where(a=> a!.Question.QuestionnaireId == questionnaireId)
+            .Select(answer => answer.RespondentUserId)
+            .Distinct()
+            .ToListAsync();
+        
+        return respondentsIds;
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesByRespondentIdAsync(string respondentId)
     {
-        return await _ctx.Questionnaires.AsNoTracking()
-            .Where(q => q.RespondentUserId != null &&
-                        q.RespondentUserId.ToLower() == respondentId.ToLower())
+        var listQuestionnaires = await _ctx.Answers.AsNoTracking()
+            .Where(a => a!.RespondentUserId == respondentId)
+            .Select(a => a!.Question.Questionnaire)
+            .Distinct()
             .ToListAsync();
+
+        var questionnairesTask = listQuestionnaires
+            .Select(q => GetQuestionnaireByIdAsync(q.QuestionnaireId))
+            .ToList();
+        
+        var questionnaires = await Task.WhenAll(questionnairesTask);
+        
+        return questionnaires.ToList();
     }
+
 
     public async Task<List<Questionnaire>> DeleteRangeAsync(List<Questionnaire> questionnaires)
     {

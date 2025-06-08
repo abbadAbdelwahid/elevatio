@@ -43,6 +43,11 @@ namespace EvaluationService.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
+                    b.Property<string>("RespondentUserId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.HasKey("AnswerId");
 
                     b.HasIndex("QuestionId");
@@ -61,6 +66,10 @@ namespace EvaluationService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EvaluationId"));
 
+                    b.Property<string>("Comment")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
                     b.Property<DateTime>("EvaluatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -77,6 +86,9 @@ namespace EvaluationService.Migrations
 
                     b.Property<float>("Score")
                         .HasColumnType("real");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("EvaluationId");
 
@@ -104,7 +116,6 @@ namespace EvaluationService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
@@ -139,17 +150,15 @@ namespace EvaluationService.Migrations
                     b.Property<int?>("ModuleId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("RespondentUserId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("TypeInternalExternal")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TypeModuleFiliere")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")

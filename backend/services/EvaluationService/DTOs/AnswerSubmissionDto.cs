@@ -8,8 +8,8 @@ public class AnswerSubmissionDto
     [Required]
     public int QuestionId { get; set; }
 
-    // [Required]
-    // public int RespondentUserId { get; set; }
+    [Required]
+    public int RespondentUserId { get; set; }
 
     [MaxLength(2000)]
     public string? RawAnswer { get; set; }
