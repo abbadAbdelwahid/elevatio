@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using EvaluationService.Models;
 
 namespace EvaluationService.DTOs;
 
@@ -9,7 +10,8 @@ public class CreateEvaluationDto
     
     public string? Comment { get; set; }
 
-    
+    [Required]
+    public TypeModuleFiliere Type { get; set; }
     
     public int? FiliereId { get; set; }
     public int? ModuleId { get; set; }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EvaluationService.Migrations
 {
     [DbContext(typeof(EvaluationsDbContext))]
-    [Migration("20250607041030_update1")]
-    partial class update1
+    [Migration("20250608185108_MigrationsConflict_1")]
+    partial class MigrationsConflict_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
