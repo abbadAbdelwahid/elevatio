@@ -52,6 +52,7 @@ services:
       ConnectionStrings__AnalyticsDb: "Host=sys-evaluation-db.cg5ksoeei3fn.us-east-1.rds.amazonaws.com;Port=5432;Database=analytics_db;Username=postgres;Password=PGadmin_Ev4l!2025"
       OpenAI__ApiKey: ""
       EvaluationService__BaseUrl: "http://evaluation-service:8080"
+      CourseManagementService__BaseUrl: "http://course-management-service:8080"
 
   frontend:
     image: 149536475819.dkr.ecr.us-east-1.amazonaws.com/sys-eval-front:latest

@@ -23,8 +23,9 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__AnalyticsDb: "Host=analytics-db;Port=5432;Database=analytics_db;Username=postgres;Password=S3cureP@ssw0rd!2025"
-      OpenAI__ApiKey: ""
+      Groq__ApiKey: "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"
       EvaluationService__BaseUrl: "http://evaluation-service:8080/"
+      CourseManagementService__BaseUrl: "http://course-management-service:8080"
     depends_on:
       analytics-db:
         condition: service_healthy
