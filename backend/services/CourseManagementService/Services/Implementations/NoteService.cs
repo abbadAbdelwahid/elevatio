@@ -212,6 +212,20 @@ namespace CourseManagementService.Services.Implementations
             UpdatedAt  = note.UpdatedAt
         };
     }
+    
+    public async Task<double?> GetStudentAverageAsync(int studentId)
+    {
+        var notes = await _context.Notes
+            .Where(n => n.StudentId == studentId)
+            .Select(n => n.Grade)
+            .ToListAsync();
+
+        if (!notes.Any())
+            return null; // Aucun note
+
+        return notes.Average();
+    }
+
 
 
     }

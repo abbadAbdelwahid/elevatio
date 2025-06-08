@@ -69,6 +69,18 @@ namespace CourseManagementService.Controllers
             var notes = await _service.GetNotesByStudentAsync(studentId);
             return Ok(notes);
         }
+        
+        // GET api/note/student/{studentId}/average
+        [HttpGet("student/{studentId}/average")]
+        public async Task<ActionResult<double>> GetStudentAverage(int studentId)
+        {
+            var avg = await _service.GetStudentAverageAsync(studentId);
+            if (avg == null)
+                return NotFound("Aucune note trouvée pour cet étudiant.");
+
+            return Ok(new { studentId, average = avg });
+        }
+
 
     }
 }

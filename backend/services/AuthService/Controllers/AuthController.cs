@@ -46,22 +46,24 @@ namespace AuthService.Controllers
         
         // [Authorize]
         [HttpGet("getIdAndRole")]
-        public async Task<IActionResult> GetRoles()
+        public async Task<IActionResult> GetIdAndRole()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Récupérer l'ID à partir du token JWT
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Récupérer l'ID depuis le token
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return NotFound("Utilisateur non trouvé");
 
             var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault(); // Supposé avoir un seul rôle
 
             return Ok(new
             {
-                userId = user.Id,    // Ajout de l'ID dans la réponse
-                roles = roles        // Liste des rôles de l'utilisateur
+                userId = user.Id,
+                role = role  // Chaîne simple, pas un tableau
             });
         }
+
         
         [Authorize]
         [HttpGet("isTokenValid")]
