@@ -1,5 +1,6 @@
 ﻿// /Services/Implementations/ModuleService.cs
 using CourseManagementService.DTOs;
+using CourseManagementService.ExternalServices;
 using CourseManagementService.Models;
 using CourseManagementService.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,14 @@ namespace CourseManagementService.Services.Implementations
     public class ModuleService : IModuleService
     {
         private readonly ApplicationDbContext _context;
+        private readonly AuthHttpClientService _authHttp;
 
-        public ModuleService(ApplicationDbContext context)
+
+        public ModuleService(ApplicationDbContext context,AuthHttpClientService authHttp)
         {
             _context = context;
+            _authHttp = authHttp;
+
         }
 
         public async Task<ModuleDto> CreateModuleAsync(CreateModuleDto dto)
@@ -46,6 +51,7 @@ namespace CourseManagementService.Services.Implementations
                 ModuleDescription = module.ModuleDescription,
                 ModuleDuration = module.ModuleDuration,
                 FiliereName = filiere.FiliereName, // Retourner le nom de la filière
+                ProfileImageUrl = module.ProfileImageUrl, // 👈 ici
                 TeacherId = module.TeacherId,
                 CreatedAt = module.CreatedAt,
                 UpdatedAt = module.UpdatedAt
@@ -55,11 +61,13 @@ namespace CourseManagementService.Services.Implementations
         public async Task<ModuleDto?> GetModuleByIdAsync(int id)
         {
             var module = await _context.Modules
-                .Include(m => m.Filiere) // Inclure les données de la filière associée
+                .Include(m => m.Filiere)
                 .FirstOrDefaultAsync(m => m.ModuleId == id);
 
             if (module == null)
                 return null;
+
+            var teacherFullName = await _authHttp.GetTeacherFullNameAsync(module.TeacherId);
 
             return new ModuleDto
             {
@@ -67,12 +75,16 @@ namespace CourseManagementService.Services.Implementations
                 ModuleName = module.ModuleName,
                 ModuleDescription = module.ModuleDescription,
                 ModuleDuration = module.ModuleDuration,
-                FiliereName = module.Filiere.FiliereName, // Récupérer le nom de la filière
+                FiliereName = module.Filiere.FiliereName,
                 TeacherId = module.TeacherId,
+                TeacherFullName = teacherFullName,
+                ProfileImageUrl = module.ProfileImageUrl, // 👈 ici
                 CreatedAt = module.CreatedAt,
-                UpdatedAt = module.UpdatedAt
+                UpdatedAt = module.UpdatedAt,
+                Evaluated = module.Evaluated
             };
         }
+
 
         public async Task<IEnumerable<ModuleDto>> GetAllModulesAsync()
         {
@@ -88,6 +100,7 @@ namespace CourseManagementService.Services.Implementations
                 ModuleDescription = m.ModuleDescription,
                 ModuleDuration = m.ModuleDuration,
                 FiliereName = m.Filiere.FiliereName, // Inclure le nom de la filière
+                ProfileImageUrl = m.ProfileImageUrl, // 👈 ici
                 TeacherId = m.TeacherId,
                 CreatedAt = m.CreatedAt,
                 UpdatedAt = m.UpdatedAt
@@ -118,6 +131,7 @@ namespace CourseManagementService.Services.Implementations
                 ModuleDescription = module.ModuleDescription,
                 ModuleDuration = module.ModuleDuration,
                 FiliereName = module.Filiere.FiliereName,  // Maintenant la filière est chargée
+                ProfileImageUrl = module.ProfileImageUrl, // 👈 ici
                 TeacherId = module.TeacherId,
                 CreatedAt = module.CreatedAt,
                 UpdatedAt = module.UpdatedAt
@@ -151,18 +165,31 @@ namespace CourseManagementService.Services.Implementations
                 .AsNoTracking()
                 .ToListAsync();
 
-            return modules.Select(m => new ModuleDto
+            var results = new List<ModuleDto>();
+
+            foreach (var m in modules)
             {
-                ModuleId = m.ModuleId,
-                ModuleName = m.ModuleName,
-                ModuleDescription = m.ModuleDescription,
-                ModuleDuration = m.ModuleDuration,
-                FiliereName = m.Filiere.FiliereName,
-                TeacherId = m.TeacherId,
-                CreatedAt = m.CreatedAt,
-                UpdatedAt = m.UpdatedAt
-            });
+                var fullName = await _authHttp.GetTeacherFullNameAsync(m.TeacherId);
+
+                results.Add(new ModuleDto
+                {
+                    ModuleId = m.ModuleId,
+                    ModuleName = m.ModuleName,
+                    ModuleDescription = m.ModuleDescription,
+                    ModuleDuration = m.ModuleDuration,
+                    FiliereName = m.Filiere.FiliereName,
+                    TeacherId = m.TeacherId,
+                    TeacherFullName = fullName,
+                    ProfileImageUrl = m.ProfileImageUrl, // 👈 ici
+                    CreatedAt = m.CreatedAt,
+                    UpdatedAt = m.UpdatedAt,
+                    Evaluated = m.Evaluated
+                });
+            }
+
+            return results;
         }
+
         
         public async Task<IEnumerable<ModuleDto>> GetFilteredModulesAsync(string filter)
         {
@@ -171,46 +198,67 @@ namespace CourseManagementService.Services.Implementations
             switch (filter.ToLower())
             {
                 case "all":
-                    // Retourne tous les modules
                     query = query.AsNoTracking();
                     break;
-            
+
                 case "recent":
-                    // Retourne les 8 derniers modules créés
                     query = query.OrderByDescending(m => m.CreatedAt).Take(8);
                     break;
 
                 case "evaluated":
-                    // Retourne tous les modules avec Evaluated = true
                     query = query.Where(m => m.Evaluated == true);
                     break;
 
                 case "notevaluated":
-                    // Retourne tous les modules avec Evaluated = false
                     query = query.Where(m => m.Evaluated == false);
                     break;
 
                 default:
-                    return Enumerable.Empty<ModuleDto>(); // Si un filtre invalide est passé
+                    return Enumerable.Empty<ModuleDto>();
             }
 
             var modules = await query
-                .Include(m => m.Filiere) // Inclure les données de la filière associée
+                .Include(m => m.Filiere)
                 .ToListAsync();
 
-            return modules.Select(m => new ModuleDto
+            var results = new List<ModuleDto>();
+
+            foreach (var m in modules)
             {
-                ModuleId = m.ModuleId,
-                ModuleName = m.ModuleName,
-                ModuleDescription = m.ModuleDescription,
-                ModuleDuration = m.ModuleDuration,
-                FiliereName = m.Filiere.FiliereName,
-                TeacherId = m.TeacherId,
-                CreatedAt = m.CreatedAt,
-                UpdatedAt = m.UpdatedAt,
-                Evaluated = m.Evaluated // Inclure la nouvelle propriété Evaluated
-            });
+                var fullName = await _authHttp.GetTeacherFullNameAsync(m.TeacherId);
+
+                results.Add(new ModuleDto
+                {
+                    ModuleId = m.ModuleId,
+                    ModuleName = m.ModuleName,
+                    ModuleDescription = m.ModuleDescription,
+                    ModuleDuration = m.ModuleDuration,
+                    FiliereName = m.Filiere.FiliereName,
+                    ProfileImageUrl = m.ProfileImageUrl, // 👈 ici
+                    TeacherId = m.TeacherId,
+                    TeacherFullName = fullName,
+                    CreatedAt = m.CreatedAt,
+                    UpdatedAt = m.UpdatedAt,
+                    Evaluated = m.Evaluated
+                });
+            }
+
+            return results;
         }
+        
+        public async Task<bool> UpdateModuleImageUrlAsync(int moduleId, string imageUrl)
+        {
+            var module = await _context.Modules.FindAsync(moduleId);
+            if (module == null) return false;
+
+            module.ProfileImageUrl = imageUrl;
+            module.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+
 
     
     }

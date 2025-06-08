@@ -11,6 +11,8 @@ public interface IEnseignantService
     Task<bool> UpdateAsync(string id, UpdateEnseignantDto dto, string currentUserId);
     Task<bool> DeleteAsync(string id);
     public Task<string> UploadProfileImage(IFormFile file);
+    Task<string?> GetFullNameByIdAsync(string id);
+
 
 
 }

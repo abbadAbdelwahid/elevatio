@@ -24,7 +24,7 @@ public class EnseignantsController : ControllerBase
 
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateEnseignantDto dto)
     {
@@ -32,7 +32,7 @@ public class EnseignantsController : ControllerBase
         return ok ? Ok(new { ens!.Id, ens.Email }) : BadRequest(errors);
     }
 
-    [Authorize(Roles = "Admin,Enseignant")]
+    // [Authorize(Roles = "Admin,Enseignant")]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(string id)
     {
@@ -42,7 +42,7 @@ public class EnseignantsController : ControllerBase
     }
     
     // Controllers/EnseignantsController.cs
-    [Authorize(Roles = "Admin,Enseignant")]
+    // [Authorize(Roles = "Admin,Enseignant")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(string id, UpdateEnseignantDto dto)
     {
@@ -52,7 +52,7 @@ public class EnseignantsController : ControllerBase
     }
 
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
@@ -60,7 +60,7 @@ public class EnseignantsController : ControllerBase
         return success ? NoContent() : NotFound();
     }
     
-    [Authorize(Roles = "Enseignant")]
+    // [Authorize(Roles = "Enseignant")]
     [HttpGet("me")] // Route pour obtenir les informations de l'enseignant connecté
     public async Task<IActionResult> GetMe()
     {
@@ -71,7 +71,7 @@ public class EnseignantsController : ControllerBase
         return enseignant is null ? NotFound() : Ok(enseignant);  // Retourner les données ou 404 si l'enseignant n'existe pas
     }
 
-    [Authorize(Roles = "Enseignant")]
+    // [Authorize(Roles = "Enseignant")]
     [HttpPut("me/profile-image")]
     public async Task<IActionResult> UpdateProfileImage(IFormFile file)
     {
@@ -102,8 +102,18 @@ public class EnseignantsController : ControllerBase
         {
             return BadRequest($"Erreur de téléchargement de l'image : {ex.Message}");
         }
+        
     }
 
+    
+    [HttpGet("{id}/fullname")]
+    public async Task<IActionResult> GetFullName(string id)
+    {
+        var fullName = await _svc.GetFullNameByIdAsync(id);
 
+        if (fullName == null)
+            return NotFound("Enseignant introuvable.");
 
+        return Ok(new { fullName });
+    }
 }

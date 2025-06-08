@@ -73,6 +73,37 @@ namespace CourseManagementService.Controllers
             var result = await _service.GetModulesByFiliereNameAsync(filiereName);
             return Ok(result);
         }
+        
+        
+        [HttpPost("{id}/upload-image")]
+        public async Task<IActionResult> UploadImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("Fichier invalide.");
+
+            var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/modules");
+            if (!Directory.Exists(uploadsDir))
+                Directory.CreateDirectory(uploadsDir);
+
+            var extension = Path.GetExtension(file.FileName);
+            var fileName = $"module_{id}_{Guid.NewGuid()}{extension}";
+            var filePath = Path.Combine(uploadsDir, fileName);
+            var relativePath = $"/uploads/modules/{fileName}";
+
+            // Écriture du fichier
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Mise à jour du module
+            var success = await _service.UpdateModuleImageUrlAsync(id, relativePath);
+            if (!success) return NotFound();
+
+            return Ok(new { imageUrl = relativePath });
+        }
+
+
 
 
     }

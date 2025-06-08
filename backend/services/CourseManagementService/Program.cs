@@ -1,4 +1,5 @@
 using CourseManagementService;
+using CourseManagementService.ExternalServices;
 using Microsoft.EntityFrameworkCore;
 using CourseManagementService.Services;
 using CourseManagementService.Services.Implementations;
@@ -11,6 +12,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddHttpClient<AuthHttpClientService>();
+
 
 // Configuration du DbContext pour PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -19,6 +22,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IFiliereService, FiliereService>();
 builder.Services.AddScoped<IModuleService, ModuleService>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddScoped<INoteService,    NoteService>();   // 🟢 ← à ajouter
 
 
 var app = builder.Build();
@@ -36,6 +41,8 @@ if (app.Environment.IsDevelopment())
 
 // Ajouter le middleware global d'exception
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 app.UseHttpsRedirection();

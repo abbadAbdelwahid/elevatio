@@ -44,16 +44,41 @@ namespace AuthService.Controllers
             return BadRequest("Erreur lors de la réinitialisation du mot de passe");
         }
         
+        // [Authorize]
+        [HttpGet("getIdAndRole")]
+        public async Task<IActionResult> GetIdAndRole()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Récupérer l'ID depuis le token
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound("Utilisateur non trouvé");
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault(); // Supposé avoir un seul rôle
+
+            return Ok(new
+            {
+                userId = user.Id,
+                role = role  // Chaîne simple, pas un tableau
+            });
+        }
+
+        
         [Authorize]
-        [HttpGet("getRoles")]
-        public async Task<IActionResult> GetRoles()
+        [HttpGet("isTokenValid")]
+        public IActionResult IsTokenValid()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
-            var roles = await _userManager.GetRolesAsync(user);
 
-            return Ok(new { roles });
+            // Si l'ID utilisateur est présent dans le token, le token est valide
+            if (!string.IsNullOrEmpty(userId))
+                return Ok(new { isValid = true, userId });
+
+            return Ok(new { isValid = false });
         }
+
+
 
         
     }

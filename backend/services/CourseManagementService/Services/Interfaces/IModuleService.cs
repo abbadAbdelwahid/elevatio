@@ -12,6 +12,8 @@ namespace CourseManagementService.Services.Interfaces
         Task<bool> DeleteModuleAsync(int id);
         Task<IEnumerable<ModuleDto>> GetModulesByFiliereNameAsync(string filiereName);
         public Task<IEnumerable<ModuleDto>> GetFilteredModulesAsync(string filter);
+        Task<bool> UpdateModuleImageUrlAsync(int moduleId, string imageUrl);
+
 
 
     }
