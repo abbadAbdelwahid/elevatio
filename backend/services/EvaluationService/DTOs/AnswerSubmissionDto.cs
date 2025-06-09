@@ -9,7 +9,7 @@ public class AnswerSubmissionDto
     public int QuestionId { get; set; }
 
     [Required]
-    public int RespondentUserId { get; set; }
+    public string RespondentUserId { get; set; }
 
     [MaxLength(2000)]
     public string? RawAnswer { get; set; }

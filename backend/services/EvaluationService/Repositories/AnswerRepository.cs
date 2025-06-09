@@ -139,25 +139,25 @@ public class AnswerRepository : IAnswerRepository
 
     public async Task<List<Question?>> GetQuestionsOfAnswersList(List<Answer> answers)
     {
-        if(answers == null || answers.Count == 0)
-            return new List<Question>();
+        var questions = new List<Question?>();
 
-        var questionsTask = answers.Select(async a =>
+        foreach (var a in answers)
+        {
+            try
             {
-                try
-                {
-                    return await GetQuestionOfAnswerById(a.AnswerId);
-                }
-                catch (NullReferenceException e)
-                {
-                    Console.WriteLine(e);
-                    return null;
-                }
+                var question = await GetQuestionOfAnswerById(a.AnswerId);
+                if (question != null)
+                    questions.Add(question);
             }
-        );
-        var questions = await Task.WhenAll(questionsTask);
-        return questions.Where(q => q != null).ToList();
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e); // ou mieux : logger avec ILogger
+            }
+        }
+
+        return questions;
     }
+
     
     public async Task<Question> GetQuestionOfAnswerById(int answerId)
     {
