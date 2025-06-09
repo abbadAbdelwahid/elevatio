@@ -67,8 +67,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var type = await _questionnaireService.GetQuestionnaireTypeExternalInternalAsync(questionnaireId);
-                if (type == null)
-                    return NotFound($"No external/internal type for questionnaire {questionnaireId}.");
+                /*if (type == null)
+                    return NotFound($"No external/internal type for questionnaire {questionnaireId}.");*/
                 return Ok(new {  typeInternalExternal = type });
             }
             catch (Exception e)
@@ -83,8 +83,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var type = await _questionnaireService.GetQuestionnaireTypeModuleFiliereAsync(questionnaireId);
-                if (type == null)
-                    return NotFound($"No module/filière type for questionnaire {questionnaireId}.");
+                /*if (type == null)
+                    return NotFound($"No module/filière type for questionnaire {questionnaireId}.");*/
                 return Ok(new {  typeModuleFiliere = type });
             }
             catch (Exception e)
@@ -127,8 +127,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var q = await _questionnaireService.GetQuestionnaireByIdAsync(questionnaireId);
-                if (q == null)
-                    return NotFound($"Questionnaire {questionnaireId} not found.");
+                /*if (q == null)
+                    return NotFound($"Questionnaire {questionnaireId} not found.");*/
                 return Ok(q);
             }
             catch (Exception e)
@@ -143,8 +143,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var list = await _questionnaireService.GetQuestionnairesByModuleIdAsync(moduleId);
-                if (list == null || !list.Any())
-                    return NotFound($"No questionnaires for module {moduleId}.");
+                /*if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for module {moduleId}.");*/
                 return Ok(list);
             }
             catch (Exception e)
@@ -159,8 +159,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var list = await _questionnaireService.GetQuestionnairesByFiliereIdAsync(filiereId);
-                if (list == null || !list.Any())
-                    return NotFound($"No questionnaires for filière {filiereId}.");
+                /*if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for filière {filiereId}.");*/
                 return Ok(list);
             }
             catch (Exception e)
@@ -175,8 +175,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var list = await _questionnaireService.GetQuestionnairesByCreatorUserIdAsync(creatorUserId);
-                if (list == null || !list.Any())
-                    return NotFound($"No questionnaires for creator {creatorUserId}.");
+                /*if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for creator {creatorUserId}.");*/
                 return Ok(list);
             }
             catch (Exception e)
@@ -247,8 +247,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var ids = await _questionnaireService.GetRespondentsIdsByQuestionnaireIdAsync(questionnaireId);
-                if (ids == null || !ids.Any())
-                    return NotFound($"No respondents for questionnaire {questionnaireId}.");
+                /*if (ids == null || !ids.Any())
+                    return NotFound($"No respondents for questionnaire {questionnaireId}.");*/
                 return Ok(ids);
             }
             catch (Exception e)
@@ -263,8 +263,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var list = await _questionnaireService.GetQuestionnairesByRespondentIdAsync(respondentId);
-                if (list == null || !list.Any())
-                    return NotFound($"No questionnaires for respondent {respondentId}.");
+                /*if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for respondent {respondentId}.");*/
                 return Ok(list);
             }
             catch (Exception e)
@@ -313,8 +313,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var deleted = await _questionnaireService.DeleteQuestionnaireAsync(questionnaireId);
-                if (deleted == null)
-                    return NotFound($"Questionnaire {questionnaireId} not found.");
+                /*if (deleted == null)
+                    return NotFound($"Questionnaire {questionnaireId} not found.");*/
                 return Ok(deleted);
             }
             catch (Exception e)
@@ -329,8 +329,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var list = await _questionnaireService.DeleteQuestionnairesByCreatorIdAsync(creatorId);
-                if (list == null || !list.Any())
-                    return NotFound($"No questionnaires for creator {creatorId}.");
+                /*if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for creator {creatorId}.");*/
                 return Ok(list);
             }
             catch (Exception e)
@@ -345,8 +345,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var list = await _questionnaireService.DeleteQuestionnairesByFiliereIdAsync(filiereId);
-                if (list == null || !list.Any())
-                    return NotFound($"No questionnaires for filière {filiereId}.");
+                /*if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for filière {filiereId}.");*/
                 return Ok(list);
             }
             catch (Exception e)
@@ -361,8 +361,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var list = await _questionnaireService.DeleteQuestionnairesByModuleIdAsync(moduleId);
-                if (list == null || !list.Any())
-                    return NotFound($"No questionnaires for module {moduleId}.");
+                /*if (list == null || !list.Any())
+                    return NotFound($"No questionnaires for module {moduleId}.");*/
                 return Ok(list);
             }
             catch (Exception e)

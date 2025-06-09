@@ -21,10 +21,10 @@ namespace EvaluationService.Controllers
         public async Task<IActionResult> GetAllQuestions()
         {
             var questions = await _questionService.GetAllQuestionsAsync();
-            if (questions == null || !questions.Any())
+            /*if (questions == null || !questions.Any())
             {
                 return NotFound("No questions found.");
-            }
+            }*/
             return Ok(questions);
         }
         
@@ -53,10 +53,10 @@ namespace EvaluationService.Controllers
             try
             {
                 var questions = await _questionService.GetQuestionsByQuestionnaireIdAsync(questionnaireId);
-                if (questions == null || !questions.Any())
+                /*if (questions == null || !questions.Any())
                 {
                     return NotFound("No questions found for the given questionnaire ID.");
-                }
+                }*/
                 return Ok(questions);
             }
             catch (Exception e)
@@ -104,10 +104,10 @@ namespace EvaluationService.Controllers
             try
             {
                 var question = await _questionService.GetQuestionAsync(questionId);
-                if (question == null)
+                /*if (question == null)
                 {
                     return NotFound("Question not found for the given ID.");
-                }
+                }*/
                 return Ok(question);
             }
             catch (Exception e)

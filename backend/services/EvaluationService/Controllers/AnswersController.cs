@@ -22,8 +22,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answers = await _answerService.GetAnswersByQuestionIdAsync(questionId);
-                if (answers == null || !answers.Any())
-                    return NotFound($"No answers found for question ID {questionId}.");
+                /*if (answers == null || !answers.Any())
+                    return NotFound($"No answers found for question ID {questionId}.");*/
                 return Ok(answers);
             }
             catch (Exception e)
@@ -38,8 +38,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answers = await _answerService.GetAnswersByQuestionnaireIdAsync(questionnaireId);
-                if (answers == null || !answers.Any())
-                    return NotFound($"No answers found for questionnaire ID {questionnaireId}.");
+                /*if (answers == null || !answers.Any())
+                    return NotFound($"No answers found for questionnaire ID {questionnaireId}.");*/
                 return Ok(answers);
             }
             catch (Exception e)
@@ -54,8 +54,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answers = await _answerService.GetAnswersByRespondentIdAsync(respondentId);
-                if (answers == null || !answers.Any())
-                    return NotFound($"No answers found for respondent ID {respondentId}.");
+                /*if (answers == null || !answers.Any())
+                    return NotFound($"No answers found for respondent ID {respondentId}.");*/
                 return Ok(answers);
             }
             catch (Exception e)
@@ -84,8 +84,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answer = await _answerService.GetAnswerByIdAsync(answerId);
-                if (answer == null)
-                    return NotFound($"Answer not found for answer ID {answerId}.");
+                /*if (answer == null)
+                    return NotFound($"Answer not found for answer ID {answerId}.");*/
                 return Ok(answer);
             }
             catch (Exception e)
@@ -122,8 +122,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answer = await _answerService.UpdateCleanAnswerAsync(updatedAnswer);
-                if (answer == null)
-                    return NotFound($"Answer not found for answer ID {updatedAnswer.AnswerId}.");
+                /*if (answer == null)
+                    return NotFound($"Answer not found for answer ID {updatedAnswer.AnswerId}.");*/
                 return Ok(answer);
             }
             catch (Exception e)
@@ -138,8 +138,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answer = await _answerService.DeleteAnswerByIdAsync(answerId);
-                if (answer == null)
-                    return NotFound($"Answer not found for answer ID {answerId}.");
+                /*if (answer == null)
+                    return NotFound($"Answer not found for answer ID {answerId}.");*/
                 return Ok(answer);
             }
             catch (Exception e)
@@ -154,8 +154,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answer = await _answerService.DeleteAnswersByRespondentId(respondentId);
-                if (answer == null || !answer.Any())
-                    return NotFound($"No answers found for the given respondent ID {respondentId}.");
+                /*if (answer == null || !answer.Any())
+                    return NotFound($"No answers found for the given respondent ID {respondentId}.");*/
                 return Ok(answer);
             }
             catch (Exception e)
@@ -187,8 +187,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var type = await _answerService.GetQuestionnaireTypeFiliereModuleAsync(answerId);
-                if (type == null)
-                    return NotFound($"TypeModuleFiliere not found for answer ID {answerId}.");
+                /*if (type == null)
+                    return NotFound($"TypeModuleFiliere not found for answer ID {answerId}.");*/
                 return Ok(type);
             }
             catch (Exception e)
@@ -203,9 +203,9 @@ namespace EvaluationService.Controllers
             try
             {
                 var type = await _answerService.GetQuestionnaireTypeInternalExternalAsync(answerId);
-                if (type == null)
-                    return NotFound($"TypeInternalExternal not found for answer ID {answerId}.");
-                return Ok(type);
+                /*if (type == null)
+                    return NotFound($"TypeInternalExternal not found for answer ID {answerId}.");*/
+                return Ok(new { TypeInternalExternal = type});
             }
             catch (Exception e)
             {
@@ -219,8 +219,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answers = await _answerService.GetAnswersFiliereAsync();
-                if (answers == null || !answers.Any())
-                    return NotFound("No filiere answers found.");
+                // if (answers == null || !answers.Any())
+                //     return NotFound("No filiere answers found.");
                 return Ok(answers);
             }
             catch (Exception e)
@@ -235,8 +235,8 @@ namespace EvaluationService.Controllers
             try
             {
                 var answers = await _answerService.GetAnswersModuleAsync();
-                if (answers == null || !answers.Any())
-                    return NotFound("No module answers found.");
+                /*if (answers == null || !answers.Any())
+                    return NotFound("No module answers found.");*/
                 return Ok(answers);
             }
             catch (Exception e)

@@ -23,10 +23,10 @@ namespace EvaluationService.Controllers
             try
             {
                 var questions = await _standardQuestionService.GetQuestionsStandardsByStatName(statName);
-                if (questions == null || !questions.Any())
+                /*if (questions == null || !questions.Any())
                 {
                     return NotFound("No standard questions found for the given StatName.");
-                }
+                }*/
                 return Ok(questions);
             }
             catch (Exception e)
@@ -41,10 +41,10 @@ namespace EvaluationService.Controllers
             try
             {
                 var question = await _standardQuestionService.GetStandardQuestionById(id);
-                if (question == null)
+                /*if (question == null)
                 {
                     return NotFound("Standard question not found for the given ID.");
-                }
+                }*/
                 return Ok(question);
             }
             catch (Exception e)
@@ -73,10 +73,10 @@ namespace EvaluationService.Controllers
             try
             {
                 var deletedQuestion = await _standardQuestionService.DeleteStandardQuestionById(id);
-                if (deletedQuestion == null)
+                /*if (deletedQuestion == null)
                 {
                     return NotFound("Standard question not found for the given ID.");
-                }
+                }*/
                 return Ok(deletedQuestion);
             }
             catch (Exception e)
@@ -91,10 +91,10 @@ namespace EvaluationService.Controllers
             try
             {
                 var deletedQuestions = await _standardQuestionService.DeleteStandardQuestionsByStatName(statName);
-                if (deletedQuestions == null || !deletedQuestions.Any())
+                /*if (deletedQuestions == null || !deletedQuestions.Any())
                 {
                     return NotFound("No standard questions found for the given StatName to delete.");
-                }
+                }*/
                 return Ok(deletedQuestions);
             }
             catch (Exception e)

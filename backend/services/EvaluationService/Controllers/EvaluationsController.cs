@@ -41,10 +41,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluationType = await _evaluationService.GetEvaluationType(evaluationId);
-            if (evaluationType == null)
+            /*if (evaluationType == null)
             {
                 return NotFound("Evaluation type not found for the given evaluation ID.");
-            }
+            }*/
             return Ok(new { evaluationType = evaluationType});
         }
         catch (Exception e)
@@ -59,10 +59,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.GetEvaluationsByFiliereIdAsync(filiereId);
-            if (evaluations == null || !evaluations.Any())
+            /*if (evaluations == null || !evaluations.Any())
             {
                 return NotFound("No evaluations found for the given filière ID.");
-            }
+            }*/
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -77,10 +77,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.GetEvaluationsByModuleIdAsync(moduleId);
-            if (evaluations == null || !evaluations.Any())
+            /*if (evaluations == null || !evaluations.Any())
             {
                 return NotFound("No evaluations found for the given module ID.");
-            }
+            }*/
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -95,10 +95,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.GetEvaluationsByRespondentIdAsync(respondentId);
-            if (evaluations == null || !evaluations.Any())
+            /*if (evaluations == null || !evaluations.Any())
             {
                 return NotFound("No evaluations found for the given respondent ID.");
-            }
+            }*/
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -127,10 +127,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluation = await _evaluationService.GetEvaluationByIdAsync(evaluationId);
-            if (evaluation == null)
+            /*if (evaluation == null)
             {
                 return NotFound("Evaluation not found for the given evaluation ID.");
-            }
+            }*/
             return Ok(evaluation);
         }
         catch (Exception e)
@@ -145,10 +145,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluation = await _evaluationService.DeleteEvaluationByIdAsync(evaluationId);
-            if (evaluation == null)
+            /*if (evaluation == null)
             {
                 return NotFound("Evaluation not found for the given evaluation ID.");
-            }
+            }*/
             return Ok(evaluation);
         }
         catch (Exception e)
@@ -163,10 +163,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.DeleteEvaluationsByRespondentIdAsync(respondentId);
-            if (evaluations == null || !evaluations.Any())
+            /*if (evaluations == null || !evaluations.Any())
             {
                 return NotFound("No evaluations found for the given respondent ID.");
-            }
+            }*/
 
             return Ok(evaluations);
         }
@@ -182,10 +182,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.DeleteEvaluationsByFiliereIdAsync(filiereId);
-            if (evaluations == null || !evaluations.Any())
+            /*if (evaluations == null || !evaluations.Any())
             {
                 return NotFound("No evaluations found for the given filiere ID.");
-            }
+            }*/
 
             return Ok(evaluations);
         }
@@ -201,10 +201,10 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.DeleteEvaluationsByModuleIdAsync(moduleId);
-            if (evaluations == null || !evaluations.Any())
+            /*if (evaluations == null || !evaluations.Any())
             {
                 return NotFound("No evaluations found for the given module ID.");
-            }
+            }*/
 
             return Ok(evaluations);
         }
