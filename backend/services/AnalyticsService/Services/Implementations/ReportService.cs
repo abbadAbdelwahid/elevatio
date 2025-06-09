@@ -204,9 +204,9 @@ Le NPS  reflète la fidélité des étudiants : quelles modifications méthodolo
             Console.Write(ResponseMedian);
             var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, MF) : null;
 // Créer le prompt pour la statistique "Net Promoter Score"
-            Console.Write(ResponseParticipation)
+            Console.Write(ResponseParticipation);
             var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, MF) : null;
-            Console.Write(ResponseNpsScore)
+            Console.Write(ResponseNpsScore);
             // 2) Créer le prompt pour générer le rapport avec GroqAI
             var prompt =
                 $@"Donne moi une conclusion générale de ces textes en une paragraphe : 
@@ -277,6 +277,8 @@ Texte4 : {ResponseNpsScore}";
 </html>
 "; 
             Console.Write(Conclusion);
+            Console.Write("------------------------------");
+            Console.Write(htmlContent);
             // 4) Créer le PDF 
             return ReportService.GeneratePdf(htmlContent );
 
@@ -393,8 +395,7 @@ public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
 </html>
 "; 
             Console.Write(Conclusion);
-            Console.Write("------------------------------");
-            Console.Write(htmlContent);
+            
             // 4) Créer le PDF 
             return ReportService.GeneratePdf(htmlContent );
 
