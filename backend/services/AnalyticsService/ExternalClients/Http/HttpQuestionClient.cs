@@ -19,7 +19,6 @@ public class HttpQuestionClient : IQuestionClient
     {   
         try{
         var response = await _http.GetAsync($"{_evaluationServiceBaseUrl}/api/questions/getQuestionsByQuestionnaireId/{questionnaireId}");
-		Console.WriteLine($"URL de la requête : {_evaluationServiceBaseUrl}/api/questions/getQuestionsByQuestionnaireId/{questionnaireId}");
         // Vérifie si la réponse HTTP est réussie
         response.EnsureSuccessStatusCode();
 
