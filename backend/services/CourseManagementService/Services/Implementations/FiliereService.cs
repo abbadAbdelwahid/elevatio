@@ -136,6 +136,12 @@ namespace CourseManagementService.Services.Implementations
                 })
                 .ToListAsync();
         }
+        
+        public async Task<bool> FiliereExistsAsync(int filiereId)
+        {
+            return await _context.Filieres.AnyAsync(f => f.FiliereId == filiereId);
+        }
+
 
 
         

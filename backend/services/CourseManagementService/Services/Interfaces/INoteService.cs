@@ -14,6 +14,9 @@ namespace CourseManagementService.Services.Interfaces
 
         public Task<NoteDto?> GetNoteWithStudentNameAsync(int id);
         Task<double?> GetStudentAverageAsync(int studentId);
+        
+        Task<IEnumerable<StudentNoteBriefDto>> GetStudentNotesByModuleNameAsync(string moduleName);
+
 
 
 

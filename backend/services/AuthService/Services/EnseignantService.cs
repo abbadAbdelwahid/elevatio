@@ -106,6 +106,30 @@ public class EnseignantService : IEnseignantService
 
         return $"{enseignant.FirstName} {enseignant.LastName}";
     }
+    
+    public async Task<bool> UpdateAsync(string id, UpdateEnseignantDto dto)
+    {
+        var enseignant = await _db.Enseignants.FindAsync(id);
+        if (enseignant is null)
+            return false;
+
+        enseignant.FirstName = dto.FirstName;
+        enseignant.LastName = dto.LastName;
+        enseignant.Grade = dto.Grade;
+        enseignant.Specialite = dto.Specialite;
+
+        _db.Enseignants.Update(enseignant);
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
+    
+    public async Task<List<Enseignant>> GetAllAsync()
+    {
+        return await _db.Enseignants.AsNoTracking().ToListAsync();
+    }
+
+
 
 
 

@@ -10,6 +10,9 @@ public interface IFiliereService
     Task<bool> DeleteFiliereAsync(int id);
     Task<FiliereDto?> GetFiliereByIdAsync(int id);
     Task<IEnumerable<FiliereMiniDto>> GetFiliereIdsAndNamesAsync();
+    
+    Task<bool> FiliereExistsAsync(int filiereId);
+
 
     
 }

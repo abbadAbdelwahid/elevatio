@@ -90,4 +90,41 @@ public class EtudiantsController : ControllerBase
         return Ok(new { fullName });
     }
     
+    [HttpPut("{id}/profile-image")]
+    public async Task<IActionResult> UpdateProfileImageById(string id, IFormFile file)
+    {
+        var etudiant = await _svc.GetByIdAsync(id);  // Cherche l'étudiant par ID
+
+        if (etudiant == null)
+            return NotFound("Étudiant non trouvé.");
+
+        try
+        {
+            // Upload de l’image
+            var imageUrl = await _svc.UploadProfileImage(file);
+
+            // Mise à jour de l’URL
+            etudiant.ProfileImageUrl = imageUrl;
+
+            // Sauvegarde dans la BDD
+            _db.Etudiants.Update(etudiant);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { imageUrl });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Erreur lors de l'envoi de l'image : {ex.Message}");
+        }
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var etudiants = await _svc.GetAllAsync();
+        return Ok(etudiants);
+    }
+
+
+    
 }

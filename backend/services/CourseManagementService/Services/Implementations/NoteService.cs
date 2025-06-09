@@ -35,7 +35,7 @@ namespace CourseManagementService.Services.Implementations
                 ModuleId  = dto.ModuleId,
                 StudentId = dto.StudentId,
                 Grade     = dto.Grade,
-                Comment   = dto.Comment?.Trim(),
+                Observation = dto.Observation?.Trim(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -51,7 +51,7 @@ namespace CourseManagementService.Services.Implementations
                 ModuleName = module.ModuleName,
                 StudentId  = note.StudentId,
                 Grade      = note.Grade,
-                Comment    = note.Comment,
+                Observation    = note.Observation,
                 CreatedAt  = note.CreatedAt,
                 UpdatedAt  = note.UpdatedAt
             };
@@ -67,7 +67,7 @@ namespace CourseManagementService.Services.Implementations
         if (note == null) return null;
 
         note.Grade   = dto.Grade;
-        note.Comment = dto.Comment?.Trim();
+        note.Observation = dto.Observation?.Trim();
         note.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
@@ -107,7 +107,7 @@ namespace CourseManagementService.Services.Implementations
                 StudentId  = note.StudentId,
                 StudentFullName = studentFullName,
                 Grade      = note.Grade,
-                Comment    = note.Comment,
+                Observation    = note.Observation,
                 CreatedAt  = note.CreatedAt,
                 UpdatedAt  = note.UpdatedAt
             });
@@ -140,7 +140,7 @@ namespace CourseManagementService.Services.Implementations
                 StudentId = note.StudentId,
                 StudentFullName = studentFullName,
                 Grade = note.Grade,
-                Comment = note.Comment,
+                Observation = note.Observation,
                 CreatedAt = note.CreatedAt,
                 UpdatedAt = note.UpdatedAt
             });
@@ -158,7 +158,7 @@ namespace CourseManagementService.Services.Implementations
         ModuleName = moduleName,
         StudentId  = note.StudentId,
         Grade      = note.Grade,
-        Comment    = note.Comment,
+        Observation    = note.Observation,
         CreatedAt  = note.CreatedAt,
         UpdatedAt  = note.UpdatedAt
     };
@@ -182,7 +182,7 @@ namespace CourseManagementService.Services.Implementations
             StudentId = n.StudentId,
             StudentFullName = studentFullName,
             Grade = n.Grade,
-            Comment = n.Comment,
+            Observation = n.Observation,
             CreatedAt = n.CreatedAt,
             UpdatedAt = n.UpdatedAt
         });
@@ -207,7 +207,7 @@ namespace CourseManagementService.Services.Implementations
             StudentId  = note.StudentId,
             StudentFullName = studentFullName,
             Grade      = note.Grade,
-            Comment    = note.Comment,
+            Observation    = note.Observation,
             CreatedAt  = note.CreatedAt,
             UpdatedAt  = note.UpdatedAt
         };
@@ -225,6 +225,37 @@ namespace CourseManagementService.Services.Implementations
 
         return notes.Average();
     }
+    
+    public async Task<IEnumerable<StudentNoteBriefDto>> GetStudentNotesByModuleNameAsync(string moduleName)
+    {
+        var module = await _context.Modules
+            .FirstOrDefaultAsync(m => m.ModuleName.ToLower() == moduleName.ToLower());
+
+        if (module == null)
+            throw new InvalidOperationException("Module introuvable.");
+
+        var notes = await _context.Notes
+            .Where(n => n.ModuleId == module.ModuleId)
+            .AsNoTracking()
+            .ToListAsync();
+
+        var result = new List<StudentNoteBriefDto>();
+
+        foreach (var note in notes)
+        {
+            var fullName = await _authHttp.GetStudentFullNameAsync(note.StudentId);
+
+            result.Add(new StudentNoteBriefDto
+            {
+                StudentId = note.StudentId,
+                StudentFullName = fullName,
+                Grade = note.Grade
+            });
+        }
+
+        return result;
+    }
+
 
 
 

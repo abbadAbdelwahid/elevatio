@@ -73,6 +73,14 @@ namespace CourseManagementService.Controllers
             return Ok(list);
         }
 
+        // GET api/filiere/{id}/exists
+        [HttpGet("{id}/exists")]
+        public async Task<ActionResult<bool>> CheckExistence(int id)
+        {
+            var exists = await _service.FiliereExistsAsync(id);
+            return Ok(exists);
+        }
+
 
         
     }

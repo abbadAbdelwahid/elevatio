@@ -16,7 +16,7 @@ namespace CourseManagementService.DTOs
         public int Grade { get; set; }
 
         [MaxLength(500)]
-        public string Comment { get; set; }
+        public string Observation { get; set; }
         
     }
 }

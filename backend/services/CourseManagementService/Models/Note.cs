@@ -14,7 +14,7 @@ namespace CourseManagementService.Models
 
         public int Grade { get; set; }  // La note (entre 0 et 20)
         
-        public string Comment { get; set; }  // Commentaire
+        public string Observation { get; set; }
 
         public DateTime CreatedAt { get; set; }  // Date de création
         public DateTime UpdatedAt { get; set; }  // Date de mise à jour
