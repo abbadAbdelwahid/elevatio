@@ -11,5 +11,8 @@ public interface IEtudiantService
     public Task<string> UploadProfileImage(IFormFile file);
 
     Task<string?> GetFullNameByIdAsync(string id);
+    
+    Task<IEnumerable<Etudiant>> GetAllAsync();
+
 
 }

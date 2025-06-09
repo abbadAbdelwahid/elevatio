@@ -65,7 +65,7 @@ namespace AuthService.Controllers
         }
 
         
-        [Authorize]
+        // [Authorize]
         [HttpGet("isTokenValid")]
         public IActionResult IsTokenValid()
         {
@@ -78,8 +78,13 @@ namespace AuthService.Controllers
             return Ok(new { isValid = false });
         }
 
-
-
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult GetUserInfo()
+        {
+            return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
+        }
+        
         
     }
 }

@@ -6,5 +6,5 @@ public record CreateEtudiantDto(
     string Password,
     string FirstName,
     string LastName,
-    string FiliereId
+    int FiliereId
 );

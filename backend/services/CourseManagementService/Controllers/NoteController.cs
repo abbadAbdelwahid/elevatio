@@ -80,6 +80,22 @@ namespace CourseManagementService.Controllers
 
             return Ok(new { studentId, average = avg });
         }
+        
+        // GET api/note/module-name/{moduleName}/students
+        [HttpGet("module-name/{moduleName}/students")]
+        public async Task<ActionResult<IEnumerable<StudentNoteBriefDto>>> GetNotesByModuleName(string moduleName)
+        {
+            try
+            {
+                var data = await _service.GetStudentNotesByModuleNameAsync(moduleName);
+                return Ok(data);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
 
 
     }

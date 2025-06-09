@@ -17,9 +17,28 @@ public class EtudiantService : IEtudiantService
         _userMgr = userMgr;
         _db = db;
     }
-
     public async Task<(bool Ok, IEnumerable<string> Errors, Etudiant? Data)> CreateAsync(CreateEtudiantDto dto)
     {
+        // Vérification auprès du microservice CourseManagement
+        using var http = new HttpClient();
+        var filiereCheckUrl = $"http://localhost:5201/api/Filiere/{dto.FiliereId}/exists";
+    
+        try
+        {
+            var response = await http.GetAsync(filiereCheckUrl);
+            if (!response.IsSuccessStatusCode)
+                return (false, new[] { $"Erreur lors de la vérification de la filière (status {response.StatusCode})" }, null);
+
+            var exists = bool.Parse(await response.Content.ReadAsStringAsync());
+            if (!exists)
+                return (false, new[] { "La filière spécifiée n'existe pas." }, null);
+        }
+        catch (Exception ex)
+        {
+            return (false, new[] { $"Erreur lors de l'appel au service Filière : {ex.Message}" }, null);
+        }
+
+        // Création de l'utilisateur
         var etu = new Etudiant
         {
             UserName  = dto.Email,
@@ -36,6 +55,7 @@ public class EtudiantService : IEtudiantService
         await _userMgr.AddToRoleAsync(etu, "Etudiant");
         return (true, Enumerable.Empty<string>(), etu);
     }
+
 
     public async Task<Etudiant?> GetByIdAsync(string id) =>
         await _db.Etudiants.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
@@ -76,6 +96,12 @@ public class EtudiantService : IEtudiantService
 
         return $"{etudiant.FirstName} {etudiant.LastName}";
     }
+    
+    public async Task<IEnumerable<Etudiant>> GetAllAsync()
+    {
+        return await _db.Etudiants.AsNoTracking().ToListAsync();
+    }
+
 
 
     

@@ -6,4 +6,5 @@ public record UpdateEnseignantDto(
     string LastName,
     string Grade,
     string Specialite
+    
 );

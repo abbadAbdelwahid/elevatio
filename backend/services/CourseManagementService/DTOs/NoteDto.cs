@@ -11,7 +11,8 @@ namespace CourseManagementService.DTOs
         public string StudentFullName { get; set; }
 
         public int Grade { get; set; }
-        public string Comment { get; set; }
+        
+        public string Observation { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         

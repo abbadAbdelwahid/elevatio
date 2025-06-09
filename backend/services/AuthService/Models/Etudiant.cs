@@ -5,7 +5,7 @@ namespace AuthService.Models;
 
 public class Etudiant : ApplicationUser
 {
-    public string FiliereId { get; set; } = default!;
+    public int FiliereId { get; set; }
     public string? ProfileImageUrl { get; set; } // Nouveau champ pour stocker l'URL de l'image de profil
 
 }

@@ -46,10 +46,10 @@ public class EnseignantsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(string id, UpdateEnseignantDto dto)
     {
-        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Récupérer l'ID de l'utilisateur authentifié
-        var success = await _svc.UpdateAsync(id, dto, currentUserId);
-        return success ? NoContent() : Forbid();  // Si l'ID ne correspond pas, renvoie 403 Forbidden
+        var success = await _svc.UpdateAsync(id, dto);
+        return success ? NoContent() : NotFound("Enseignant introuvable.");
     }
+
 
 
     // [Authorize(Roles = "Admin")]
@@ -116,4 +116,36 @@ public class EnseignantsController : ControllerBase
 
         return Ok(new { fullName });
     }
+    
+    [HttpPut("{id}/profile-image")]
+    public async Task<IActionResult> UpdateProfileImageById(string id, IFormFile file)
+    {
+        var enseignant = await _svc.GetByIdAsync(id);
+        if (enseignant is null)
+            return NotFound("Enseignant introuvable.");
+
+        try
+        {
+            var imageUrl = await _svc.UploadProfileImage(file);
+
+            enseignant.ProfileImageUrl = imageUrl;
+            _db.Enseignants.Update(enseignant);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { imageUrl });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Erreur de téléchargement de l'image : {ex.Message}");
+        }
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var enseignants = await _svc.GetAllAsync();
+        return Ok(enseignants);
+    }
+
+
 }
