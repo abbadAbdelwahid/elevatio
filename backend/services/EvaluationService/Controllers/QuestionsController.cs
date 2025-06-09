@@ -20,12 +20,15 @@ namespace EvaluationService.Controllers
         [HttpGet("GetAllQuestions")]
         public async Task<IActionResult> GetAllQuestions()
         {
-            var questions = await _questionService.GetAllQuestionsAsync();
-            /*if (questions == null || !questions.Any())
+            try
             {
-                return NotFound("No questions found.");
-            }*/
-            return Ok(questions);
+                var questions = await _questionService.GetAllQuestionsAsync();
+                return Ok(questions);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error fetching questions: " + e.Message);
+            }
         }
         
         [HttpPost("addRange")]
@@ -53,10 +56,6 @@ namespace EvaluationService.Controllers
             try
             {
                 var questions = await _questionService.GetQuestionsByQuestionnaireIdAsync(questionnaireId);
-                /*if (questions == null || !questions.Any())
-                {
-                    return NotFound("No questions found for the given questionnaire ID.");
-                }*/
                 return Ok(questions);
             }
             catch (Exception e)
@@ -104,11 +103,11 @@ namespace EvaluationService.Controllers
             try
             {
                 var question = await _questionService.GetQuestionAsync(questionId);
-                /*if (question == null)
-                {
-                    return NotFound("Question not found for the given ID.");
-                }*/
                 return Ok(question);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("Error fetching question: " + ex.Message);
             }
             catch (Exception e)
             {
@@ -123,6 +122,10 @@ namespace EvaluationService.Controllers
             {
                 var deletedQuestion = await _questionService.DeleteQuestionAsync(questionId);
                 return Ok(deletedQuestion);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("Error fetching question: " + ex.Message);
             }
             catch (Exception e)
             {
@@ -142,6 +145,10 @@ namespace EvaluationService.Controllers
             {
                 var updatedQuestion = await _questionService.UpdateQuestionAsync(questionDto);
                 return Ok(updatedQuestion);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("Error fetching question: " + ex.Message);
             }
             catch (Exception e)
             {

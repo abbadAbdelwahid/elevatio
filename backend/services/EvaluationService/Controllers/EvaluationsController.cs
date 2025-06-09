@@ -41,11 +41,11 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluationType = await _evaluationService.GetEvaluationType(evaluationId);
-            /*if (evaluationType == null)
-            {
-                return NotFound("Evaluation type not found for the given evaluation ID.");
-            }*/
             return Ok(new { evaluationType = evaluationType});
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound("Error fetching evaluation: " + ex.Message);
         }
         catch (Exception e)
         {
@@ -59,10 +59,6 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.GetEvaluationsByFiliereIdAsync(filiereId);
-            /*if (evaluations == null || !evaluations.Any())
-            {
-                return NotFound("No evaluations found for the given filière ID.");
-            }*/
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -95,10 +91,6 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluations = await _evaluationService.GetEvaluationsByRespondentIdAsync(respondentId);
-            /*if (evaluations == null || !evaluations.Any())
-            {
-                return NotFound("No evaluations found for the given respondent ID.");
-            }*/
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -127,11 +119,11 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluation = await _evaluationService.GetEvaluationByIdAsync(evaluationId);
-            /*if (evaluation == null)
-            {
-                return NotFound("Evaluation not found for the given evaluation ID.");
-            }*/
             return Ok(evaluation);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound("Error fetching evaluation: " + ex.Message);
         }
         catch (Exception e)
         {
@@ -145,11 +137,11 @@ public class EvaluationController : ControllerBase
         try
         {
             var evaluation = await _evaluationService.DeleteEvaluationByIdAsync(evaluationId);
-            /*if (evaluation == null)
-            {
-                return NotFound("Evaluation not found for the given evaluation ID.");
-            }*/
             return Ok(evaluation);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound("Error fetching evaluation: " + ex.Message);
         }
         catch (Exception e)
         {
@@ -157,17 +149,12 @@ public class EvaluationController : ControllerBase
         }
     }
     
-    [HttpDelete("deleteEvaluationByRespondentId/{respondentId}")]
-    public async Task<IActionResult> DeleteEvaluationByRespondentId(string respondentId)
+    [HttpDelete("deleteEvaluationsByRespondentId/{respondentId}")]
+    public async Task<IActionResult> DeleteEvaluationsByRespondentId(string respondentId)
     {
         try
         {
             var evaluations = await _evaluationService.DeleteEvaluationsByRespondentIdAsync(respondentId);
-            /*if (evaluations == null || !evaluations.Any())
-            {
-                return NotFound("No evaluations found for the given respondent ID.");
-            }*/
-
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -176,17 +163,12 @@ public class EvaluationController : ControllerBase
         }
     }    
     
-    [HttpDelete("deleteEvaluationByFiliereId/{filiereId:int}")]
-    public async Task<IActionResult> DeleteEvaluationByFiliereId(int filiereId)
+    [HttpDelete("deleteEvaluationsByFiliereId/{filiereId:int}")]
+    public async Task<IActionResult> DeleteEvaluationsByFiliereId(int filiereId)
     {
         try
         {
             var evaluations = await _evaluationService.DeleteEvaluationsByFiliereIdAsync(filiereId);
-            /*if (evaluations == null || !evaluations.Any())
-            {
-                return NotFound("No evaluations found for the given filiere ID.");
-            }*/
-
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -195,17 +177,12 @@ public class EvaluationController : ControllerBase
         }
     }   
     
-    [HttpDelete("deleteEvaluationByModuleId/{moduleId:int}")]
-    public async Task<IActionResult> DeleteEvaluationByModuleId(int moduleId)
+    [HttpDelete("deleteEvaluationsByModuleId/{moduleId:int}")]
+    public async Task<IActionResult> DeleteEvaluationsByModuleId(int moduleId)
     {
         try
         {
             var evaluations = await _evaluationService.DeleteEvaluationsByModuleIdAsync(moduleId);
-            /*if (evaluations == null || !evaluations.Any())
-            {
-                return NotFound("No evaluations found for the given module ID.");
-            }*/
-
             return Ok(evaluations);
         }
         catch (Exception e)
@@ -226,6 +203,10 @@ public class EvaluationController : ControllerBase
         {
             var updatedEvaluation = await _evaluationService.UpdateEvaluationAsync(evaluationUpdateDto);
             return Ok(updatedEvaluation);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound("Error updating evaluation: " + ex.Message);
         }
         catch (Exception e)
         {
