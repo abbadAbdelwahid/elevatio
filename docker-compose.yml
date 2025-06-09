@@ -112,7 +112,7 @@ services:
       RabbitMQ__Pass: "guest"
       RabbitMQ__Exchange: "evaluations.exchange"
       AI__Endpoint: "https://api.groq.com/openai/v1/chat/completions"
-      AI__ApiKey: "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"
+      AI__ApiKey: "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"
       Other-Microservices-EndPoints__AuthService-EndPoint: "http://auth-service:8080"
       Other-Microservices-EndPoints__CoursesManagementService-EndPoint: "http://course-management-service:8080"
     depends_on:
