@@ -276,8 +276,9 @@ Texte4 : {ResponseNpsScore}";
 "; 
             Console.Write(Conclusion);
             // 4) Créer le PDF 
-            return ReportService.GeneratePdf(htmlContent );
-
+            Task<byte[]> pdfbytes = ReportService.GeneratePdf(htmlContent );
+            File(pdfBytes, "pdf", $"ModuleReport{ModuleId}.pdf");
+            return pdfBytes;
         }
         catch (KeyNotFoundException ex)
         {
