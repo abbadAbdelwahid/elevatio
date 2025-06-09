@@ -21,7 +21,7 @@ public class ModuleReportController : ControllerBase
         {
             try
             {
-                Task<byte[]> pdfBytes = await _reportService.GenerateModuleReportPdfAsync(ModuleId); 
+                var pdfBytes = await _reportService.GenerateModuleReportPdfAsync(ModuleId); 
                 // Si le PDF est vide ou null, on renvoie 404
                 // if (pdfBytes == null || pdfBytes.Length == 0)
                 //     return NotFound("Le PDF est vide ou introuvable.");
