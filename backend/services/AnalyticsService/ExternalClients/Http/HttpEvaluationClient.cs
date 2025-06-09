@@ -54,7 +54,7 @@ public class HttpEvaluationClient : IEvaluationClient
     {
         try
         {
-            var response = await _http.GetAsync($"api/evaluations/getEvaluationsByFiliereId/{filiereId}");
+            var response = await _http.GetAsync($"{_evaluationServiceBaseUrl}/api/evaluations/getEvaluationsByFiliereId/{filiereId}");
             // Vérifie si la réponse HTTP est réussie
             response.EnsureSuccessStatusCode();
 

@@ -18,7 +18,7 @@ public class HttpQuestionClient : IQuestionClient
     public async Task<IEnumerable<QuestionDto>> GetByQuestionnaireAsync(int questionnaireId)
     {   
         try{
-        var response = await _http.GetAsync($"{_evaluationServiceBaseUrl}/api/questions/getQuestionsByQuestionnaireId/{questionnaireId}");
+        var response = await _http.GetAsync($"{_evaluationServiceBaseUrl}/api/questions/getQuestionsByQuestionnaireId/{questionnaireId}{questionnaireId}");
         // Vérifie si la réponse HTTP est réussie
         response.EnsureSuccessStatusCode();
 

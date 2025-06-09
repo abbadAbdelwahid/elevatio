@@ -20,7 +20,7 @@ public class HttpQuestionnaireClient:IQuestionnaireClient
 
     public async Task<IEnumerable<QuestionnaireDto>> GetByIdAsync(int Id)
     {
-        var requestUri =  $"{_evaluationServiceBaseUrl}/api/Questionnaire/getQuestionnaireById/{Id}" ; 
+        var requestUri =  $"{_evaluationServiceBaseUrl}/api/questionnaires/{Id}" ; 
     
        
         var response = await _http.GetAsync(requestUri);
@@ -33,7 +33,7 @@ public class HttpQuestionnaireClient:IQuestionnaireClient
     
     public async Task<IEnumerable<QuestionnaireDto>> GetByModuleAsync(int moduleId)
     {
-        var requestUri =  $"{_evaluationServiceBaseUrl}/api/Questionnaire/getQuestionnairesByModuleId/{moduleId}" ; 
+        var requestUri =  $"{_evaluationServiceBaseUrl}/api/questionnaires/by-module/{moduleId}" ; 
     
         // Récupérer tous les questionnaires de l'API externe 
         Console.WriteLine($"URL de la requête : {requestUri}"); 
@@ -54,7 +54,7 @@ public class HttpQuestionnaireClient:IQuestionnaireClient
             // Récupérer tous les questionnaires de l'API externe
             var response =
                 await _http.GetAsync(
-                    $"{_evaluationServiceBaseUrl}/api/Questionnaire/getQuestionnairesByFiliereId/{filiereId}");
+                    $"{_evaluationServiceBaseUrl}/api/questionnaires/by-filiere/{filiereId}");
             // Vérifie si la réponse HTTP est réussie (code 2xx)
             response.EnsureSuccessStatusCode();
 
