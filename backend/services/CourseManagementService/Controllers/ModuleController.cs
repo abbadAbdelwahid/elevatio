@@ -102,6 +102,27 @@ namespace CourseManagementService.Controllers
 
             return Ok(new { imageUrl = relativePath });
         }
+        
+        // GET api/module/unassigned
+        [HttpGet("unassigned")]
+        public async Task<ActionResult<IEnumerable<UnassignedModuleDto>>> GetUnassignedModules()
+        {
+            var modules = await _service.GetUnassignedModulesAsync();
+            return Ok(modules);
+        }
+
+        
+        // POST api/module/assign
+        [HttpPost("assign")]
+        public async Task<IActionResult> AssignModulesToTeacher([FromBody] AssignModulesDto dto)
+        {
+            var result = await _service.AssignModulesToTeacherAsync(dto.TeacherId, dto.ModuleIds);
+            if (!result)
+                return NotFound("Aucun module trouvé avec les identifiants fournis.");
+
+            return Ok("Modules assignés avec succès.");
+        }
+
 
 
 

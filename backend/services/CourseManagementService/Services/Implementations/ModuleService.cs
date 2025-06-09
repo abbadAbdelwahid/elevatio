@@ -257,6 +257,40 @@ namespace CourseManagementService.Services.Implementations
 
             return true;
         }
+        
+        public async Task<IEnumerable<UnassignedModuleDto>> GetUnassignedModulesAsync()
+        {
+            var modules = await _context.Modules
+                .Where(m => m.TeacherId == 0)
+                .Select(m => new UnassignedModuleDto
+                {
+                    ModuleId = m.ModuleId,
+                    ModuleName = m.ModuleName
+                })
+                .ToListAsync();
+
+            return modules;
+        }
+
+        public async Task<bool> AssignModulesToTeacherAsync(int teacherId, List<int> moduleIds)
+        {
+            var modules = await _context.Modules
+                .Where(m => moduleIds.Contains(m.ModuleId))
+                .ToListAsync();
+
+            if (!modules.Any())
+                return false;
+
+            foreach (var module in modules)
+            {
+                module.TeacherId = teacherId;
+                module.UpdatedAt = DateTime.UtcNow;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
 
 
 

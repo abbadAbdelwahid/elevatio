@@ -85,6 +85,25 @@ namespace AuthService.Controllers
             return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
         }
         
+        // [Authorize] 
+        [HttpGet("user/{id}/basic-info")]
+        public async Task<IActionResult> GetBasicUserInfo(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound("Utilisateur non trouvé.");
+
+            var result = new UserBasicInfoDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            };
+
+            return Ok(result);
+        }
+
+        
         
     }
 }
