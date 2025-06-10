@@ -41,7 +41,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
             const response = await fetch(`${baseUrl}/login`, {
                 method: "POST",
                 headers: {

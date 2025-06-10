@@ -19,7 +19,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");
-        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+        const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
         const roleFromCookie = getRoleFromCookie();
         console.log(roleFromCookie);
 

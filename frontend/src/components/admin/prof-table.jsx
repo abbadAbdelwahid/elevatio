@@ -37,7 +37,7 @@ import { Label } from "@/components/ui/label";
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+                const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
                 const courseBaseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL;
 
                 const [profsRes, modulesRes, moduleUnssigned] = await Promise.all([
@@ -80,7 +80,7 @@ import { Label } from "@/components/ui/label";
         };
 
         const handleDelete = async (id) => {
-            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL;
             try {
                 const res = await fetch(`${baseUrl}/api/Enseignants/${id}`, {
                     method: 'DELETE',

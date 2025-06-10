@@ -19,7 +19,7 @@ export default function SettingsPage() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+                const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
                 // Si l'API nécessite un token d'authentification (par exemple dans un en-tête Authorization)
                 const token = localStorage.getItem("accessToken"); // ou une autre méthode pour récupérer le token
                 const roleFromCookie = getRoleFromCookie()

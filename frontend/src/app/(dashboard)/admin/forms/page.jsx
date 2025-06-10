@@ -9,7 +9,7 @@ export default function CoursesPage() {
     const [questionnaires, setQuestionnaires] = useState([])
     const [loading, setLoading] = useState(true)
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+    const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL
     const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null
 
     // Fetch initiaux

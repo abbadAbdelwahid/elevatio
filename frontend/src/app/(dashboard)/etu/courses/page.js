@@ -16,7 +16,7 @@ export default function CoursesPage() {
     const fetchCourses = async (filter) => {
         setIsLoading(true);
         try {
-            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
             const res = await fetch(`${baseUrl}/courses?filter=${filter}`);
             const data = await res.json();
             setCourses(data);
