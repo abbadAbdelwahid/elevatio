@@ -75,8 +75,8 @@ export function UserProfileCard({ user }) {
                     id="profileImageInput"
                 />
 
-                <h2 className="mb-2 text-xl font-semibold text-[#4a2a5a]">El batteoui oussama{user.firstName}</h2>
-                <p className="text-md text-gray-500">user@gmail.com{user.email}</p>
+                <h2 className="mb-2 text-xl font-semibold text-[#4a2a5a]">{user.firstName}</h2>
+                <p className="text-md text-gray-500">{user.email}</p>
             </CardContent>
         </Card>
     );

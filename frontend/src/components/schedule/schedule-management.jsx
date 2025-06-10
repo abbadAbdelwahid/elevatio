@@ -13,17 +13,18 @@ export default function ScheduleManagement() {
   const [week, setWeek] = useState("")
   const [year, setYear] = useState("")
   const [mode, setMode] = useState("view")
-  const [planningData, setPlanningData] = useState({})
+  const [planningData, setPlanningData] = useState([])
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
 
-  const currentKey = `${group}-${year}-${week}`
-  const courses = planningData[currentKey] || []
-  const [windowWidth,setWindowWidth]=useState(null)
+    const currentKey = `${group}-${year}-${week}`;
+    const courses = planningData[currentKey] || [];
 
+  const [windowWidth,setWindowWidth]=useState(null)
+   const [courseSheduleData, setCourseSheduleData] = useState([])
 
 
   useEffect(() => {
@@ -36,19 +37,31 @@ export default function ScheduleManagement() {
   }, [week, year])
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:3003/plannings")
-      const data = await res.json()
-      console.log(data)
-      const mapped = {}
-      data.forEach(p => {
-        const key = `${p.group}-${p.year}-${p.week}`
-        mapped[key] = p.courses
-      })
-      setPlanningData(mapped)
-    }
-    fetchData()
-  }, [])
+    const fetchPlanning = async () => {
+      if (!group || !year || !week) return;
+
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL;
+        const res = await fetch(
+            `${baseUrl}/api/Schedule?group=${group}&year=${year}&week=${week}`
+        );
+        if (!res.ok) throw new Error("Erreur lors du chargement du planning");
+
+        const data = await res.json();
+        console.log(data.courses)
+          const key = `${data.group}-${data.year}-${data.week}`;
+          setPlanningData((prev) => ({
+              ...prev,
+              [key]: data.courses || []
+          }));
+      } catch (err) {
+          console.error("Erreur fetch planning:", err);
+      }
+    };
+
+    fetchPlanning();
+  }, [group, year, week]);
+console.log(planningData)
 
   const days = useMemo(() => {
     if (!week || !year) return []
@@ -143,6 +156,7 @@ export default function ScheduleManagement() {
 
         { isEditDialogOpen && selectedCourse && (
             <EditCourseDialog
+                courses={courses}
                 isOpen={isEditDialogOpen}
                 setIsOpen={setIsEditDialogOpen}
                 selectedCourse={selectedCourse}

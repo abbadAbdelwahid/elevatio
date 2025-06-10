@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-export default function EditCourseDialog({ isOpen, setIsOpen, selectedCourse, days, onSave }) {
+export default function EditCourseDialog({ isOpen, setIsOpen, selectedCourse, days, onSave,courses}) {
+  console.log(courses)
   const [editedCourse, setEditedCourse] = useState(selectedCourse || {})
   const [isClient, setIsClient] = useState(false)
 
@@ -40,16 +41,22 @@ export default function EditCourseDialog({ isOpen, setIsOpen, selectedCourse, da
             <div className="grid gap-4 py-4">
               {/* Nom */}
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Nom</Label>
-                <Input
-                    id="name"
-                    value={editedCourse.name || ""}
-                    onChange={(e) =>
-                        setEditedCourse({ ...editedCourse, name: e.target.value })
-                    }
-                    className="col-span-3"
-                />
+                <Label htmlFor="module" className="text-right">Module</Label>
+                <select
+                    id="module"
+                    value={editedCourse.moduleId || ""}
+                    onChange={(e) => setEditedCourse({ ...editedCourse, moduleId: parseInt(e.target.value) })}
+                    className="col-span-3 border rounded-md p-2"
+                >
+                  <option value="">-- Sélectionner un module --</option>
+                  {courses.map((mod) => (
+                      <option key={mod.moduleId} value={mod.moduleId}>
+                        {mod.moduleId}
+                      </option>
+                  ))}
+                </select>
               </div>
+
 
               {/* Salle */}
               <div className="grid grid-cols-4 items-center gap-4">

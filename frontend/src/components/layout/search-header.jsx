@@ -61,10 +61,6 @@ export function SearchHeader() {
 
     return (
         <div className="mb-8 bg-white rounded-3xl">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Notifications</h2>
-            </div>
-
             <div className="flex items-center justify-between px-10 py-4">
                 <h3 className="text-md font-semibold">Welcome to CPS</h3>
                 <div className="flex items-center gap-4">

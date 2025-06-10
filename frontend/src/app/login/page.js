@@ -51,38 +51,70 @@ export default function LoginPage() {
             });
 
             const data = await response.json();
-            console.log(data); // Log pour vérifier la réponse
+            console.log('the data for login: ', data);
 
             if (response.ok) {
-                console.log("I received a response!");
+                const accessToken = data.accessToken;
+                if (!accessToken) {
+                    setErrors({ form: "Token manquant dans la réponse." });
+                    setLoading(false);
+                    return;
+                }
+                console.log("AccessToken:", accessToken);
 
-                // Vérifie si le token a un préfixe "Bearer"
-                const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTIzNDU2Nzg5Iiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE2MTIyMzQyNjAsImV4cGlyZWRfc3RhcnRfdGltZSI6MTYxMjIzNDI2MH0.jZoNB2DP61ZZGbVQQRLmczcZJbqFlTxTBKTkyS4HD7k";  // Supprimer le préfixe "Bearer "
-                console.log("AccessToken:", accessToken); // Log pour vérifier le token sans "Bearer"
+                // Appel pour récupérer rôle et id
+                const response2 = await fetch(`${baseUrl}/api/Auth/getIdAndRole`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
 
-                try {
-                    // Décoder le token
-                    const decoded = jwtDecode(accessToken);
-                    console.log("Decoded JWT:", decoded);  // Vérifie que le token est bien décodé
+                if (!response2.ok) {
+                    setErrors({ form: "Erreur lors de la récupération des informations utilisateur." });
+                    setLoading(false);
+                    return;
+                }
 
-                    const role = decoded.role;  // Extraction du rôle du payload
-                    console.log("Role:", role);  // Log pour vérifier le rôle extrait du token
+                const data2 = await response2.json();
+                console.log(data2);
 
-                    // Stocker le token dans localStorage
-                    localStorage.setItem("accessToken", accessToken);
+                // Récupère le rôle (attention à la clé exacte dans data2)
+                const role = data2.role
+                const userId=data2.userId
+                if (!role) {
+                    setErrors({ form: "Rôle utilisateur introuvable." });
+                    setLoading(false);
+                    return;
+                }
+                console.log('the role is : ', role);
 
-                    // Enregistrer le rôle dans un cookie
-                    document.cookie = `role=${role}; path=/; secure; samesite=strict`;
+                // Stocker le token dans localStorage
+                localStorage.setItem("accessToken", accessToken);
 
-                    // Redirection selon le rôle
-                    if (role === "admin") {
+                // Enregistrer le rôle dans un cookie sécurisé
+                document.cookie = `role=${role}; path=/; Secure; SameSite=Strict`;
+                document.cookie = `userId=${userId}; path=/; Secure; SameSite=Strict`;
+
+                // Redirection selon le rôle
+                switch (role) {
+                    case "Admin":
                         router.push("/admin/dashboard");
-                    } else {
+                        break;
+                    case "Enseignant":
+                        router.push("/prof/dashboard");
+                        break;
+                    case "Etudiant":
                         router.push("/etu/dashboard");
-                    }
-                } catch (error) {
-                    console.error("Error decoding JWT:", error);
-                    setErrors({ form: "Erreur lors du décodage du token." });
+                        break;
+                    case "ExternalEvaluator":
+                        router.push("/external/dashboard");
+                        break;
+                    default:
+                        // Optionnel : redirection ou message d'erreur si rôle inconnu
+                        console.warn(`Rôle inconnu : ${role}`);
+                        router.push("/login");
+                        break;
                 }
 
             } else {

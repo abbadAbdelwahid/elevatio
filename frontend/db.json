@@ -1,4 +1,58 @@
 {
+  "professors": [
+    {
+      "id": "1",
+      "nom": "Ahmed Bouziani",
+      "email": "ahmed.bouziane@example.com"
+    },
+    {
+      "id": "2",
+      "nom": "Nadia Lahlou",
+      "email": "nadia.lahlou@example.com"
+    }
+  ],
+  "modules": [
+    {
+      "id": "1",
+      "name": "Math",
+      "profId": 1
+    },
+    {
+      "id": "2",
+      "name": "Algorithmique",
+      "profId": 1
+    },
+    {
+      "id": "3",
+      "name": "Réseaux",
+      "profId": 2
+    },
+    {
+      "id": "4",
+      "name": "Sécurité",
+      "profId": 2
+    }
+  ],
+  "reports": [
+    {
+      "id": "1",
+      "name": "rapport1.pdf",
+      "profId": 1,
+      "url": "/files/rapport1.pdf"
+    },
+    {
+      "id": "2",
+      "name": "rapport2.pdf",
+      "profId": 1,
+      "url": "/files/rapport2.pdf"
+    },
+    {
+      "id": "3",
+      "name": "rapportA.pdf",
+      "profId": 2,
+      "url": "/files/rapportA.pdf"
+    }
+  ],
   "users": [
     {
       "id": "1",
@@ -28,103 +82,6 @@
       "password": "test789"
     }
   ],
-  "login": [
-    {
-      "id": "5fbc",
-      "email": "oussama@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "7094",
-      "email": "batteoui@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "e7f5",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "7a1c",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "42d9",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "e362",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "2b89",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "f45c",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "033c",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "8062",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    },
-    {
-      "id": "a993",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "6996",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "be4f",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "696e",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "6b21",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "34be",
-      "email": "a@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "a481",
-      "email": "oussama@gmail.com",
-      "password": "ZT@303625"
-    },
-    {
-      "id": "0856",
-      "email": "ff@gmail.com",
-      "password": "ff@"
-    },
-    {
-      "id": "58be",
-      "email": "SS@gmail.com",
-      "password": "SS@GMAI"
-    }
-  ],
   "statistics": {
     "participationRate": 60,
     "averageRating": 4.2,
@@ -134,20 +91,20 @@
   "recentEvaluations": [
     {
       "id": "1",
-      "subject": "C++",
-      "professor": "Pr.Haddad",
+      "courseId": "C++",
+      "rating": "Pr.Haddad",
       "time": "today"
     },
     {
       "id": "2",
-      "subject": "Project Management",
-      "professor": "Pr.Fissoune",
+      "courseId": "Project Management",
+      "rating": "Pr.Fissoune",
       "time": "10:30 AM"
     },
     {
       "id": "3",
-      "subject": "Introduction to Web Development",
-      "professor": "Pr.amechnoue",
+      "courseId": "Introduction to Web Development",
+      "rating": "Pr.amechnoue",
       "time": "01:00 PM"
     }
   ],
@@ -156,17 +113,12 @@
       "id": "1",
       "title": "Programming Language C++",
       "image": "/images/acceuil/about.svg",
-
       "duration": "19h 30m",
       "professor": "Pr. Fissoune",
       "evaluated": true,
+      "status": "in progress",
       "date": "2023-05-01",
-      "evaluation": {
-        "id": "4e35",
-        "course_id": 1,
-        "rating": 4,
-        "comment": "ddddeee"
-      }
+      "filiere": "GINF1"
     },
     {
       "id": "2",
@@ -176,13 +128,9 @@
       "duration": "15h 0m",
       "professor": "Pr. Amechnoune",
       "evaluated": false,
+      "status": "terminé",
       "date": "2023-06-01",
-      "evaluation": {
-        "id": "4e35",
-        "course_id": 2,
-        "rating": 2,
-        "comment": "ddddeee"
-      }
+      "filiere": "GINF2"
     },
     {
       "id": "3",
@@ -193,13 +141,9 @@
       "students": "60+ Students",
       "professor": "Pr. Haddad",
       "evaluated": true,
+      "status": "in progress",
       "date": "2023-04-01",
-      "evaluation": {
-        "id": "4e35",
-        "course_id": 3,
-        "rating": 3,
-        "comment": "ddddeee"
-      }
+      "filiere": "GINF1"
     },
     {
       "id": "4",
@@ -210,13 +154,9 @@
       "students": "40+ Students",
       "professor": "Pr. Benali",
       "evaluated": false,
+      "status": "in progress",
       "date": "2023-07-01",
-      "evaluation": {
-        "id": "4e35",
-        "course_id": 4,
-        "rating": 3,
-        "comment": "ddddeee"
-      }
+      "filiere": "GINF3"
     },
     {
       "id": "5",
@@ -227,13 +167,9 @@
       "students": "80+ Students",
       "professor": "Pr. Dali",
       "evaluated": true,
+      "status": "in progress",
       "date": "2023-05-15",
-      "evaluation": {
-        "id": "4e35",
-        "course_id": 5,
-        "rating": 4,
-        "comment": "ddddeee"
-      }
+      "filiere": "GINF2"
     },
     {
       "id": "6",
@@ -244,13 +180,9 @@
       "students": "35+ Students",
       "professor": "Pr. Lhafi",
       "evaluated": false,
+      "status": "in progress",
       "date": "2023-06-20",
-      "evaluation": {
-        "id": "4e35",
-        "course_id": 6,
-        "rating": 5,
-        "comment": "ddddeee"
-      }
+      "filiere": "GINF3"
     }
   ],
   "evaluations": [
@@ -262,13 +194,13 @@
     },
     {
       "id": "504c",
-      "course_id": 1,
+      "course_id": 2,
       "rating": 4,
       "comment": "ccccccccc"
     },
     {
       "id": "331e",
-      "course_id": "1",
+      "course_id": "2",
       "rating": 3,
       "comment": ""
     },
@@ -456,5 +388,74 @@
       ],
       "id": "ce0e"
     }
+  ],
+  "questionnaires": [
+    {
+      "id": 1,
+      "title": "Évaluation du module Java",
+      "type": "EDT",
+      "status": true,
+      "created": "2024-03-15",
+      "questions": [
+        {
+          "id": 101,
+          "question_text": "Qu'est-ce qu'une classe en Java ?",
+          "question_type": "ouverte",
+          "responses": [
+            {
+              "userId": "user1",
+              "answer": "Une classe est un modèle définissant les propriétés et comportements d'un objet."
+            },
+            {
+              "userId": "user2",
+              "answer": "C'est une structure qui encapsule données et méthodes."
+            }
+          ]
+        },
+        {
+          "id": 102,
+          "question_text": "Java est-il compilé ou interprété ?",
+          "question_type": "choix_multiple",
+          "options": ["Compilé", "Interprété", "Les deux"],
+          "responses": [
+            {
+              "userId": "user1",
+              "answer": [2]
+            },
+            {
+              "userId": "user2",
+              "answer": [0, 1]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Sondage filière GINF3",
+      "type": "Filière",
+      "status": false,
+      "created": "2024-04-01",
+      "questions": [
+        {
+          "id": 201,
+          "question_text": "Avez-vous aimé le module d’optimisation ?",
+          "question_type": "choix_multiple",
+          "options": ["Oui", "Non", "Moyennement"],
+          "responses": [
+            {
+              "userId": "user3",
+              "answer": [0]
+            },
+            {
+              "userId": "user4",
+              "answer": [2]
+            }
+          ]
+        }
+      ]
+    }
   ]
+
+
 }
