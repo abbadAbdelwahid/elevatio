@@ -25,6 +25,16 @@ builder.Services.AddScoped<IModuleService, ModuleService>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddScoped<INoteService,    NoteService>();   // 🟢 ← à ajouter
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.AllowAnyOrigin() // ou ton URL réelle
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -38,6 +48,7 @@ if (app.Environment.IsDevelopment())
         // Optionnellement : c.RoutePrefix = "swagger"; // c’est déjà la valeur par défaut
     });
 }
+
 
 // Ajouter le middleware global d'exception
 app.UseMiddleware<ExceptionMiddleware>();
