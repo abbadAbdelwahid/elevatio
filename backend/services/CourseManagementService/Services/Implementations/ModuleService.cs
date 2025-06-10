@@ -301,7 +301,32 @@ namespace CourseManagementService.Services.Implementations
 
 
 
+        public async Task<IEnumerable<ModuleDto>> GetModulesByTeacherAsync(int teacherId)
+        {
+            // Récupère les modules dont TeacherId correspond
+            var modules = await _context.Modules
+                .Where(m => m.TeacherId == teacherId)
+                .ToListAsync();
+            var results = new List<ModuleDto>(); 
+            foreach (var m in modules)
+            {
+                var fullName = await _authHttp.GetTeacherFullNameAsync(m.TeacherId);
 
+                results.Add(new ModuleDto
+                {
+                    ModuleId = m.ModuleId,
+                    ModuleName = m.ModuleName,
+                    ModuleDescription = m.ModuleDescription,
+                    ModuleDuration = m.ModuleDuration,
+                    FiliereName = m.Filiere.FiliereName,
+                    TeacherId = m.TeacherId,
+                    TeacherFullName = fullName,
+                    CreatedAt = m.CreatedAt,
+                    UpdatedAt = m.UpdatedAt,
+                    Evaluated = m.Evaluated
+                });
+        }
+    return results;}
 
     
     }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CourseManagementService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250607185401_AddProfileImageUrlToModule")]
-    partial class AddProfileImageUrlToModule
+    [Migration("20250610204944_Initial455555555555")]
+    partial class Initial455555555555
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -147,10 +147,6 @@ namespace CourseManagementService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("NoteId"));
 
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -159,6 +155,10 @@ namespace CourseManagementService.Migrations
 
                     b.Property<int>("ModuleId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Observation")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");

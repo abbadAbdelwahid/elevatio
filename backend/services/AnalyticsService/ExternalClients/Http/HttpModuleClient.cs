@@ -17,7 +17,7 @@ public class HttpModuleClient : IModuleClient
         _CourseManagementServiceBaseUrl = cfg["CourseManagementService:BaseUrl"];
     }
 
-    public async Task<ModuleDto> GetModuleByIdAsync(int ModuleId) 
+    public async Task<ModuleDto> GetModuleByIdAsync(int ModuleId)
     {
         // 1) Construction de l'URL d'appel au microservice Modules
         //    Exemple : http://localhost:5201/api/modules/{moduleId}
@@ -52,4 +52,71 @@ public class HttpModuleClient : IModuleClient
         // 6) Retourne l'objet ModuleDto
         return module;
     }
+
+    public async Task<IEnumerable<ModuleDto>> GetModuleByTeacherAsync(int teacherId)
+    {
+        // 1) Construire l'URL de l'endpoint
+        var requestUrl = $"{_CourseManagementServiceBaseUrl}/api/module/teacher/{teacherId}";
+
+        // 2) Envoyer la requête GET
+        var response = await _http.GetAsync(requestUrl);
+
+        // 3) Vérifier que le status est 2xx
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException(
+                $"Request to {requestUrl} failed with status {response.StatusCode}");
+        }
+
+        try
+        {
+            // 4) Désérialiser en IEnumerable<ModuleDto>
+            var modules = await response.Content
+                .ReadFromJsonAsync<IEnumerable<ModuleDto>>();
+
+            // 5) Ne jamais retourner null
+            return modules ?? Array.Empty<ModuleDto>();
+        }
+        catch (JsonException ex)
+        {
+            // Logging si besoin
+            throw new InvalidOperationException(
+                "Erreur lors de la désérialisation des modules", ex);
+        }
     }
+
+    public async Task<IEnumerable<ModuleDto>> GetByFiliereAsync(String FiliereName)
+    {
+        // 1) Construire l'URL de l'endpoint
+        
+        var requestUrl = $"{_CourseManagementServiceBaseUrl}/api/module/filiere/{FiliereName}";
+
+        // 2) Envoyer la requête GET
+        var response = await _http.GetAsync(requestUrl);
+
+        // 3) Vérifier que le status est 2xx
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException(
+                $"Request to {requestUrl} failed with status {response.StatusCode}");
+        }
+
+        try
+        {
+            // 4) Désérialiser en IEnumerable<ModuleDto>
+            var modules = await response.Content
+                .ReadFromJsonAsync<IEnumerable<ModuleDto>>();
+
+            // 5) Ne jamais retourner null
+            return modules ?? Array.Empty<ModuleDto>();
+        }
+        catch (JsonException ex)
+        {
+            // Logging si besoin
+            throw new InvalidOperationException(
+                "Erreur lors de la désérialisation des modules", ex);
+        }
+
+      
+    } 
+}

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalyticsService.Migrations
 {
     [DbContext(typeof(AnalyticsDbContext))]
-    [Migration("20250606154704_Initial4555555")]
-    partial class Initial4555555
+    [Migration("20250610200122_Initial45555555555555")]
+    partial class Initial45555555555555
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,34 +83,31 @@ namespace AnalyticsService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("AverageRating")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("AverageRatingM")
+                    b.Property<double?>("AverageM")
                         .HasColumnType("double precision");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("ImprovementTrend")
+                    b.Property<string>("MaxModuleRated")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("MedianNotes")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("MedianRating")
+                    b.Property<string>("ModuleMaxPass")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ModuleMinPass")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("NoteMax")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("NegativeFeedbackPct")
+                    b.Property<double?>("NoteMin")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("NpsScore")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("ParticipationRate")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("PeerReviewScore")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("PositiveFeedbackPct")
+                    b.Property<double?>("PassRate")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Rapport")
@@ -121,10 +118,7 @@ namespace AnalyticsService.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<double>("ResponseTimeAvg")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("StdDevRating")
+                    b.Property<double?>("StdEv")
                         .HasColumnType("double precision");
 
                     b.Property<int>("TeacherId")
@@ -135,6 +129,50 @@ namespace AnalyticsService.Migrations
                     b.ToTable("StatistiquesEnseignants");
                 });
 
+            modelBuilder.Entity("AnalyticsService.Models.StatistiqueEtudiant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("FiliereId")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("Median")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("NoteMax")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("NoteMin")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("NoteMoyenne")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Observation")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("PassRate")
+                        .HasColumnType("double precision");
+
+                    b.Property<byte[]>("RapportPdf")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatistiquesEtudiants");
+                });
+
             modelBuilder.Entity("AnalyticsService.Models.StatistiqueFiliere", b =>
                 {
                     b.Property<int>("Id")
@@ -143,8 +181,8 @@ namespace AnalyticsService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ActionPlanCount")
-                        .HasColumnType("integer");
+                    b.Property<double?>("AverageMoyenne")
+                        .HasColumnType("double precision");
 
                     b.Property<double?>("AverageRating")
                         .HasColumnType("double precision");
@@ -155,11 +193,33 @@ namespace AnalyticsService.Migrations
                     b.Property<int>("FiliereId")
                         .HasColumnType("integer");
 
-                    b.Property<double?>("ImprovementTrend")
+                    b.Property<string>("FiliereName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FiliereRoot")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Majorant")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MaxModuleRated")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("MaxMoyenne")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("MedianRating")
                         .HasColumnType("double precision");
+
+                    b.Property<string>("ModuleMaxPass")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ModuleMinPass")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("NbrEtds")
+                        .HasColumnType("integer");
 
                     b.Property<double?>("NegativeFeedbackPct")
                         .HasColumnType("double precision");
@@ -167,7 +227,7 @@ namespace AnalyticsService.Migrations
                     b.Property<double?>("NpsScore")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("ParticipationRate")
+                    b.Property<double?>("PassRate")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("PositiveFeedbackPct")
@@ -195,25 +255,16 @@ namespace AnalyticsService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double?>("AverageRating")
+                    b.Property<double?>("AverageNotes")
                         .HasColumnType("double precision");
 
-                    b.Property<int?>("CommentCount")
-                        .HasColumnType("integer");
-
-                    b.Property<double?>("CompletionTimeAvg")
+                    b.Property<double?>("AverageRating")
                         .HasColumnType("double precision");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double?>("DropoutRate")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("ImprovementTrend")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("MedianRating")
+                    b.Property<double?>("MedianNotes")
                         .HasColumnType("double precision");
 
                     b.Property<int>("ModuleId")
@@ -222,24 +273,34 @@ namespace AnalyticsService.Migrations
                     b.Property<double?>("NegativeFeedbackPct")
                         .HasColumnType("double precision");
 
+                    b.Property<double?>("NoteMax")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("NoteMin")
+                        .HasColumnType("double precision");
+
                     b.Property<double?>("NpsScore")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("ParticipationRate")
                         .HasColumnType("double precision");
 
+                    b.Property<double?>("PassRate")
+                        .HasColumnType("double precision");
+
                     b.Property<double?>("PositiveFeedbackPct")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Rapport")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<byte[]>("RapportPdf")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<double?>("StdDevRating")
+                    b.Property<double?>("SatisfactionRate")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("StdevNotes")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");

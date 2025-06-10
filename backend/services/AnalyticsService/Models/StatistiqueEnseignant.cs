@@ -8,19 +8,18 @@ public class StatistiqueEnseignant
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
     public int      Id{ get; set; }  // PK
     public int      TeacherId             { get; set; }  // Référence métier
-    public double   AverageRating         { get; set; }  // Moyenne des notes 
-    public double   AverageRatingM     { get; set; } // Moyenne des modules 
-    public double   MedianRating          { get; set; }  // Médiane des notes
-    public double   StdDevRating          { get; set; }  // Écart-type
-    public double   ParticipationRate     { get; set; }  // % de retours
-    public double   NpsScore              { get; set; }  // Net Promoter Score
-    public double   PositiveFeedbackPct   { get; set; }  // % positifs
-    public double   NegativeFeedbackPct   { get; set; }  // % négatifs
-    public double   PeerReviewScore       { get; set; }  // Évaluation 360°
-    public double   ResponseTimeAvg       { get; set; }  // Temps moyen de réponse
-    public double   ImprovementTrend      { get; set; }  // Δ moyenne entre sessions
+    public double?  AverageM     { get; set; } // Moyenne des modules 
+    public double?  MedianNotes         { get; set; }  // Médiane des moyennes 
+    public double?  StdEv     { get; set; }  
+    public String? ModuleMaxPass          { get; set; }  
+    public String? ModuleMinPass          { get; set; }  
+    public String? MaxModuleRated        { get; set; }
+    public double?  NoteMax      { get; set; } 
+    public double?  NoteMin        { get; set; }  // Moyenne des notes 
+    public double?  PassRate       { get; set; }
+
     public DateTime CreatedAt             { get; set; }  // Date de génération 
-    public String Rapport  { get; set; }
+    public String Rapport  { get; set; } 
     [Column(TypeName = "bytea")] 
     public byte[] RapportPdf { get; set; } 
 }
