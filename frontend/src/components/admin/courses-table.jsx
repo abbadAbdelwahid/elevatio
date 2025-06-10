@@ -153,7 +153,7 @@ export function CoursesTable() {
         e.preventDefault();
         const token = localStorage.getItem("accessToken");
         try {
-            const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
             const res = await fetch(`${baseUrl}/courses/${editCourse.id}`, {
                 method: "PUT",
                 headers: {
