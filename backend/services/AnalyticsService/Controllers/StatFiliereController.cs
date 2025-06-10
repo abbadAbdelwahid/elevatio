@@ -14,7 +14,7 @@ public class StatFiliereController:ControllerBase
     public Task<StatistiqueFiliere> RefreshStandardStats(int id)
         => _service.CalculateStandardStats(id);   
    
-    [HttpPost("Create/{FiliereId:int}/{FiliereName:string}")]
+    [HttpPost("Create/{FiliereId:int}/{FiliereName}")]
     public async Task<IActionResult> Create(int FiliereId, string FiliereName)
     {
         var stat = await _service.CreateAsync(FiliereId,FiliereName);
