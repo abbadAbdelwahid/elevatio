@@ -10,7 +10,7 @@ public class StatFiliereController:ControllerBase
     public StatFiliereController(IStatistiqueService<StatistiqueFiliere> svc)
         => _service = svc;
 
-    [HttpGet("{id}/stats")]
+    [HttpGet("{id}/stats")] 
     public Task<StatistiqueFiliere> GetStats(int id)
         => _service.CalculateStats(id);  
 }

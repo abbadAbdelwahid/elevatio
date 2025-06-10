@@ -7,17 +7,22 @@ public class StatistiqueFiliere
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
     public int      Id   { get; set; }  // PK 
-    public int      FiliereId              { get; set; }  // Référence métier
-    public double?   AverageRating          { get; set; }  // Moyenne des notes
+    public int      FiliereId              { get; set; } // Référence métier 
+    public int?     NbrEtds               { get; set; } 
+    public double?   AverageRating          { get; set; } // Moyenne des notes
+    public double?   AverageMoyenne          { get; set; } // Moyenne des notes 
+    public String? ModuleMaxPass          { get; set; } 
+    public String? Majorant               { get; set; }
+    public double? MaxMoyenne               { get; set; }
+    
+
     public double?   MedianRating           { get; set; }  // Médiane des notes
     public double?  StdDevRating           { get; set; }  // Écart-type des notes
-    public double?  SatisfactionRate       { get; set; }  // % notes ≥ seuil
-    public double?  ParticipationRate      { get; set; }  // % de retours
+    public double?  SatisfactionRate       { get; set; }  // % notes ≥ seuil 
     public double?  NpsScore               { get; set; }  // Net Promoter Score
     public double?  PositiveFeedbackPct    { get; set; }  // % feedbacks positifs
-    public double?  NegativeFeedbackPct    { get; set; }  // % feedbacks négatifs
-    public int?  ActionPlanCount        { get; set; }  // Nb d’actions déclenchées
-    public double?   ImprovementTrend       { get; set; }  // Δ moyenne vs session précédente
+    public double?  NegativeFeedbackPct    { get; set; }  // % feedbacks négatifs 
+    public double?  PassRate       { get; set; }
     public DateTime CreatedAt              { get; set; }  // Date de génération 
     [Column(TypeName = "bytea")] 
     public byte[]?  RapportPdf { get; set; } 

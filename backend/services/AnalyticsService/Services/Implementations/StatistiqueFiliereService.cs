@@ -72,7 +72,7 @@ private readonly IEvaluationClient _evalClient;
             double? statValue = question.StatName switch
             {
                 
-                "MedianRating"  => CalculateMedian(values),
+                "SatisfactionRate"  => CalculateMedian(values),
                 "StdDev"=> CalculateStdDev(values),
                 "NpsScore"     => CalculateNps(values),
                 _ => null 
@@ -81,11 +81,8 @@ private readonly IEvaluationClient _evalClient;
             switch (question.StatName)
             {
                 
-                case "MedianRating":
-                    stat.MedianRating = statValue;
-                    break;
-                case "StdDev":
-                    stat.StdDevRating = statValue;
+                case "SatisfactionRate":
+                    stat.SatisfactionRate = statValue;
                     break;
                 case "NpsScore":
                     stat.NpsScore = statValue;

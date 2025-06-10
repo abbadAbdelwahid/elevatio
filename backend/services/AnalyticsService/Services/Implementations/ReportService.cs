@@ -199,7 +199,7 @@ Le NPS  reflète la fidélité des étudiants : quelles modifications méthodolo
             var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, MF) : null;
             Console.Write(ResponseAVG);
 // Créer le prompt pour la statistique "Médiane des notes"
-            var ResponseMedian = (stat.MedianRating != null && stat.MedianRating != 0) ? await GroqMedianRating(stat.MedianRating.Value, MF) : null;
+            var ResponseMedian = (stat.MedianNotes != null && stat.MedianNotes != 0) ? await GroqMedianRating(stat.MedianNotes.Value, MF) : null;
 // Créer le prompt pour la statistique "Taux de participation"
             Console.Write(ResponseMedian);
             var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, MF) : null;
@@ -261,7 +261,7 @@ Texte4 : {ResponseNpsScore}";
         <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
        {ResponseAVG}</p>
         <!-- Médiane des Notes -->
-        <p><strong>Médiane des Notes : {stat.MedianRating}</strong><br>
+        <p><strong>Médiane des Notes : {stat.MedianNotes}</strong><br>
      {ResponseMedian}</p>
         <!-- Net Promoter Score (NPS) -->
         <p><strong>Net Promoter Score (NPS) :{stat.NpsScore}</strong><br>
@@ -318,7 +318,7 @@ public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
 // Créer le prompt pour la statistique "Médiane des notes"
             var ResponseMedian = (stat.MedianRating != null && stat.MedianRating != 0) ? await GroqMedianRating(stat.MedianRating.Value, FiliereName) : null;
 // Créer le prompt pour la statistique "Taux de participation"
-            var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, FiliereName) : null;
+            var ResponseParticipation = (stat.SatisfactionRate!= null && stat.SatisfactionRate != 0) ? await GroqParticipationRate(stat.SatisfactionRate.Value, FiliereName) : null;
 // Créer le prompt pour la statistique "Net Promoter Score"
             var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, FiliereName) : null;
 
@@ -385,7 +385,7 @@ public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
         <p><strong>Net Promoter Score (NPS) :{stat.NpsScore}</strong><br>
      {ResponseNpsScore}</p>
         <!-- Taux de Participation -->
-        <p><strong>Taux de Participation :{stat.ParticipationRate}</strong><br>
+        <p><strong>Taux de Participation :{stat.SatisfactionRate}</strong><br>
        {ResponseParticipation}</p>
 
         <!-- Conclusion -->

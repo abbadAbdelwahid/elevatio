@@ -74,7 +74,20 @@ namespace CourseManagementService.Controllers
             return Ok(result);
         }
         
-        
+        [HttpGet("teacher/{teacherId}")]
+        public async Task<ActionResult<IEnumerable<ModuleDto>>> GetByTeacher(int teacherId)
+        {
+            // 1) On appelle le service qui fait la projection
+            var modules = await _service.GetModulesByTeacherAsync(teacherId);
+
+            // 2) Si aucun module, on renvoie 404
+            if (modules == null || !modules.Any())
+                return NotFound($"Aucun module trouvé pour l'enseignant {teacherId}.");
+
+           
+            // 4) On renvoie le 200 + données
+            return Ok(modules);
+        }
         [HttpPost("{id}/upload-image")]
         public async Task<IActionResult> UploadImage(int id, IFormFile file)
         {
