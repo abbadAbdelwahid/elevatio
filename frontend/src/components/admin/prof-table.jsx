@@ -32,8 +32,7 @@ import { Label } from "@/components/ui/label";
         });
         const [openDialog, setOpenDialog] = useState(false);
         const [isLoading, setIsLoading] = useState(false);
-        const token = localStorage.getItem("accessToken");
-
+        const [token,setToken] = useState("");
         const fetchData = async () => {
             setIsLoading(true);
             try {
@@ -63,6 +62,7 @@ import { Label } from "@/components/ui/label";
         };
 
         useEffect(() => {
+            setToken(localStorage.getItem("accessToken"))
             fetchData();
         }, [token]);
 

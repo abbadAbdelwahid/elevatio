@@ -32,7 +32,7 @@ export function Sidebar() {
 
             // admin routes
             { name: "Dashboard", href: "/admin/dashboard", icon: "/images/sidebar/dashboard-icon.svg", roles: [ "Admin"] },
-            { name: "Professors", href: "/admin/professors", icon: "/images/sidebar/profs.svg", roles: ["Admin"] },
+            { name: "Professors", href: "/admin/profs", icon: "/images/sidebar/profs.svg", roles: ["Admin"] },
             { name: "Course", href: "/admin/courses", icon: "/images/sidebar/coursesIcon.svg", roles: ["Admin"] },
             { name: "Planning", href: "/admin/edt", icon: "/images/sidebar/edt.svg", roles: ["Admin"] },
             { name: "Forms", href: "/admin/forms", icon: "/images/sidebar/form.svg", roles: ["Admin"] },

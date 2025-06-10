@@ -1,4 +1,4 @@
-
+'use client'
 import { SearchHeader } from "@/components/layout/search-header"
 import {CornerUpLeft} from "lucide-react";
 import {CoursesTable} from "@/components/admin/courses-table";
@@ -10,7 +10,7 @@ import ScheduleManagement from "@/components/schedule/schedule-management";
 
 
 
-export default function CoursesPage() {
+export default function Professors() {
     return (
         <div className="flex min-h-screen max-h-screen overflow-y-auto bg-blue-50">
             {/* Main content */}
