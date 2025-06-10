@@ -9,6 +9,13 @@ namespace CourseManagementService.Services.Interfaces
         Task<ScheduleDto> GetScheduleByGroupAsync(string group, string year, string week);
 
         // Méthode pour créer un emploi du temps
+        
         Task<ScheduleDto> CreateScheduleAsync(ScheduleDto dto);
+        
+        Task<IEnumerable<CourseScheduleBriefDto>> GetAllCourseSchedulesAsync();
+
+        Task<bool> DeleteCourseScheduleAsync(int courseScheduleId);
+        Task<bool> UpdateCourseScheduleAsync(int courseScheduleId, UpdateCourseScheduleDto dto);
+
     }
 }

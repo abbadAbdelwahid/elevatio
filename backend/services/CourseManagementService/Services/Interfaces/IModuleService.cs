@@ -14,6 +14,11 @@ namespace CourseManagementService.Services.Interfaces
         public Task<IEnumerable<ModuleDto>> GetFilteredModulesAsync(string filter);
         Task<bool> UpdateModuleImageUrlAsync(int moduleId, string imageUrl);
 
+        Task<IEnumerable<UnassignedModuleDto>> GetUnassignedModulesAsync();
+
+        Task<bool> AssignModulesToTeacherAsync(int teacherId, List<int> moduleIds);
+
+        Task<string?> GetTeacherFullNameByModuleIdAsync(int moduleId);
 
 
     }
