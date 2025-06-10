@@ -52,6 +52,7 @@ jobs:
           docker push ${{ secrets.ECR_ANALYTICS_SERVICE_URI }}:latest
 
       # Step 5: SSH into EC2 and update services
+      # Step 5: SSH into EC2 and update services
       - name: SSH into EC2 and update services
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -62,23 +63,28 @@ jobs:
             # Ensure the SSH key has the correct permissions
             echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
-            
+
             # Add EC2 IP to known hosts to avoid SSH warnings
             ssh-keyscan -H ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
+
             # Change to the directory containing Docker Compose file
             cd sys-eval
+
             # Login to ECR for all 5 repositories
             sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_ANALYTICS_SERVICE_URI }}
             sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_AUTH_SERVICE_URI }}
             sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_COURSE_MANAGEMENT_SERVICE_URI }}
             sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_EVALUATION_SERVICE_URI }}
             sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_FRONTEND_URI }}
-      
-            # Stop and remove the existing containers
+
+            # Stop and remove running containers
             sudo docker-compose down
-            
-            # Pull the latest images from ECR (for all services)
+
+            # 🔥 Remove ALL Docker images
+            sudo docker rmi -f $(sudo docker images -q) || true
+
+            # Pull the latest images from ECR
             sudo docker-compose pull
-            
-            # Rebuild and restart the containers with the latest images
-            sudo docker-compose up -d --build --force-recreate
+
+            # Recreate containers with the latest pulled images
+            sudo docker-compose up -d --force-recreate
