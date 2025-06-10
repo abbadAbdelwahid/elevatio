@@ -7,10 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
-export function UserSettingsForm({ user }) {
+export function UserSettingsForm({ user,role }) {
+    console.log('roe : ', role);
     // Initialiser le state avec les données de l'utilisateur
     const [passwords, setPasswords] = useState({
-        currentPassword: "",
+        oldPassword: "",
         newPassword: "",
         confirmPassword: "",
     });
@@ -19,7 +20,7 @@ export function UserSettingsForm({ user }) {
     useEffect(() => {
         // Initialiser les mots de passe vides
         setPasswords({
-            currentPassword: "",
+            oldPassword: "",
             newPassword: "",
             confirmPassword: "",
         });
@@ -40,24 +41,29 @@ export function UserSettingsForm({ user }) {
         }
 
         // Vérification que le mot de passe actuel est fourni
-        if (!passwords.currentPassword) {
+        if (!passwords.oldPassword) {
             alert('Le mot de passe actuel est requis');
             return;
         }
 
         try {
+            const token = localStorage.getItem("accessToken");
+            console.log(token);
             const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
             // Envoi de la requête pour modifier le mot de passe
-            const response = await fetch(`${baseUrl}/changePassword`, {
-                method: 'PATCH',
+            const response = await fetch(`${baseUrl}/api/Auth/resetPassword`, {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json", // ❗️ requis pour envoyer du JSON
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    currentPassword: passwords.currentPassword,
+                    email: user.email,
+                    oldPassword: passwords.oldPassword,
                     newPassword: passwords.newPassword,
                 }),
             });
+
 
             // Vérification de la réponse du serveur
             if (!response.ok) {
@@ -68,7 +74,7 @@ export function UserSettingsForm({ user }) {
             // Si tout est ok, on réinitialise les champs de mot de passe
             alert('Mot de passe modifié avec succès!');
             setPasswords({
-                currentPassword: "",
+                oldPassword: "",
                 newPassword: "",
                 confirmPassword: "",
             });
@@ -77,7 +83,6 @@ export function UserSettingsForm({ user }) {
             alert(error.message);
         }
     };
-
     return (
         <Card className="border-0 shadow-lg bg-white profil-card">
             <CardHeader>
@@ -88,26 +93,53 @@ export function UserSettingsForm({ user }) {
                 {/* Details Section */}
                 <div className="space-y-6 details">
                     <h3 className="text-lg font-semibold text-[#4a2a5a]">Details</h3>
+
                     <div className="grid grid-cols-2 gap-4">
-                        {[{ label: "Name", name: "firstName" },
-                            { label: "Last Name", name: "lastName" },
-                            { label: "Email", name: "email", type: "email" },
-                            { label: "Filiere", name: "filiere" }]
-                            .map((field) => (
-                                <div className="space-y-1" key={field.name}>
-                                    <Label className="text-sm font-medium text-gray-700">{field.label}</Label>
-                                    <Input
-                                        name={field.name}
-                                        type={field.type || "text"}
-                                        value={user[field.name] || ""}
-                                        className="h-[50px] focus:ring-1 focus:ring-[#4a2a5a] bg-white"
-                                        readOnly
-                                    />
-                                </div>
-                            ))
-                        }
+                        <div className="space-y-1">
+                            <Label className="text-sm font-medium text-gray-700">Name</Label>
+                            <Input
+                                name="firstName"
+                                value={user.firstName || ""}
+                                className="h-[50px] focus:ring-1 focus:ring-[#4a2a5a] bg-white"
+                                readOnly
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <Label className="text-sm font-medium text-gray-700">Last Name</Label>
+                            <Input
+                                name="lastName"
+                                value={user.lastName || ""}
+                                className="h-[50px] focus:ring-1 focus:ring-[#4a2a5a] bg-white"
+                                readOnly
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <Label className="text-sm font-medium text-gray-700">Email</Label>
+                            <Input
+                                name="email"
+                                type="email"
+                                value={user.email || ""}
+                                className="h-[50px] focus:ring-1 focus:ring-[#4a2a5a] bg-white"
+                                readOnly
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <Label className="text-sm font-medium text-gray-700">
+                               Filière
+                            </Label>
+                            <Input
+                                name="filiere"
+                                value="GINF2"
+                                className="h-[50px] focus:ring-1 focus:ring-[#4a2a5a] bg-white"
+                                readOnly
+                            />
+                        </div>
                     </div>
                 </div>
+
 
                 <Separator className="bg-gray-300 h-[1.5px]" />
 
@@ -117,7 +149,7 @@ export function UserSettingsForm({ user }) {
                         <h3 className="text-lg font-semibold text-[#4a2a5a]">Password</h3>
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
-                                {[{ label: "Current Password", name: "currentPassword" },
+                                {[{ label: "Current Password", name: "oldPassword" },
                                     { label: "New Password", name: "newPassword" },
                                     { label: "Confirm New Password", name: "confirmPassword" }]
                                     .map((field) => (

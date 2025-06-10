@@ -8,20 +8,21 @@ import { ScheduleGrid } from "@/components/schedule/gestion-planning/schedule-gr
 import  EditCourseDialog  from "@/components/schedule/gestion-planning/edit-course-dialog"
 import {DeleteCourseDialog} from "@/components/schedule/gestion-planning/delete-course-dialog";
 
-export default function Planning() {
+export default function ScheduleManagement() {
   const [group, setGroup] = useState("GINF2")
   const [week, setWeek] = useState("")
   const [year, setYear] = useState("")
   const [mode, setMode] = useState("view")
-  const [planningData, setPlanningData] = useState({})
+  const [planningData, setPlanningData] = useState([])
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
 
-  const currentKey = `${group}-${year}-${week}`
-  const courses = planningData[currentKey] || []
+  const currentKey = `${group}-${year}-${week}`;
+  const courses = planningData[currentKey] || [];
+
   const [windowWidth,setWindowWidth]=useState(null)
 
 
@@ -36,19 +37,31 @@ export default function Planning() {
   }, [week, year])
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:3003/plannings")
-      const data = await res.json()
-      console.log(data)
-      const mapped = {}
-      data.forEach(p => {
-        const key = `${p.group}-${p.year}-${p.week}`
-        mapped[key] = p.courses
-      })
-      setPlanningData(mapped)
-    }
-    fetchData()
-  }, [])
+    const fetchPlanning = async () => {
+      if (!group || !year || !week) return;
+
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL;
+        const res = await fetch(
+            `${baseUrl}/api/Schedule?group=${group}&year=${year}&week=${week}`
+        );
+        if (!res.ok) throw new Error("Erreur lors du chargement du planning");
+
+        const data = await res.json();
+        console.log(data.courses)
+        const key = `${data.group}-${data.year}-${data.week}`;
+        setPlanningData((prev) => ({
+          ...prev,
+          [key]: data.courses || []
+        }));
+      } catch (err) {
+        console.error("Erreur fetch planning:", err);
+      }
+    };
+
+    fetchPlanning();
+  }, [group, year, week]);
+  console.log(planningData)
 
   const days = useMemo(() => {
     if (!week || !year) return []
@@ -76,6 +89,24 @@ export default function Planning() {
 
   return (
       <div className="space-y-4">
+        <div className="flex justify-end gap-2">
+          <Button
+              variant={mode === "update" ? "default" : "outline"}
+              onClick={() => setMode(mode === "update" ? "view" : "update")}
+          >
+            {mode === "update" ? "Annuler" : "Modifier"}
+          </Button>
+
+          <Button
+              variant={mode === "delete" ? "default" : "outline"}
+              onClick={() => setMode(mode === "delete" ? "view" : "delete")}
+              className="text-red-600 border-red-300"
+          >
+            {mode === "delete" ? "Annuler" : "Supprimer"}
+          </Button>
+        </div>
+
+
         <div className="flex gap-4 w-full">
           <div className="w-1/4">
             <ScheduleSettings
@@ -104,6 +135,7 @@ export default function Planning() {
             </Card>
           </div>
         </div>
+
       </div>
   )
 }
