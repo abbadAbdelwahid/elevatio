@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuthService.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20250509171511_AddEtudiant_TPT")]
-    partial class AddEtudiant_TPT
+    [Migration("20250610125319_Initial45555555555")]
+    partial class Initial45555555555
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,6 +239,9 @@ namespace AuthService.Migrations
                     b.Property<string>("Grade")
                         .HasColumnType("text");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("Specialite")
                         .HasColumnType("text");
 
@@ -249,11 +252,28 @@ namespace AuthService.Migrations
                 {
                     b.HasBaseType("AuthService.Models.ApplicationUser");
 
-                    b.Property<string>("FiliereId")
-                        .IsRequired()
+                    b.Property<int>("FiliereId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ProfileImageUrl")
                         .HasColumnType("text");
 
                     b.ToTable("Etudiants", (string)null);
+                });
+
+            modelBuilder.Entity("AuthService.Models.ExternalEvaluator", b =>
+                {
+                    b.HasBaseType("AuthService.Models.ApplicationUser");
+
+                    b.Property<string>("Domaine")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Organisation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.ToTable("ExternalEvaluators", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -321,6 +341,15 @@ namespace AuthService.Migrations
                     b.HasOne("AuthService.Models.ApplicationUser", null)
                         .WithOne()
                         .HasForeignKey("AuthService.Models.Etudiant", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AuthService.Models.ExternalEvaluator", b =>
+                {
+                    b.HasOne("AuthService.Models.ApplicationUser", null)
+                        .WithOne()
+                        .HasForeignKey("AuthService.Models.ExternalEvaluator", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

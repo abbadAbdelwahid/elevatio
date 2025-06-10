@@ -6,13 +6,13 @@ using AnalyticsService.Models;
 [Route("api/[controller]")]
 public class StatEtdController : ControllerBase
 {
-    private readonly IStatistiqueService<StatistiqueEtudiant> _service;
-    public StatEtdController(IStatistiqueService<StatistiqueEtudiant> svc)
+    private readonly IStatistiqueUserService<StatistiqueEtudiant> _service;
+    public StatEtdController(IStatistiqueUserService<StatistiqueEtudiant> svc)
         => _service = svc;
    
     
-    [HttpGet("{id}/Refresh")]
-    public async Task<ActionResult<StatistiqueEtudiant>> GetStats(int id)
+    [HttpGet("{id}/RefreshMarksStats")]
+    public async Task<ActionResult<StatistiqueEtudiant>> RefreshMarksStats(int id)
     {
         var stats = await _service.CalculateStats(id); 
         if (stats == null)
@@ -21,5 +21,24 @@ public class StatEtdController : ControllerBase
             return NotFound(new { message = $"Etudiant avec id {id} non trouvé." });
         }
         return Ok(stats); 
+    } 
+    [HttpPost("Create/{EtdId}")]
+    public async Task<IActionResult> Create(int EtdId)
+    {
+        var stat = await _service.CreateAsync(EtdId);
+        return Ok(stat); 
+    } 
+    [HttpGet("{etdId}")]
+    public async Task<IActionResult> GetByEtudiant(int etdId)
+    {
+        try
+        {
+            var stats = await _service.GetByUserIdAsync(etdId);
+            return Ok(stats);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound(new { Message = $"Aucune statistique trouvée pour l'etudiant {etdId}." });
+        }
     }
 }

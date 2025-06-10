@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuthService.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20250604235131_AddProfileImageToEtudiant")]
-    partial class AddProfileImageToEtudiant
+    [Migration("20250610130422_Initial4555555555555")]
+    partial class Initial4555555555555
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,6 +239,9 @@ namespace AuthService.Migrations
                     b.Property<string>("Grade")
                         .HasColumnType("text");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("Specialite")
                         .HasColumnType("text");
 
@@ -249,9 +252,8 @@ namespace AuthService.Migrations
                 {
                     b.HasBaseType("AuthService.Models.ApplicationUser");
 
-                    b.Property<string>("FiliereId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("FiliereId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ProfileImageUrl")
                         .HasColumnType("text");

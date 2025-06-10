@@ -84,4 +84,39 @@ public class HttpModuleClient : IModuleClient
                 "Erreur lors de la désérialisation des modules", ex);
         }
     }
+
+    public async Task<IEnumerable<ModuleDto>> GetByFiliereAsync(String FiliereName)
+    {
+        // 1) Construire l'URL de l'endpoint
+        
+        var requestUrl = $"{_CourseManagementServiceBaseUrl}/api/module/filiere/{FiliereName}";
+
+        // 2) Envoyer la requête GET
+        var response = await _http.GetAsync(requestUrl);
+
+        // 3) Vérifier que le status est 2xx
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException(
+                $"Request to {requestUrl} failed with status {response.StatusCode}");
+        }
+
+        try
+        {
+            // 4) Désérialiser en IEnumerable<ModuleDto>
+            var modules = await response.Content
+                .ReadFromJsonAsync<IEnumerable<ModuleDto>>();
+
+            // 5) Ne jamais retourner null
+            return modules ?? Array.Empty<ModuleDto>();
+        }
+        catch (JsonException ex)
+        {
+            // Logging si besoin
+            throw new InvalidOperationException(
+                "Erreur lors de la désérialisation des modules", ex);
+        }
+
+      
+    } 
 }

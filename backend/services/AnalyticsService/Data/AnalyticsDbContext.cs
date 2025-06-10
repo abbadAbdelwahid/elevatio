@@ -13,7 +13,8 @@ public class AnalyticsDbContext : DbContext
 
     public DbSet<StatistiqueFiliere>    StatistiquesFilieres    { get; set; }
     public DbSet<StatistiqueModule>     StatistiquesModules     { get; set; }
-    public DbSet<StatistiqueEnseignant> StatistiquesEnseignants { get; set; } 
+    public DbSet<StatistiqueEnseignant> StatistiquesEnseignants { get; set; }  
+    public DbSet<StatistiqueEtudiant> StatistiquesEtudiants { get; set; } 
    
 
     // Rapports par questionnaire

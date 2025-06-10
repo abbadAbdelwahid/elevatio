@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace AuthService.Migrations
+namespace EvaluationService.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigrations : Migration
+    public partial class Initial45555555555 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

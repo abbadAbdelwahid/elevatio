@@ -20,9 +20,11 @@ builder.Services.AddDbContext<AnalyticsDbContext>(opts =>
 // Charger la section "External" dans une variable de configuration
 var config = builder.Configuration.GetSection("EvaluationService");
 // 3) Enregistrement du service de statistiques pour le module
-builder.Services.AddScoped<IStatistiqueService<StatistiqueModule>, StatistiqueModuleService>();
+builder.Services.AddScoped<IStatistiqueModuleService<StatistiqueModule>, StatistiqueModuleService>();
 // 3) Enregistrement du service de statistiques pour le module
 builder.Services.AddScoped<IStatistiqueService<StatistiqueFiliere>, StatistiqueFiliereService>();
+builder.Services.AddScoped<IStatistiqueUserService<StatistiqueEtudiant>, StatistiqueEtdService>();
+builder.Services.AddScoped<IStatistiqueUserService<StatistiqueEnseignant>, StatistiqueEnsService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 
 

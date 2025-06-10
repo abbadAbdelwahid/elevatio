@@ -6,7 +6,7 @@ using AnalyticsService.ExternalClients.ClientInterfaces;
 using AnalyticsService.Models;
 using AnalyticsService.ExternalClients.DTO; 
 using AnalyticsService.Data;
-public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
+public class StatistiqueModuleService : IStatistiqueModuleService<StatistiqueModule>
 {
     private readonly IEvaluationClient _evalClient;
     private readonly IAnswerClient _ansClient;
@@ -27,8 +27,36 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
         _qClient = qClient;
         _db = db;
     } 
-    
-    public async Task<StatistiqueModule> CalculateStats(int moduleId)
+    public async Task<StatistiqueModule> CreateAsync(int moduleId)
+    {
+        // On crée l’objet avec uniquement le ModuleId rempli
+        var statistique = new StatistiqueModule
+        {
+            ModuleId = moduleId
+            // Tous les autres champs restent à leur valeur par défaut (null ou 0)
+        };
+
+        _db.StatistiquesModules.Add(statistique);
+        await _db.SaveChangesAsync();
+
+        return statistique;
+    }
+    public async Task<StatistiqueModule> GetByPropertyAsync(int moduleId)
+    {
+        // On récupère la ligne stats pour le module
+        var stats = await _db.StatistiquesModules
+            .FirstOrDefaultAsync(s => s.ModuleId == moduleId);
+
+        if (stats == null)
+        {
+            // Vous pouvez choisir de retourner null ou de lancer une exception
+            throw new KeyNotFoundException(
+                $"Aucune statistique trouvée pour ModuleId = {moduleId}");
+        }
+
+        return stats;
+    }
+    public async Task<StatistiqueModule> CalculateStandardStats(int moduleId)
     {
         var evaluations = await _evalClient.GetByModuleAsync(moduleId); 
         if (evaluations == null)
@@ -60,7 +88,7 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
                 }
     
                 // 3. Filtrer les questions avec StatName non null
-                var statQuestions = allQuestions.Where(q => !string.IsNullOrEmpty(q.StatName)).ToList();
+                var statQuestions = allQuestions.Where(q => !string.IsNullOrEmpty(q.StatName) && (q.StatName == "SatisfactionRate" || q.StatName == "NpsScore") ).ToList();
     
                 // 4. Initialiser l'objet StatistiqueModule
                 var stat = new StatistiqueModule { ModuleId = moduleId, CreatedAt = DateTime.UtcNow , AverageRating =  evaluationDtos.Average(e => e.Score)};
@@ -134,7 +162,7 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
         // 5) Retourner la valeur calculée
         return avg;
     }   
-    public async Task<StatistiqueModule> RefreshModuleStatsMarks(int moduleId)
+    public async Task<StatistiqueModule> CalculateMarksStats(int moduleId)
     {
         // 1) Charger l’entité existan
         var stat = await _db.StatistiquesModules
@@ -167,7 +195,7 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
             stat.MedianNotes  = 0;
             stat.StdevNotes   = 0;
             stat.PassRate     = 0;
-        }
+        } 
 
       
 
@@ -181,7 +209,7 @@ public class StatistiqueModuleService : IStatistiqueService<StatistiqueModule>
         if (total == 0) return 0;
 
         var passed = notes.Count(n => n.Grade >= 12.0);
-        return (double) passed / total;
+        return (double) (passed / total)*100;
     } 
      // Méthode de calcul de la médiane
             private double CalculateMedian(List<float> values)

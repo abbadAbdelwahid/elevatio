@@ -10,8 +10,11 @@ public class StatistiqueEnseignant
     public int      TeacherId             { get; set; }  // Référence métier
     public double?  AverageM     { get; set; } // Moyenne des modules 
     public double?  MedianNotes         { get; set; }  // Médiane des moyennes 
-    public double?  StdEv     { get; set; } 
-    public double?  NoteMax      { get; set; }
+    public double?  StdEv     { get; set; }  
+    public String? ModuleMaxPass          { get; set; }  
+    public String? ModuleMinPass          { get; set; }  
+    public String? MaxModuleRated        { get; set; }
+    public double?  NoteMax      { get; set; } 
     public double?  NoteMin        { get; set; }  // Moyenne des notes 
     public double?  PassRate       { get; set; }
 

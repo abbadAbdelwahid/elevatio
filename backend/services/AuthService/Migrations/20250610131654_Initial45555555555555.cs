@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace AnalyticsService.Migrations
+namespace AuthService.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial4555 : Migration
+    public partial class Initial45555555555555 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

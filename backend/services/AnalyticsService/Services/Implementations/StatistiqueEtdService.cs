@@ -3,10 +3,11 @@ using AnalyticsService.ExternalClients.ClientInterfaces;
 using AnalyticsService.ExternalClients.DTO;
 using AnalyticsService.Models;
 using AnalyticsService.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnalyticsService.Services.Implementations;
 
-public class StatistiqueEtdService : IStatistiqueService<StatistiqueEtudiant> 
+public class StatistiqueEtdService : IStatistiqueUserService<StatistiqueEtudiant> 
 {
     private readonly AnalyticsDbContext  _db; 
     private readonly INoteClient   _noteClient;
@@ -18,7 +19,34 @@ public class StatistiqueEtdService : IStatistiqueService<StatistiqueEtudiant>
         _noteClient = noteClient;
 
     }
+    public async Task<StatistiqueEtudiant> CreateAsync(int EtdId)
+    {
+        // On crée l’objet avec uniquement le ModuleId rempli
+        var statistique = new StatistiqueEtudiant() {
+            StudentId = EtdId
+            // Tous les autres champs restent à leur valeur par défaut (null ou 0)
+        };
 
+        _db.StatistiquesEtudiants.Add(statistique);
+        await _db.SaveChangesAsync();
+
+        return statistique;
+    } 
+    public async Task<StatistiqueEtudiant> GetByUserIdAsync(int EtdId)
+    {
+        // On récupère la ligne stats pour le module
+        var stats = await _db.StatistiquesEtudiants
+            .FirstOrDefaultAsync(s => s.StudentId==EtdId );
+
+        if (stats == null)
+        {
+            // Vous pouvez choisir de retourner null ou de lancer une exception
+            throw new KeyNotFoundException(
+                $"Aucune statistique trouvée pour etd= {EtdId}");
+        }
+
+        return stats;
+    }
     public async Task<StatistiqueEtudiant> CalculateStats(int StudentId)
     {
         // 1) Récupérer les notes de l'étudiant
@@ -75,6 +103,6 @@ public class StatistiqueEtdService : IStatistiqueService<StatistiqueEtudiant>
         if (total == 0) return 0;
 
         var passed = notes.Count(n => n.Grade >= 12.0);
-        return (double) passed / total;
+        return (double) (passed / total)*100;
     } 
 }

@@ -7,7 +7,7 @@ using AnalyticsService.Models;
 using AnalyticsService.ExternalClients.DTO; 
 using AnalyticsService.Data;
 
-public class StatistiqueEnsService : IStatistiqueService<StatistiqueEnseignant>
+public class StatistiqueEnsService : IStatistiqueUserService<StatistiqueEnseignant>
 {
 
     private readonly AnalyticsDbContext _db;
@@ -20,7 +20,34 @@ public class StatistiqueEnsService : IStatistiqueService<StatistiqueEnseignant>
         _db = db;
         _noteClient = noteClient;
     }
+    public async Task<StatistiqueEnseignant> CreateAsync(int EnsId)
+    {
+        // On crée l’objet avec uniquement le ModuleId rempli
+        var statistique = new StatistiqueEnseignant() {
+            TeacherId = EnsId
+            // Tous les autres champs restent à leur valeur par défaut (null ou 0)
+        };
 
+        _db.StatistiquesEnseignants.Add(statistique);
+        await _db.SaveChangesAsync();
+
+        return statistique;
+    }
+    public async Task<StatistiqueEnseignant> GetByUserIdAsync(int EnsId)
+    {
+        // On récupère la ligne stats pour le module
+        var stats = await _db.StatistiquesEnseignants
+            .FirstOrDefaultAsync(s => s.TeacherId==EnsId );
+
+        if (stats == null)
+        {
+            // Vous pouvez choisir de retourner null ou de lancer une exception
+            throw new KeyNotFoundException(
+                $"Aucune statistique trouvée pour ens= {EnsId}");
+        }
+
+        return stats;
+    }
    public async Task<StatistiqueEnseignant> CalculateStats(int teacherId)
     {
         // 1) Récupérer l’enregistrement existant depuis la base

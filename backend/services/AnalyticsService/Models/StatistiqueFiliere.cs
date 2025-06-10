@@ -7,13 +7,17 @@ public class StatistiqueFiliere
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
     public int      Id   { get; set; }  // PK 
-    public int      FiliereId              { get; set; } // Référence métier 
+    public int      FiliereId              { get; set; } // Référence métier
+    public String FiliereName               { get; set; }
+    public String? FiliereRoot               { get; set; }
     public int?     NbrEtds               { get; set; } 
     public double?   AverageRating          { get; set; } // Moyenne des notes
     public double?   AverageMoyenne          { get; set; } // Moyenne des notes 
-    public String? ModuleMaxPass          { get; set; } 
+    public String? ModuleMaxPass          { get; set; }  
+    public String? ModuleMinPass          { get; set; } 
     public String? Majorant               { get; set; }
-    public double? MaxMoyenne               { get; set; }
+    public double? MaxMoyenne               { get; set; }  
+    public String? MaxModuleRated { get; set; }
     
 
     public double?   MedianRating           { get; set; }  // Médiane des notes
