@@ -1,5 +1,6 @@
 using System.Net;
-using System.Text;
+using System.Text; 
+using PuppeteerSharp;
 using AnalyticsService.ExternalClients.DTO;
 using iText.IO.Font.Constants;
 using iText.Kernel.Font;

@@ -8,5 +8,5 @@ public class NoteDto
     public int studentId { get; set; }
                                        
     public float Grade { get; set; } 
-    public string Observation { get; set; }
+    public string Observation { get; set; } 
 }

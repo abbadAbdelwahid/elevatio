@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CourseManagementService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610200506_Initial455555555555555")]
-    partial class Initial455555555555555
+    [Migration("20250610204944_Initial455555555555")]
+    partial class Initial455555555555
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,10 +80,6 @@ namespace CourseManagementService.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FiliereName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FiliereRoot")
                         .IsRequired()
                         .HasColumnType("text");
 
