@@ -123,6 +123,17 @@ namespace CourseManagementService.Controllers
             return Ok("Modules assignés avec succès.");
         }
 
+        // GET api/module/{id}/teacher-fullname
+        [HttpGet("{id}/teacher-fullname")]
+        public async Task<ActionResult<string>> GetTeacherFullNameByModuleId(int id)
+        {
+            var fullName = await _service.GetTeacherFullNameByModuleIdAsync(id);
+            if (fullName == null)
+                return NotFound("Module introuvable.");
+
+            return Ok(new { teacherFullName = fullName });
+        }
+
 
 
 

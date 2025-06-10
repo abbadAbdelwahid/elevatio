@@ -290,6 +290,15 @@ namespace CourseManagementService.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
+        
+        public async Task<string?> GetTeacherFullNameByModuleIdAsync(int moduleId)
+        {
+            var module = await _context.Modules.FindAsync(moduleId);
+            if (module == null) return null;
+
+            return await _authHttp.GetTeacherFullNameAsync(module.TeacherId);
+        }
+
 
 
 

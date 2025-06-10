@@ -102,6 +102,32 @@ namespace AuthService.Controllers
 
             return Ok(result);
         }
+        
+        [Authorize]
+        [HttpGet("me/info")]
+        public async Task<IActionResult> GetMyInfo()
+        {
+            // Récupérer l'id de l'utilisateur depuis le token
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+                return Unauthorized("Token invalide.");
+
+            // Rechercher l'utilisateur
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return NotFound("Utilisateur non trouvé.");
+
+            // Retourner les données demandées
+            return Ok(new
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
+            });
+        }
+
 
         
         
