@@ -15,6 +15,7 @@ RUN npm install
 # Copy the rest of the app
 COPY . .
 
+RUN rm -f .env.local
 # Build the app for production
 RUN npm run build
 
