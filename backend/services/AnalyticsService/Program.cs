@@ -30,6 +30,7 @@ builder.Services.AddScoped<IReportService, ReportService>();
 
 // Ajouter les services HTTP avec l'URL de base
 builder.Services.AddHttpClient<IQuestionnaireClient, HttpQuestionnaireClient>();
+builder.Services.AddHttpClient<INoteClient, HttpNoteClient>(); 
 builder.Services.AddHttpClient<IAnswerClient, HttpAnswerClient>(); 
 builder.Services.AddHttpClient<IQuestionClient, HttpQuestionClient>(); 
 builder.Services.AddHttpClient<IFiliereClient, HttpFiliereClient>(); 
