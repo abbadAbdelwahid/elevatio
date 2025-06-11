@@ -36,9 +36,14 @@ export function Sidebar() {
             { name: "Course", href: "/admin/courses", icon: "/images/sidebar/coursesIcon.svg", roles: ["Admin"] },
             { name: "Planning", href: "/admin/edt", icon: "/images/sidebar/edt.svg", roles: ["Admin"] },
             { name: "Forms", href: "/admin/forms", icon: "/images/sidebar/form.svg", roles: ["Admin"] },
-
+            //prof routes
+            { name: "Dashboard", href: "/prof/dashboard", icon: "/images/sidebar/dashboard-icon.svg", roles: ["Enseignant"] },
+            { name: "Students", href: "/prof/students", icon: "/images/sidebar/profs.svg", roles: ["Enseignant"] },
+            { name: "Course", href: "/prof/courses", icon: "/images/sidebar/coursesIcon.svg", roles: ["Enseignant"] },
+            { name: "Planning", href: "/prof/edt", icon: "/images/sidebar/edt.svg", roles: ["Enseignant"] },
+            { name: "Forms", href: "/prof/forms", icon: "/images/sidebar/form.svg", roles: ["Enseignant"] },
             // common routes
-            { name: "Profil", href: "/profil", icon: "/images/sidebar/profilIcon.svg", roles: ["Etudiant", "Admin"] },
+            { name: "Profil", href: "/profil", icon: "/images/sidebar/profilIcon.svg", roles: ["Etudiant", "Admin","Enseignant"] },
         ]
 
         if (!role) return []

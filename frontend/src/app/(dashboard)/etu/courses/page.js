@@ -16,9 +16,10 @@ export default function CoursesPage() {
     const fetchCourses = async (filter) => {
         setIsLoading(true);
         try {
-            const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
-            const res = await fetch(`${baseUrl}/courses?filter=${filter}`);
+            const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL;
+            const res = await fetch(`${baseUrl}/api/Module?filter=${filter}`);
             const data = await res.json();
+            console.log('les modules pour eut: ',data);
             setCourses(data);
             setFilteredCourses(data); // Initialisation des cours filtrés par défaut (All)
         } catch (error) {

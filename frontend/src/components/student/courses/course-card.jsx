@@ -1,16 +1,43 @@
 'use client'
 
 
-import { useState} from "react"
+import { useState,useEffect} from "react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import  {DialogDemo} from "@/components/student/courses/modalComponent";
 
 export function CourseCard({ course }) {
-
+    const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL;
     const [rating, setRating] = useState(course.evaluation?.rating || 0)
     const [hoverRating, setHoverRating] = useState(0)
 
+
+    useEffect(() => {
+        const fetchRating = async () => {
+            try {
+                const token = localStorage.getItem("accessToken")
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_COURSE_URL}/api/evaluations/getEvaluationsByModuleId/${course.moduleId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                if (res.ok) {
+                    const data = await res.json()
+                    setRating(data.rating || 0)
+                } else {
+                    console.warn("Pas d'évaluation pour ce module.")
+                }
+            } catch (error) {
+                console.error("Erreur fetch rating :", error)
+            }
+        }
+
+        if (course.moduleId) {
+            fetchRating()
+        }
+    }, [course.moduleId])
     // Générer les étoiles
     const renderStars = (count, filled) => {
         return [...Array(count)].map((_, i) => (
@@ -20,6 +47,7 @@ export function CourseCard({ course }) {
                 onClick={() => setRating(filled ? i + 1 : rating)}
                 onMouseEnter={() => setHoverRating(filled ? i + 1 : 0)}
                 onMouseLeave={() => setHoverRating(0)}
+                type="button"
             >
                 <StarIcon filled={filled && (i < rating || i < hoverRating)} />
             </button>
@@ -29,17 +57,17 @@ export function CourseCard({ course }) {
     return (
         <div className="overflow-hidden rounded-lg border border-gray-200 shadow-sm">
             <div className="relative h-70 w-full overflow-hidden">
-                <Image src={course.image || "/placeholder.svg"} alt={course.title} fill className="object-cover" />
+                <Image src={course.profileImageUrl || "/placeholder.svg"} alt={course.moduleName} fill className="object-cover" />
             </div>
             <div className="p-4">
-                <h3 className="mb-2 font-medium">{course.title}</h3>
+                <h3 className="mb-2 font-medium">{course.moduleName}</h3>
                 <div className="mb-3 flex text-yellow-400">
                     {renderStars(5, true)}
                 </div>
                 <div className="mb-4 flex items-center justify-between text-sm text-gray-500">
                     <div className="flex items-center gap-1">
                         <ClockIcon />
-                        <span>{course.duration}</span>
+                        <span>{course.moduleDuration}</span>
                     </div>
                 </div>
                 <div className="relative">
@@ -49,7 +77,7 @@ export function CourseCard({ course }) {
                                 <AvatarImage src="/placeholder-user.jpg" />
                                 <AvatarFallback>{}</AvatarFallback>
                             </Avatar>
-                            <span className="text-sm text-gray-600">{course.professor}</span>
+                            <span className="text-sm text-gray-600">{course.teacherFullName}</span>
                         </div>
 
                         <DialogDemo
