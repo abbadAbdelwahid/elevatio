@@ -23,7 +23,7 @@ public class EnsReportController : ControllerBase
                 byte[] reportData = await _reportUserService.GenerateEnsReportPassAvgdfAsync(teacherId);
     
                 // Retourner le fichier généré (ici, on suppose que c'est un PDF)
-                return File(reportData, "application/pdf", "rapport_performance_enseignant.pdf");
+                return File(reportData, "application/pdf", $"rapport_performance_enseignant_Id{teacherId}.pdf");
             }
             catch (Exception ex)
             {
