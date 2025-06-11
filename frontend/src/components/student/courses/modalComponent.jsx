@@ -11,11 +11,14 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
+import {getUserIdFromCookie} from "@/lib/utils";
 
-export function DialogDemo({ title, course }) {
-    const [rating, setRating] = useState(course.evaluation?.rating || 0)
-    const [comment, setComment] = useState(course.evaluation?.comment || "")
+export function DialogDemo({ title, course ,score,commentaire,idEval }) {
 
+    const [rating, setRating] = useState(score)
+
+    const [comment, setComment] = useState(commentaire)
+   console.log('idEval: ',title,score,commentaire,rating)
     const [successMessage, setSuccessMessage] = useState("") // Nouveau state pour message de succès
     const [isSubmitting, setIsSubmitting] = useState(false) // Nouveau state pour la soumission en cours
     const triggerRef = useRef(null)
@@ -55,40 +58,49 @@ export function DialogDemo({ title, course }) {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setIsSubmitting(true)
+        e.preventDefault();
+        setIsSubmitting(true);
 
         const evaluationData = {
-            course_id: course.id,
-            rating,
-            comment,
-        }
+            respondentUserId: getUserIdFromCookie(), // ID de l'utilisateur
+            comment: comment, // Commentaire saisi par l'utilisateur
+            type: 'Module',  // Type d'évaluation (peut être "Module" ou "Filiere")
+            filiereId: 0,    // ID de la filière (mettre à 0 si non utilisé)
+            moduleId: course.moduleId, // ID du module
+            score: rating,  // Score de l'évaluation (basé sur le rating)
+        };
 
         try {
-            const res = await fetch(
-                `http://localhost:3003/evaluations${course.evaluation ? `/${course.evaluation.id}` : ''}`,
-                {
-                    method: course.evaluation ? "PUT" : "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(evaluationData),
-                }
-            )
+            const apiUrl = `${process.env.NEXT_PUBLIC_API_EVALUATION_URL}/api/evaluations`;
+            const url = course.score>0 ? `${apiUrl}/updateEvaluation/${idEval}` : `${apiUrl}/addEvaluation`;
+
+            const method = course.score >0 ? "PUT" : "POST"; // PUT pour la mise à jour, POST pour l'ajout
+
+            const res = await fetch(url, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Authentification
+                },
+                body: JSON.stringify(evaluationData),
+            });
 
             if (res.ok) {
-                setSuccessMessage(course.evaluation ? "Évaluation modifiée avec succès !" : "Évaluation soumise avec succès !")
+                setSuccessMessage(course.score ? "Évaluation modifiée avec succès !" : "Évaluation soumise avec succès !");
                 setTimeout(() => {
-                    setSuccessMessage("")
-                    setIsSubmitting(false)
-                }, 3000)
+                    setSuccessMessage("");
+                    setIsSubmitting(false);
+                }, 3000);
             } else {
-                console.error("Erreur lors de la soumission de l'évaluation")
+                console.error("Erreur lors de la soumission de l'évaluation");
+                setIsSubmitting(false);
             }
         } catch (error) {
-            console.error("Erreur réseau:", error)
+            console.error("Erreur réseau:", error);
+            setIsSubmitting(false);
         }
-    }
+    };
+
 
 
     return (
@@ -118,10 +130,10 @@ export function DialogDemo({ title, course }) {
             >
                 <DialogHeader>
                     <DialogTitle className="text-purple-600">
-                        Évaluer {course.title}
+                        Évaluer {course.moduleName}
                     </DialogTitle>
                     <DialogDescription className="text-sm">
-                        {course.professor}
+                        {course.teacherFullName}
                     </DialogDescription>
                 </DialogHeader>
 

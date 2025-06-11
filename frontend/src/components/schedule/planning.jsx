@@ -89,23 +89,6 @@ export default function ScheduleManagement() {
 
   return (
       <div className="space-y-4">
-        <div className="flex justify-end gap-2">
-          <Button
-              variant={mode === "update" ? "default" : "outline"}
-              onClick={() => setMode(mode === "update" ? "view" : "update")}
-          >
-            {mode === "update" ? "Annuler" : "Modifier"}
-          </Button>
-
-          <Button
-              variant={mode === "delete" ? "default" : "outline"}
-              onClick={() => setMode(mode === "delete" ? "view" : "delete")}
-              className="text-red-600 border-red-300"
-          >
-            {mode === "delete" ? "Annuler" : "Supprimer"}
-          </Button>
-        </div>
-
 
         <div className="flex gap-4 w-full">
           <div className="w-1/4">

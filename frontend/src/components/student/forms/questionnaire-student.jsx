@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Plus, Pencil, Trash, Eye, Type, List } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { Plus, Pencil, Trash, Eye, Type, List } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import {
     Table,
     TableBody,
@@ -10,13 +10,13 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -27,21 +27,21 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+} from "@/components/ui/alert-dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 
-// Définir les types pour les questionnaires
-const questionnaireTypesInternalExternal = [
-    { value: "Internal", label: "Internal" },
-    { value: "External", label: "External" },
-];
+const questionTypes = [
+    { value: "ouverte", label: "Question ouverte", icon: Type },
+    { value: "choix_multiple", label: "Choix multiple", icon: List },
+]
 
-const questionnaireTypesModuleFiliere = [
-    { value: "Filiere", label: "Filière" },
+const questionnaireTypes = [
+    { value: "Filière", label: "Pour la filière" },
     { value: "EDT", label: "Emploi du temps" },
-];
+    { value: "Visiteurs", label: "Visiteurs externes" },
+]
 
 export default function QuestionnairesManager({
                                                   questionnaires,
@@ -50,13 +50,13 @@ export default function QuestionnairesManager({
                                                   onToggleStatus,
                                                   loading,
                                               }) {
-    const [currentQ, setCurrentQ] = useState(null);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [openType, setOpenType] = useState("create");
-    const [viewingQuestions, setViewingQuestions] = useState(null);
+    const [currentQ, setCurrentQ] = useState(null)
+    const [openDialog, setOpenDialog] = useState(false)
+    const [openType, setOpenType] = useState("create")
+    const [viewingQuestions, setViewingQuestions] = useState(null)
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault()
         const payload = {
             ...currentQ,
             created:
@@ -64,33 +64,61 @@ export default function QuestionnairesManager({
                     ? new Date().toISOString().split("T")[0]
                     : currentQ.created,
             questions: currentQ.questions || [],
-        };
+        }
+        onSave(payload)
+        setOpenDialog(false)
+    }
 
-        await onSave(payload); // Assurez-vous d'appeler la fonction pour la création ou la mise à jour
-        setOpenDialog(false);
-    };
+    const addQuestionOption = (questionIndex) => {
+        const newQuestions = [...currentQ.questions]
+        newQuestions[questionIndex].options = [
+            ...(newQuestions[questionIndex].options || []),
+            "",
+        ]
+        setCurrentQ({ ...currentQ, questions: newQuestions })
+    }
+
+    const handleOptionChange = (questionIndex, optionIndex, value) => {
+        const newQuestions = [...currentQ.questions]
+        newQuestions[questionIndex].options[optionIndex] = value
+        setCurrentQ({ ...currentQ, questions: newQuestions })
+    }
+
+    // Fonction utilitaire pour afficher les réponses à choix multiple
+    const renderMultipleChoiceAnswers = (question) => {
+        if (!question.responses?.length) return <p className="text-gray-500 italic">Aucune réponse</p>
+        return question.responses.map((resp, i) => {
+            // resp.answer est un tableau d'indices choisis
+            const answers = resp.answer
+                .map((idx) => question.options?.[idx])
+                .filter(Boolean)
+                .join(", ")
+            return (
+                <p key={i} className="text-sm text-gray-700">
+                    <strong>{resp.userId || `Utilisateur ${i + 1}`}:</strong> {answers || "Aucune sélection"}
+                </p>
+            )
+        })
+    }
 
     // Fonction utilitaire pour afficher les réponses ouvertes
     const renderOpenAnswers = (question) => {
-        if (!question.answers?.length) {
-            return <p className="text-gray-500 italic">Aucune réponse</p>;
-        }
-
-        return question.answers.map((resp, i) => (
+        if (!question.responses?.length) return <p className="text-gray-500 italic">Aucune réponse</p>
+        return question.responses.map((resp, i) => (
             <p key={i} className="text-sm text-gray-700">
-                <strong>{resp.respondentUserId || `Utilisateur ${i + 1}`}:</strong> {resp.rawAnswer || "Aucune réponse"}
+                <strong>{resp.userId || `Utilisateur ${i + 1}`}:</strong> {resp.answer}
             </p>
-        ));
-    };
+        ))
+    }
 
     return (
         <>
             <div className="flex items-center justify-end p-4">
                 <Button
                     onClick={() => {
-                        setCurrentQ({ questions: [], status: true });
-                        setOpenType("create");
-                        setOpenDialog(true);
+                        setCurrentQ({ questions: [], status: true })
+                        setOpenType("create")
+                        setOpenDialog(true)
                     }}
                     className="bg-[#7F56D9] hover:bg-[#3a1a4a] text-white h-10"
                 >
@@ -114,20 +142,20 @@ export default function QuestionnairesManager({
 
                     <TableBody>
                         {questionnaires.map((q) => (
-                            <TableRow key={q.questionnaireId} className="border-b border-gray-100 hover:bg-gray-50">
+                            <TableRow key={q.id} className="border-b border-gray-100 hover:bg-gray-50">
                                 <TableCell className="px-4 py-3 font-medium text-gray-900">{q.title}</TableCell>
 
                                 <TableCell className="px-4 py-3">
                   <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          q.typeModuleFiliere === "Filiere"
+                          q.type === "Filière"
                               ? "bg-purple-100 text-purple-800"
-                              : q.typeModuleFiliere === "EDT"
+                              : q.type === "EDT"
                                   ? "bg-blue-100 text-blue-800"
                                   : "bg-green-100 text-green-800"
                       }`}
                   >
-                    {q.typeModuleFiliere}
+                    {q.type}
                   </span>
                                 </TableCell>
 
@@ -148,11 +176,11 @@ export default function QuestionnairesManager({
                                 <TableCell className="px-4 py-3">
                                     <Switch
                                         checked={q.status}
-                                        onCheckedChange={(checked) => onToggleStatus(q.questionnaireId, checked)}
+                                        onCheckedChange={(checked) => onToggleStatus(q.id, checked)}
                                     />
                                 </TableCell>
 
-                                <TableCell className="px-4 py-3 text-gray-600">{new Date(q.createdAt).toLocaleDateString()}</TableCell>
+                                <TableCell className="px-4 py-3 text-gray-600">{q.created}</TableCell>
 
                                 <TableCell className="px-4 py-3 text-right">
                                     <div className="flex justify-end gap-2">
@@ -161,9 +189,9 @@ export default function QuestionnairesManager({
                                             size="sm"
                                             className="text-gray-400 hover:text-blue-600"
                                             onClick={() => {
-                                                setCurrentQ(q);
-                                                setOpenType("edit");
-                                                setOpenDialog(true);
+                                                setCurrentQ(q)
+                                                setOpenType("edit")
+                                                setOpenDialog(true)
                                             }}
                                         >
                                             <Pencil className="h-4 w-4" />
@@ -189,7 +217,7 @@ export default function QuestionnairesManager({
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>Annuler</AlertDialogCancel>
                                                     <AlertDialogAction
-                                                        onClick={() => onDelete(q.questionnaireId)}
+                                                        onClick={() => onDelete(q.id)}
                                                         className="bg-red-600 hover:bg-red-700"
                                                     >
                                                         Confirmer
@@ -219,28 +247,45 @@ export default function QuestionnairesManager({
                                 <div className="flex items-center gap-2 mb-2">
                   <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          question.statName === "MedianRating"
+                          question.question_type === "ouverte"
                               ? "bg-green-100 text-green-800"
                               : "bg-purple-100 text-purple-800"
                       }`}
                   >
-                    {question.standardQuestion.text}
+                    {questionTypes.find((t) => t.value === question.question_type)?.label}
                   </span>
                                 </div>
-                                <p className="text-sm font-medium text-gray-900">{question.text}</p>
+                                <p className="text-sm font-medium text-gray-900">{question.question_text}</p>
 
-                                {/* Affichage des réponses */}
-                                <div>
-                                    <p className="text-xs font-medium text-gray-500 mt-2">Réponses :</p>
-                                    {renderOpenAnswers(question)} {/* Affichage des réponses ouvertes */}
-                                </div>
+                                {/* Affichage des réponses selon le type */}
+                                {question.question_type === "choix_multiple" && question.options?.length > 0 && (
+                                    <>
+                                        <p className="text-xs font-medium text-gray-500 mt-2">Options :</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            {question.options.map((opt, i) => (
+                                                <li key={i} className="text-sm text-gray-700">
+                                                    {opt}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <p className="text-xs font-medium text-gray-500 mt-4">Réponses :</p>
+                                        {renderMultipleChoiceAnswers(question)}
+                                    </>
+                                )}
+
+                                {question.question_type === "ouverte" && (
+                                    <>
+                                        <p className="text-xs font-medium text-gray-500 mt-2">Réponses :</p>
+                                        {renderOpenAnswers(question)}
+                                    </>
+                                )}
                             </div>
                         ))}
                     </div>
                 </DialogContent>
             </Dialog>
 
-            {/* Dialog créer/modifier */}
+            {/* Dialog créer/modifier (reste inchangé) */}
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogContent className="sm:max-w-[700px] bg-white max-h-screen overflow-y-auto mb-20">
                     <DialogHeader>
@@ -259,34 +304,15 @@ export default function QuestionnairesManager({
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium text-gray-700">Type (Internal / External) *</Label>
+                                <Label className="text-sm font-medium text-gray-700">Type *</Label>
                                 <select
                                     className="w-full rounded-md border-gray-300"
-                                    value={currentQ?.typeInternalExternal || ""}
-                                    onChange={(e) => setCurrentQ({ ...currentQ, typeInternalExternal: e.target.value })}
+                                    value={currentQ?.type || ""}
+                                    onChange={(e) => setCurrentQ({ ...currentQ, type: e.target.value })}
                                     required
                                 >
                                     <option value="">Sélectionner un type</option>
-                                    {questionnaireTypesInternalExternal.map((type) => (
-                                        <option key={type.value} value={type.value}>
-                                            {type.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label className="text-sm font-medium text-gray-700">Type (Module / Filiere) *</Label>
-                                <select
-                                    className="w-full rounded-md border-gray-300"
-                                    value={currentQ?.typeModuleFiliere || ""}
-                                    onChange={(e) => setCurrentQ({ ...currentQ, typeModuleFiliere: e.target.value })}
-                                    required
-                                >
-                                    <option value="">Sélectionner un type</option>
-                                    {questionnaireTypesModuleFiliere.map((type) => (
+                                    {questionnaireTypes.map((type) => (
                                         <option key={type.value} value={type.value}>
                                             {type.label}
                                         </option>
@@ -304,13 +330,70 @@ export default function QuestionnairesManager({
                                         <Input
                                             required
                                             placeholder={`Question ${index + 1}`}
-                                            value={question.text}
+                                            value={question.question_text}
                                             onChange={(e) => {
-                                                const updated = [...currentQ.questions];
-                                                updated[index].text = e.target.value;
-                                                setCurrentQ({ ...currentQ, questions: updated });
+                                                const updated = [...currentQ.questions]
+                                                updated[index].question_text = e.target.value
+                                                setCurrentQ({ ...currentQ, questions: updated })
                                             }}
                                         />
+                                        <select
+                                            className="w-full rounded-md border-gray-300"
+                                            value={question.question_type}
+                                            onChange={(e) => {
+                                                const updated = [...currentQ.questions]
+                                                updated[index].question_type = e.target.value
+                                                if (e.target.value === "choix_multiple" && !updated[index].options) {
+                                                    updated[index].options = [""]
+                                                }
+                                                setCurrentQ({ ...currentQ, questions: updated })
+                                            }}
+                                            required
+                                        >
+                                            {questionTypes.map((t) => (
+                                                <option key={t.value} value={t.value}>
+                                                    {t.label}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        {question.question_type === "choix_multiple" && (
+                                            <div className="space-y-2">
+                                                {question.options?.map((opt, optIdx) => (
+                                                    <div key={optIdx} className="flex items-center gap-2">
+                                                        <Input
+                                                            required
+                                                            value={opt}
+                                                            onChange={(e) => handleOptionChange(index, optIdx, e.target.value)}
+                                                            placeholder={`Option ${optIdx + 1}`}
+                                                        />
+                                                        <Button
+                                                            type="button"
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            className="text-red-500"
+                                                            onClick={() => {
+                                                                const updated = [...currentQ.questions]
+                                                                updated[index].options = updated[index].options.filter(
+                                                                    (_, i) => i !== optIdx
+                                                                )
+                                                                setCurrentQ({ ...currentQ, questions: updated })
+                                                            }}
+                                                        >
+                                                            <Trash className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                ))}
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => addQuestionOption(index)}
+                                                >
+                                                    <Plus className="h-4 w-4 mr-2" /> Ajouter une option
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -324,8 +407,9 @@ export default function QuestionnairesManager({
                                         questions: [
                                             ...(currentQ?.questions || []),
                                             {
-                                                questionId: Date.now(),
-                                                text: "",
+                                                id: Date.now(),
+                                                question_text: "",
+                                                question_type: "ouverte",
                                             },
                                         ],
                                     })
@@ -348,5 +432,5 @@ export default function QuestionnairesManager({
                 </DialogContent>
             </Dialog>
         </>
-    );
+    )
 }
