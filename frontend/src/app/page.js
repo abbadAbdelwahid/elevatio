@@ -200,7 +200,7 @@ export default function Home() {
                         {/* First Testimonial */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <p className="text-gray-600 mb-4 italic">
-                                &quot;Elevatio has streamlined the evaluation process and made it easier for us to provide feedback. It's a powerful tool for improving the quality of our courses.&quot;
+                                &quot;Elevatio has streamlined the evaluation process and made it easier for us to provide feedback. It&#39;s a powerful tool for improving the quality of our courses.&quot;
                             </p>
                             <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
@@ -242,7 +242,7 @@ export default function Home() {
                         {/* Fourth Testimonial */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <p className="text-gray-600 mb-4 italic">
-                                &quot;With Elevatio, I can easily give feedback after every course. It's great to see the improvements based on the evaluations we provide.&quot;
+                                &quot;With Elevatio, I can easily give feedback after every course. It&#39;s great to see the improvements based on the evaluations we provide.&quot;
                             </p>
                             <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
@@ -256,7 +256,7 @@ export default function Home() {
                         {/* Fifth Testimonial */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <p className="text-gray-600 mb-4 italic">
-                                &quot;I love how easy Elevatio makes it to track and submit feedback. It's efficient, and I can see how it helps in enhancing course content.&quot;
+                                &quot;I love how easy Elevatio makes it to track and submit feedback. It&#39;s efficient, and I can see how it helps in enhancing course content.&quot;
                             </p>
                             <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
@@ -270,7 +270,7 @@ export default function Home() {
                         {/* Sixth Testimonial */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <p className="text-gray-600 mb-4 italic">
-                                &quot;Elevatio has really made it easier to evaluate courses and see tangible improvements. It's a great tool for students and educators alike.&quot;
+                                &quot;Elevatio has really made it easier to evaluate courses and see tangible improvements. It&#39;s a great tool for students and educators alike.&quot;
                             </p>
                             <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
@@ -411,7 +411,7 @@ export default function Home() {
                 <div className="container mx-auto px-4 text-center">
                     <h2 className="text-3xl font-bold mb-6">Get in Touch with Us</h2>
                     <p className="text-gray-600 mb-8">
-                        We are here to answer any questions you may have. Whether you're looking for more information on our platform or need support, feel free to reach out.
+                        We are here to answer any questions you may have. Whether you&#39;re looking for more information on our platform or need support, feel free to reach out.
                     </p>
 
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">
