@@ -2,6 +2,7 @@ using AnalyticsService.Data;
 using AnalyticsService.ExternalClients.ClientInterfaces;
 using AnalyticsService.ExternalClients.OpenAI;
 using AnalyticsService.Services.Interfaces;
+using SelectPdf;
 
 namespace AnalyticsService.Services.Implementations;
 
@@ -24,8 +25,39 @@ public class ReportEnsService
         _quesClient = quesClient;
         _moduleClient = moduleClient;
         _filiereClient = filiereClient;
+    }  
+    public static byte[] GeneratePdf(string htmlContent)
+    { // Encapsuler le titre et le contenu dans un document HTML
+        
+
+        // Créer une instance de l'objet HtmlToPdf
+        HtmlToPdf converter = new HtmlToPdf();
+        SelectPdf.PdfDocument doc = null;
+
+        try
+        {
+            // Convertir le contenu HTML en PDF
+            doc = converter.ConvertHtmlString(htmlContent);
+
+            // Sauvegarder le document PDF dans un MemoryStream
+            using (var memoryStream = new MemoryStream())
+            {
+                doc.Save(memoryStream);
+                doc.Close();
+                
+                // Retourner le tableau d'octets du PDF
+                return memoryStream.ToArray();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Gérer les erreurs
+            Console.WriteLine("Erreur lors de la génération du PDF : " + ex.Message);
+            return null;
+        }  
+    
     } 
-    public async Task<string> PassAvgAnalyse(double avg , double pass)
+    public async Task<string> PassAvgAnalyse(double? avg , double? pass)
 {
 
     // Créer le prompt pour l'analyse des moyennes des modules et du taux de validation, et les recommandations
@@ -62,7 +94,8 @@ public class ReportEnsService
     var responseClean = response.Replace("*", "  ");
     return responseClean;
 }
-    /*public async Task<byte[]> GenerateEnsReportPdfAsync(int teacherId)
+
+    public async Task<byte[]> GenerateEnsReportPassAvgdfAsync(int teacherId)
     {
         try
         {
@@ -70,28 +103,77 @@ public class ReportEnsService
             var stat = await _db.StatistiquesEnseignants.FindAsync(teacherId)
                        ?? throw new KeyNotFoundException("Enseignant introuvable");
 
-            // 2) Créer le prompt pour générer le rapport avec GroqAI
-            var prompt = $@"Rapport Enseignant {stat.TeacherId} (ISO 29990) :
-- Moyenne modules     : {stat.AverageM:F1}/5
-- Note Max     : {stat.NoteMax:P0} et Note Min : {stat.NoteMin:P0}
-- Feedback positif     : {stat.PositiveFeedBackPct:P0}
-- Pourcentage de validation dans les modules enseignés     : {stat.PassRate:F1} h
+            var Response = PassAvgAnalyse(stat.AverageM, stat.PassRate);
 
-Selon la norme ISO 29990, indique :
-1) Points forts pédagogiques.
-2) Axes d'amélioration.
-3) Trois recommandations.";
 
-            // 3) Générer le texte du rapport avec GroqAI
-            var Response = await _groqAi.SendChatAsync(prompt);
-
-            // Vérifier si le texte généré est valide
-            if (string.IsNullOrWhiteSpace(Response))
-            {
-                throw new InvalidOperationException("Le texte du rapport généré est vide ou invalide.");
-            }
-
+            string htmlContent = $@"
     
+<html>
+        <head>
+            <title>Rapport de Performance de l'Enseignant</title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                }}
+                h1 {{
+                    color: #2C3E50;
+                    text-align: center;
+                }}
+                .section {{
+                    margin: 20px 0;
+                    padding: 10px;
+                    background-color: #F4F6F7;
+                    border-radius: 8px;
+                }}
+                .section h2 {{
+                    color: #34495E;
+                }}
+                .recommendations {{
+                    background-color: #E8F8F5;
+                    padding: 10px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                }}
+                .analysis {{
+                    background-color: #FFFAF0;
+                    padding: 10px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                }}
+            </style>
+        </head>
+        <body>
+            <h1>Rapport de Performance de l'Enseignant</h1>
+
+            <div class='section'>
+                <h2>Analyse des Performances</h2>
+                <div class='analysis'>
+                    <p>{Response}</p>
+                </div>
+            </div>
+
+            <div class='section'>
+                <h2>Recommandations</h2>
+                <div class='recommendations'>
+                    <p>Basé sur l'analyse ci-dessus, voici les recommandations adaptées :</p>
+                    <ul>
+                        <li>Améliorer la préparation des étudiants avant les évaluations.</li>
+                        <li>Réviser les critères d'évaluation pour garantir des résultats plus équitables.</li>
+                        <li>Fournir davantage de ressources pédagogiques pour les étudiants en difficulté.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class='section'>
+                <h2>Conclusion</h2>
+                <p>Ce rapport présente une analyse détaillée des statistiques de l'enseignant et propose des recommandations pratiques pour améliorer l'enseignement et la réussite des étudiants.</p>
+            </div>
+        </body>
+    </html>";
+            var pdfBytes = ReportEnsService.GeneratePdf(htmlContent);
+            return pdfBytes;
+
         }
         catch (KeyNotFoundException ex)
         {
@@ -108,6 +190,7 @@ Selon la norme ISO 29990, indique :
             // Gérer d'autres exceptions générales
             throw new Exception("Une erreur est survenue lors de la génération du rapport PDF.", ex);
         }
-    
-    */
+
+
+    }
 }

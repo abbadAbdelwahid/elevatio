@@ -13,6 +13,8 @@ public class StatistiqueFiliere
     public int?     NbrEtds               { get; set; } 
     public double?   AverageRating          { get; set; } // Moyenne des notes
     public double?   AverageMoyenne          { get; set; } // Moyenne des notes 
+    public double?   MoyenneMax         { get; set; } // Moyenne des notes 
+
     public String? ModuleMaxPass          { get; set; }  
     public String? ModuleMinPass          { get; set; } 
     public String? Majorant               { get; set; }

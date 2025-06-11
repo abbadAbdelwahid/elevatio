@@ -219,6 +219,9 @@ namespace AnalyticsService.Migrations
                     b.Property<string>("ModuleMinPass")
                         .HasColumnType("text");
 
+                    b.Property<double?>("MoyenneMax")
+                        .HasColumnType("double precision");
+
                     b.Property<int?>("NbrEtds")
                         .HasColumnType("integer");
 
