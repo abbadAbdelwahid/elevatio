@@ -102,6 +102,14 @@ public class EtudiantService : IEtudiantService
         return await _db.Etudiants.AsNoTracking().ToListAsync();
     }
 
+    public async Task<IEnumerable<Etudiant>> GetByFiliereIdAsync(int filiereId)
+    {
+        return await _db.Etudiants
+            .AsNoTracking()
+            .Where(e => e.FiliereId == filiereId)
+            .ToListAsync();
+    }
+
 
 
     

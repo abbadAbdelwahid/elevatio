@@ -125,6 +125,15 @@ public class EtudiantsController : ControllerBase
         return Ok(etudiants);
     }
 
+    [HttpGet("filiere/{filiereId}")]
+    public async Task<IActionResult> GetByFiliereId(int filiereId)
+    {
+        var etudiants = await _svc.GetByFiliereIdAsync(filiereId);
+        if (etudiants == null || !etudiants.Any())
+            return NotFound("Aucun étudiant trouvé pour cette filière.");
+
+        return Ok(etudiants);
+    }
 
     
 }

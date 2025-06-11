@@ -13,6 +13,6 @@ public interface IEtudiantService
     Task<string?> GetFullNameByIdAsync(string id);
     
     Task<IEnumerable<Etudiant>> GetAllAsync();
-
+    public Task<IEnumerable<Etudiant>> GetByFiliereIdAsync(int filiereId);
 
 }
