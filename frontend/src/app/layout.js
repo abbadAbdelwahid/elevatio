@@ -10,7 +10,7 @@ const inter = Inter({
 })
 
 export const metadata = {
-    title: "QualiTrack - Enhance the Quality of Higher Education",
+    title: "Elevatio - Enhance the Quality of Higher Education",
     description:
         "A smart platform to manage, automate, and analyze training evaluations in universities and engineering schools.",
 }

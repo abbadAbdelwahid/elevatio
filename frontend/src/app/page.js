@@ -10,18 +10,20 @@ export default function Home() {
             <NavComponent />
 
             {/* Hero Section */}
-            <section className="bg-amber-50 py-16 relative overflow-hidden">
+            <section id="home" className="bg-amber-50 py-16 relative overflow-hidden">
                 <div className="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
                     <div className="space-y-6 z-10">
                         <div className="space-y-3">
+                            <div className="space-y-3 mt-8"> {/* Adding top margin */}
                             <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                                Abbad is goinig to deploy our APP <br />
-                                Higher Education
+                                Elevatio is here to elevate the quality of training through seamless evaluations <br />
+                                in Higher Education
                             </h2>
-                            <h2 className="text-4xl md:text-5xl font-bold text-orange-500">QualiTrack</h2>
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-bold text-orange-500">Elevatio</h2>
                         </div>
                         <p className="text-gray-700 max-w-md">
-                            A smart platform to manage, automate, and analyze training evaluations in universities and engineering schools.
+                            A smart platform to automate, collect, and analyze evaluations for training programs in universities and engineering schools.
                         </p>
                     </div>
                     <div className="relative z-10">
@@ -117,8 +119,8 @@ export default function Home() {
             {/* Platform Preview Section */}
             <section className="py-16 ">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold mb-2">Plateform Preview hhh</h2>
-                    <p className="text-gray-500 mb-8">Lorem ipsum is simply dummy text of the printing.</p>
+                    <h2 className="text-3xl font-bold mb-2">Plateform Preview</h2>
+                    {/*<p className="text-gray-500 mb-8">Lorem ipsum is simply dummy text of the printing.</p>*/}
 
                     <ImageCarousel />
 
@@ -189,56 +191,98 @@ export default function Home() {
             </section>
 
             {/* Testimonials Section */}
-            <section className="py-20 bg-white">
-                <div className="container  px-4 mx-auto text-center">
-                    <h2 className="text-3xl font-bold mb-2">Testimonials</h2>
-                    <p className="text-gray-500 mb-12">Lorem ipsum is simply dummy text of the printing.</p>
+            <section id="testimonials" className="py-20 bg-white">
+                <div className="container px-4 mx-auto text-center">
+                    <h2 className="text-3xl font-bold mb-2">What Our Students Say</h2>
+                    <p className="text-gray-500 mb-12">See how Elevatio is helping to improve training evaluations and enhance educational experiences at ENSAT.</p>
 
-                    <div className="grid md:grid-cols-3 gap-4 ">
-                        {/* Premier témoignage */}
+                    <div className="grid md:grid-cols-3 gap-4">
+                        {/* First Testimonial */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <p className="text-gray-600 mb-4 italic">
-                                &quot;I received detailed feedback on my teaching. Ewthoma is a game changer.&quot;
+                                &quot;Elevatio has streamlined the evaluation process and made it easier for us to provide feedback. It's a powerful tool for improving the quality of our courses.&quot;
                             </p>
                             <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
                                 <div className="text-left">
-                                    <p className="font-semibold">M. Said</p>
-                                    <p className="text-sm text-gray-500">Professor</p>
+                                    <p className="font-semibold">Anass El Ouahabi</p>
+                                    <p className="text-sm text-gray-500">Student, ENSAT</p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Deuxième témoignage */}
+                        {/* Second Testimonial */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <p className="text-gray-600 mb-4 italic">
-                                &quot;Complete account of the system and expound the actual Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots&quot;
+                                &quot;Thanks to Elevatio, submitting my course feedback has never been easier. The platform is intuitive and ensures my voice is heard.&quot;
                             </p>
                             <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
                                 <div className="text-left">
-                                    <p className="font-semibold">Zhebe</p>
-                                    <p className="text-sm text-gray-500">Sinhane University Student</p>
+                                    <p className="font-semibold">Abdelouahed Abbad</p>
+                                    <p className="text-sm text-gray-500">Student, ENSAT</p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Troisième témoignage */}
+                        {/* Third Testimonial */}
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <p className="text-gray-600 mb-4 italic">
-                                &quot;There are many variations of passages of Lorem ipsum available, but the majority have suffered alteration in some form, by injected humour.&quot;
+                                &quot;Elevatio has made evaluating our courses quick and effective. The feedback is detailed, and it really helps us as students influence course quality.&quot;
                             </p>
                             <div className="flex items-center justify-start">
                                 <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
                                 <div className="text-left">
-                                    <p className="font-semibold">Claro R. Almon</p>
-                                    <p className="text-sm text-gray-500">Ullam Design</p>
+                                    <p className="font-semibold">Yasser Boulerbah</p>
+                                    <p className="text-sm text-gray-500">Student, ENSAT</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fourth Testimonial */}
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <p className="text-gray-600 mb-4 italic">
+                                &quot;With Elevatio, I can easily give feedback after every course. It's great to see the improvements based on the evaluations we provide.&quot;
+                            </p>
+                            <div className="flex items-center justify-start">
+                                <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                                <div className="text-left">
+                                    <p className="font-semibold">Wail Hadad</p>
+                                    <p className="text-sm text-gray-500">Student, ENSAT</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fifth Testimonial */}
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <p className="text-gray-600 mb-4 italic">
+                                &quot;I love how easy Elevatio makes it to track and submit feedback. It's efficient, and I can see how it helps in enhancing course content.&quot;
+                            </p>
+                            <div className="flex items-center justify-start">
+                                <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                                <div className="text-left">
+                                    <p className="font-semibold">Oussama El Batteoui</p>
+                                    <p className="text-sm text-gray-500">Student, ENSAT</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Sixth Testimonial */}
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <p className="text-gray-600 mb-4 italic">
+                                &quot;Elevatio has really made it easier to evaluate courses and see tangible improvements. It's a great tool for students and educators alike.&quot;
+                            </p>
+                            <div className="flex items-center justify-start">
+                                <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                                <div className="text-left">
+                                    <p className="font-semibold">Mohamed Bounouar</p>
+                                    <p className="text-sm text-gray-500">Student, ENSAT</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Indicateurs de pagination */}
+                    {/* Pagination Indicators */}
                     <div className="flex justify-center mt-8 gap-1">
                         <div className="w-8 h-2 bg-purple-800 rounded-full"></div>
                         <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
@@ -247,110 +291,141 @@ export default function Home() {
                 </div>
             </section>
 
+
+
             {/* About Section */}
-            <section className="py-16 bg-white">
+            <section id="about" className="py-16 bg-white">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold mb-2">About EvalForma</h2>
-                    <p className="text-gray-500 mb-12">Lorem ipsum is simply dummy text of the printing.</p>
+                    <h2 className="text-3xl font-bold mb-2">About Elevatio</h2>
+                    <p className="text-gray-500 mb-8">
+                        Elevatio is a cutting-edge platform designed to revolutionize the way educational institutions evaluate and improve their training programs. In today’s fast-paced academic world, managing feedback and assessments manually can be time-consuming and error-prone. Elevatio automates the entire process, allowing universities and engineering schools to easily collect, analyze, and act on feedback from students, professors, and administrators.
+                    </p>
+                    <p className="text-gray-500 mb-12">
+                        Our platform offers intuitive tools for students to provide detailed evaluations, while enabling instructors to receive actionable insights. Administrators gain access to comprehensive reports and analytics that help in making data-driven decisions to improve training quality and student satisfaction. With Elevatio, educational institutions can ensure a continuous cycle of improvement, enhancing the overall learning experience for everyone involved.
+                    </p>
                 </div>
             </section>
 
-            {/* Benefits Section */}
-            <section className="py-16 mb-20 bg-amber-50">
-                <div className="container mx-auto px-4">
-                    <div className="grid md:grid-cols-2 gap-8 items-center">
-                        {/* Image div */}
-                        <div className="ms-5">
-                            <Image
-                                src="/images/acceuil/about.svg"
-                                alt="Education professionals"
-                                width={384} // max-w-sm = 384px (tailwind par défaut)
-                                height={300}
 
-                                className="rounded-3xl w-full max-w-sm h-[300px] object-cover shadow-lg"
-                            />
-                        </div>
+            {/*/!* Benefits Section *!/*/}
+            {/*<section className="py-16 mb-20 bg-amber-50">*/}
+            {/*    <div className="container mx-auto px-4">*/}
+            {/*        <div className="grid md:grid-cols-2 gap-8 items-center">*/}
+            {/*            /!* Image div *!/*/}
+            {/*            <div className="ms-5">*/}
+            {/*                <Image*/}
+            {/*                    src="/images/acceuil/about.svg"*/}
+            {/*                    alt="Education professionals"*/}
+            {/*                    width={384} // max-w-sm = 384px (tailwind par défaut)*/}
+            {/*                    height={300}*/}
+
+            {/*                    className="rounded-3xl w-full max-w-sm h-[300px] object-cover shadow-lg"*/}
+            {/*                />*/}
+            {/*            </div>*/}
 
 
-                        {/* Text content */}
-                        <div>
-                            <h2 className="text-3xl font-bold mb-6">
-                                <span>Benefit From Our Online</span>
-                                <br />
-                                <span>Learning Expertise Earn</span>
-                                <br />
-                                <span className="text-pink-500">Professional</span>
-                            </h2>
+            {/*            /!* Text content *!/*/}
+            {/*            <div>*/}
+            {/*                <h2 className="text-3xl font-bold mb-6">*/}
+            {/*                    <span>Benefit From Our Online</span>*/}
+            {/*                    <br />*/}
+            {/*                    <span>Learning Expertise Earn</span>*/}
+            {/*                    <br />*/}
+            {/*                    <span className="text-pink-500">Professional</span>*/}
+            {/*                </h2>*/}
 
-                            <div className="grid grid-cols-2 gap-6 mb-8">
-                                <div>
-                                    <p className="text-sm text-gray-600 mb-4 w-70">
-                                        <strong className="block mb-2">OUR MISSION:</strong>
-                                        Suspendisse ultrice gravida dictum fusce placerat ultricies integer quis auctor elit sed vulputate mi sit.
-                                    </p>
-                                    <div className="flex items-center gap-2">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="text-green-500"
-                                        >
-                                            <polyline points="20 6 9 17 4 12" />
-                                        </svg>
-                                        <p className="text-sm">Professional certification</p>
-                                    </div>
-                                </div>
+            {/*                <div className="grid grid-cols-2 gap-6 mb-8">*/}
+            {/*                    <div>*/}
+            {/*                        <p className="text-sm text-gray-600 mb-4 w-70">*/}
+            {/*                            <strong className="block mb-2">OUR MISSION:</strong>*/}
+            {/*                            Suspendisse ultrice gravida dictum fusce placerat ultricies integer quis auctor elit sed vulputate mi sit.*/}
+            {/*                        </p>*/}
+            {/*                        <div className="flex items-center gap-2">*/}
+            {/*                            <svg*/}
+            {/*                                xmlns="http://www.w3.org/2000/svg"*/}
+            {/*                                width="20"*/}
+            {/*                                height="20"*/}
+            {/*                                viewBox="0 0 24 24"*/}
+            {/*                                fill="none"*/}
+            {/*                                stroke="currentColor"*/}
+            {/*                                strokeWidth="2"*/}
+            {/*                                strokeLinecap="round"*/}
+            {/*                                strokeLinejoin="round"*/}
+            {/*                                className="text-green-500"*/}
+            {/*                            >*/}
+            {/*                                <polyline points="20 6 9 17 4 12" />*/}
+            {/*                            </svg>*/}
+            {/*                            <p className="text-sm">Professional certification</p>*/}
+            {/*                        </div>*/}
+            {/*                    </div>*/}
 
-                                <div>
-                                    <p className="text-sm text-gray-600 mb-4 w-70">
-                                        <strong className="block mb-2">OUR VISSION:</strong>
-                                        Suspendisse ultrice gravida dictum fusce placerat ultricies integer quis auctor elit sed vulputate mi sit.
-                                    </p>
-                                    <div className="flex items-center gap-2">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="text-green-500"
-                                        >
-                                            <polyline points="20 6 9 17 4 12" />
-                                        </svg>
-                                        <p className="text-sm">Flexible learning schedule</p>
-                                    </div>
-                                </div>
-                            </div>
+            {/*                    <div>*/}
+            {/*                        <p className="text-sm text-gray-600 mb-4 w-70">*/}
+            {/*                            <strong className="block mb-2">OUR VISSION:</strong>*/}
+            {/*                            Suspendisse ultrice gravida dictum fusce placerat ultricies integer quis auctor elit sed vulputate mi sit.*/}
+            {/*                        </p>*/}
+            {/*                        <div className="flex items-center gap-2">*/}
+            {/*                            <svg*/}
+            {/*                                xmlns="http://www.w3.org/2000/svg"*/}
+            {/*                                width="20"*/}
+            {/*                                height="20"*/}
+            {/*                                viewBox="0 0 24 24"*/}
+            {/*                                fill="none"*/}
+            {/*                                stroke="currentColor"*/}
+            {/*                                strokeWidth="2"*/}
+            {/*                                strokeLinecap="round"*/}
+            {/*                                strokeLinejoin="round"*/}
+            {/*                                className="text-green-500"*/}
+            {/*                            >*/}
+            {/*                                <polyline points="20 6 9 17 4 12" />*/}
+            {/*                            </svg>*/}
+            {/*                            <p className="text-sm">Flexible learning schedule</p>*/}
+            {/*                        </div>*/}
+            {/*                    </div>*/}
+            {/*                </div>*/}
 
-                            <button className="bg-teal-500 hover:bg-teal-600 text-white rounded-full px-6 py-2 flex items-center">
-                                Admission Open
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="ml-2"
-                                >
-                                    <polyline points="9 18 15 12 9 6" />
-                                </svg>
-                            </button>
-                        </div>
+            {/*                <button className="bg-teal-500 hover:bg-teal-600 text-white rounded-full px-6 py-2 flex items-center">*/}
+            {/*                    Admission Open*/}
+            {/*                    <svg*/}
+            {/*                        xmlns="http://www.w3.org/2000/svg"*/}
+            {/*                        width="16"*/}
+            {/*                        height="16"*/}
+            {/*                        viewBox="0 0 24 24"*/}
+            {/*                        fill="none"*/}
+            {/*                        stroke="currentColor"*/}
+            {/*                        strokeWidth="2"*/}
+            {/*                        strokeLinecap="round"*/}
+            {/*                        strokeLinejoin="round"*/}
+            {/*                        className="ml-2"*/}
+            {/*                    >*/}
+            {/*                        <polyline points="9 18 15 12 9 6" />*/}
+            {/*                    </svg>*/}
+            {/*                </button>*/}
+            {/*            </div>*/}
 
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</section>*/}
+            {/* Contact Section */}
+            <section id="contact" className="bg-purple-50 py-16">
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="text-3xl font-bold mb-6">Get in Touch with Us</h2>
+                    <p className="text-gray-600 mb-8">
+                        We are here to answer any questions you may have. Whether you're looking for more information on our platform or need support, feel free to reach out.
+                    </p>
+
+                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-4">Contact us at</h3>
+                        <p className="text-gray-700 mb-6">
+                            For inquiries, support, or feedback, you can reach us directly via email at
+                            <span className="mr-2"></span> {/* Adding space between "at" and email */}
+                            <a href="mailto:contact@elevatio.me" className="text-purple-600 hover:underline">
+                                contact@elevatio.me
+                            </a>
+                        </p>
+                        <p className="text-gray-600">
+                            Our team is always ready to assist you and provide the best possible solutions for your needs.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -360,7 +435,7 @@ export default function Home() {
             <footer className="bg-[#4D2C5E] text-white py-12">
                 <div className="container mx-auto px-4">
                     <div className="text-center">
-                        <p>© 2023 QualiTrack. All rights reserved.</p>
+                        <p>© 2025 Elevatio. All rights reserved.</p>
                     </div>
                 </div>
             </footer>
