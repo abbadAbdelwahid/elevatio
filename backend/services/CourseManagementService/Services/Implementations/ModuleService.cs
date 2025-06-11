@@ -234,6 +234,7 @@ namespace CourseManagementService.Services.Implementations
                     ModuleDescription = m.ModuleDescription,
                     ModuleDuration = m.ModuleDuration,
                     FiliereName = m.Filiere.FiliereName,
+                    FiliereId = module.Filiere.FiliereId,
                     ProfileImageUrl = m.ProfileImageUrl, // 👈 ici
                     TeacherId = m.TeacherId,
                     TeacherFullName = fullName,

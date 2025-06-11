@@ -8,6 +8,7 @@ namespace CourseManagementService.DTOs
         public string ModuleDescription { get; set; }  // Description du module
         public int ModuleDuration { get; set; }  // Durée du module (en heures)
         public string FiliereName { get; set; }  // Nom de la filière associée
+        public int FiliereId { get; set; }  // Nom de la filière associée
         public int TeacherId { get; set; }  // ID de l'enseignant
         
         public string TeacherFullName { get; set; }
