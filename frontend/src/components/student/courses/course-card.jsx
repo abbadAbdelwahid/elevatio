@@ -1,45 +1,63 @@
 'use client'
 
-
-import { useState} from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import  {DialogDemo} from "@/components/student/courses/modalComponent";
+import { DialogDemo } from "@/components/student/courses/modalComponent";
+import { getUserIdFromCookie } from "@/lib/utils";
 
-export function CourseCard({ course }) {
+export function CourseCard({ course, evaluation }) {
+  console.log(evaluation);
+    let  score=0
+    let  commentaire=""
+    let idEvaluation=0
+    if(evaluation.length>0) {
+       let ev = evaluation[0]
+        score = ev.score
+        commentaire = ev.comment
+        idEvaluation = ev.evaluationId
+    }
 
-    const [rating, setRating] = useState(course.evaluation?.rating || 0)
-    const [hoverRating, setHoverRating] = useState(0)
+    const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL;
+
+    // Assurez-vous que le score est un entier valide entre 0 et 5
+    const validScore = Math.max(0, Math.min(5,  Math.floor(score)));
+
+    // console.log("Valid Score:", evaluation.score);
 
     // Générer les étoiles
-    const renderStars = (count, filled) => {
+    const renderStars = (count) => {
         return [...Array(count)].map((_, i) => (
             <button
-                key={`${filled ? 'filled' : 'empty'}-${i}`}
+                key={`star-${i}`}
                 className="hover:scale-110 transition-transform"
-                onClick={() => setRating(filled ? i + 1 : rating)}
-                onMouseEnter={() => setHoverRating(filled ? i + 1 : 0)}
-                onMouseLeave={() => setHoverRating(0)}
+                type="button"
             >
-                <StarIcon filled={filled && (i < rating || i < hoverRating)} />
+                {/* Affichage des étoiles en fonction du score */}
+                <StarIcon className={`w-5 h-5 ${i < validScore ? 'text-yellow-400' : 'text-gray-400'}`} />
             </button>
-        ))
-    }
+        ));
+    };
 
     return (
         <div className="overflow-hidden rounded-lg border border-gray-200 shadow-sm">
             <div className="relative h-70 w-full overflow-hidden">
-                <Image src={course.image || "/placeholder.svg"} alt={course.title} fill className="object-cover" />
+                <Image
+                    src={course.profileImageUrl ? `${baseUrl}${course.profileImageUrl}` : "/placeholder.svg"}
+                    alt={course.moduleName}
+                    fill
+                    className="object-cover"
+                />
             </div>
             <div className="p-4">
-                <h3 className="mb-2 font-medium">{course.title}</h3>
+                <h3 className="mb-2 font-medium">{course.moduleName}</h3>
                 <div className="mb-3 flex text-yellow-400">
-                    {renderStars(5, true)}
+                    {renderStars(5)} {/* Affichage des étoiles */}
                 </div>
                 <div className="mb-4 flex items-center justify-between text-sm text-gray-500">
                     <div className="flex items-center gap-1">
                         <ClockIcon />
-                        <span>{course.duration}</span>
+                        <span>{course.moduleDuration}</span>
                     </div>
                 </div>
                 <div className="relative">
@@ -47,39 +65,35 @@ export function CourseCard({ course }) {
                         <div className="flex items-center gap-2">
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src="/placeholder-user.jpg" />
-                                <AvatarFallback>{}</AvatarFallback>
+                                <AvatarFallback>?</AvatarFallback>
                             </Avatar>
-                            <span className="text-sm text-gray-600">{course.professor}</span>
+                            <span className="text-sm text-gray-600">{course.teacherFullName}</span>
                         </div>
 
                         <DialogDemo
-                            title={course.evaluation ? "Reevalue" : "Evaluate"}
+                            title={validScore ? "Reevalue" : "Evaluate"}
                             course={course}
+                            score={validScore}
+                            commentaire={commentaire}
+                            idEval={idEvaluation}
                         />
                     </div>
                 </div>
-                {/*test using modal*/}
-
-
-
-
-
-
             </div>
         </div>
-    )
+    );
 }
 
-
 // Helper components for icons
-function StarIcon({ filled }) {
+function StarIcon({ className }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
             viewBox="0 0 24 24"
-            fill={filled ? "currentColor" : "none"}
+            className={className} // Pass the className here to control the color
+            fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
@@ -108,14 +122,3 @@ function ClockIcon() {
         </svg>
     )
 }
-
-
-
-
-
-
-
-
-
-
-

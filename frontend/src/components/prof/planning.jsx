@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ScheduleSettings } from "@/components/schedule/gestion-planning/schedule-settings"
+import { ScheduleSettings } from "@/components/prof/schedule-settings"
 import { ScheduleGrid } from "@/components/schedule/gestion-planning/schedule-grid"
 import  EditCourseDialog  from "@/components/schedule/gestion-planning/edit-course-dialog"
 import {DeleteCourseDialog} from "@/components/schedule/gestion-planning/delete-course-dialog";
@@ -90,10 +90,10 @@ export default function ScheduleManagement() {
   return (
       <div className="space-y-4">
 
+
         <div className="flex gap-4 w-full">
           <div className="w-1/4">
             <ScheduleSettings
-                group={group}
                 setGroup={setGroup}
                 week={week}
                 setWeek={setWeek}
