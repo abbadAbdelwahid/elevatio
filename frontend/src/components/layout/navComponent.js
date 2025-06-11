@@ -20,7 +20,7 @@ function NavComponent() {
                             className="relative h-8 w-8 object-contain" // Ajout de 'relative' pour le positionnement
                         />
                         <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-                            Elevatio2
+                            Elevatio
                         </span>
                     </Link>
 
