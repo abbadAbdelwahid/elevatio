@@ -11,7 +11,7 @@ public class RapportMQ
     public int QuestionnaireId { get; set; } // FK vers Questionnaire 
     public int ModuleId { get; set; }
     [Column(TypeName = "bytea")] 
-    public byte[]?  RapportPdf { get; set; } 
+    public byte[] RapportPdf { get; set; } 
     public DateTime CreatedAt    { get; set; }
 
 }

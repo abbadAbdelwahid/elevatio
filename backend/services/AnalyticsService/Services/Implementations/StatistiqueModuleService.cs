@@ -19,13 +19,15 @@ public class StatistiqueModuleService : IStatistiqueModuleService<StatistiqueMod
         IAnswerClient ansClient,
         IQuestionClient quesClient,
         IQuestionnaireClient qClient,
-        AnalyticsDbContext db)
+        AnalyticsDbContext db, 
+        INoteClient noteClient)
     {
         _evalClient = evalClient;
         _ansClient = ansClient;
         _quesClient = quesClient;
         _qClient = qClient;
         _db = db;
+        _noteClient = noteClient;
     } 
     public async Task<StatistiqueModule> CreateAsync(int moduleId)
     {
@@ -179,7 +181,7 @@ public class StatistiqueModuleService : IStatistiqueModuleService<StatistiqueMod
         {
             var scores = notes.Select(n => (double)n.Grade).OrderBy(x => x).ToList();
 
-            stat.AverageNotes = scores.Average();
+            stat.AverageNotes = Math.Round(scores.Average(), 2);
             stat.NoteMax      = scores.Max();
             stat.NoteMin      = scores.Min();
             stat.MedianNotes  = CalculateMedianNotes(notes);
@@ -208,8 +210,12 @@ public class StatistiqueModuleService : IStatistiqueModuleService<StatistiqueMod
         var total = notes.Count();
         if (total == 0) return 0;
 
-        var passed = notes.Count(n => n.Grade >= 12.0);
-        return (double) (passed / total)*100;
+        var passed = notes.Count(n =>
+        {
+            Console.WriteLine($"Grade: {n.Grade}");  // Ajoutez cette ligne pour vérifier les valeurs des notes
+            return n.Grade >= 12.0;
+        });
+        return (double)(passed) / total * 100; 
     } 
      // Méthode de calcul de la médiane
             private double CalculateMedian(List<float> values)

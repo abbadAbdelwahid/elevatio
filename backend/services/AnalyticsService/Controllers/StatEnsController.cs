@@ -10,12 +10,12 @@ public class StatEnsController : ControllerBase
     public StatEnsController(IStatistiqueUserService<StatistiqueEnseignant> svc)
         => _service = svc;
     [HttpGet("{id}/Refresh")]
-    public async Task<ActionResult<StatistiqueEnseignant>> RefreshMarksStats(int teacherId)
+    public async Task<ActionResult<StatistiqueEnseignant>> RefreshMarksStats(int id)
     {
         try
         {
             // Appel de la méthode qui recharge et met à jour les stats en base
-            var stats = await _service.CalculateStats(teacherId);
+            var stats = await _service.CalculateStats(id);
             return Ok(stats);
         }
         catch (KeyNotFoundException knf)

@@ -13,13 +13,15 @@ public class StatistiqueEnseignant
     public double?  StdEv     { get; set; }  
     public String? ModuleMaxPass          { get; set; }  
     public String? ModuleMinPass          { get; set; }  
-    public String? MaxModuleRated        { get; set; }
+    public String? MaxModuleRated        { get; set; }  
     public double?  NoteMax      { get; set; } 
     public double?  NoteMin        { get; set; }  // Moyenne des notes 
-    public double?  PassRate       { get; set; }
+    public double?  PassRate       { get; set; }  
+    public double?  PositiveFeedBackPct    { get; set; }    
+    public double?  NegativeFeedBackPct    { get; set; }
 
-    public DateTime CreatedAt             { get; set; }  // Date de génération 
-    public String Rapport  { get; set; } 
+    public DateTime? CreatedAt             { get; set; }  // Date de génération 
+    public String? Rapport  { get; set; } 
     [Column(TypeName = "bytea")] 
-    public byte[] RapportPdf { get; set; } 
+    public byte[]? RapportPdf { get; set; } 
 }

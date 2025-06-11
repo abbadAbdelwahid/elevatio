@@ -25,7 +25,7 @@ builder.Services.AddScoped<IStatistiqueModuleService<StatistiqueModule>, Statist
 builder.Services.AddScoped<IStatistiqueService<StatistiqueFiliere>, StatistiqueFiliereService>();
 builder.Services.AddScoped<IStatistiqueUserService<StatistiqueEtudiant>, StatistiqueEtdService>();
 builder.Services.AddScoped<IStatistiqueUserService<StatistiqueEnseignant>, StatistiqueEnsService>();
-builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IReportPropertyService, ReportPropertyService>();
 
 
 // Ajouter les services HTTP avec l'URL de base
