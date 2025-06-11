@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseStaticFiles();
-
+app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();

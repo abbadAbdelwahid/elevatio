@@ -42,7 +42,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); 
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.AllowAnyOrigin() // ou ton URL réelle
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 void ApplyMigration()
@@ -52,7 +60,7 @@ void ApplyMigration()
     if (db.Database.GetPendingMigrations().Any())
         db.Database.Migrate();
 }
-
+app.UseCors("AllowFrontend");
 ApplyMigration(); 
 app.UseSwagger();
 app.UseSwaggerUI();
