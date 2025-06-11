@@ -54,7 +54,7 @@ public class GroqAIClient : IGroqAIClient
             if (doc.RootElement.TryGetProperty("choices", out var choices) &&
                 choices[0].TryGetProperty("message", out var message))
             {
-                return message.GetProperty("content").GetString();
+                return message.GetProperty("content").GetString().Replace("*" ,"  " ).Replace("#","  ");;
             }
             else
             {
