@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using KeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace AnalyticsService.Services.Implementations;
 using AnalyticsService.Services.Interfaces; 
@@ -21,13 +22,15 @@ private readonly IModuleClient _moduleClient;
         IAnswerClient           ansClient,
         IQuestionClient         quesClient,
         IQuestionnaireClient    qClient,
+        IModuleClient        moduleClient,
         AnalyticsDbContext      db)
     {
         _evalClient = evalClient;
         _ansClient  = ansClient;
         _quesClient = quesClient;
         _qClient    = qClient;
-        _db         = db;
+        _db         = db; 
+        _moduleClient = moduleClient;
     }
     public async Task<StatistiqueFiliere> CreateAsync(int FiliereId, String FiliereName)
     {
@@ -137,18 +140,42 @@ private readonly IModuleClient _moduleClient;
                 $"Aucun module retourné pour la filière '{FiliereName}'.");
 
         // 2) Charge les stats existantes de ces modules
-        var moduleIds = modules.Select(m => m.ModuleId).ToList();
-        var statsMods = await _db.StatistiquesModules
-            .Where(s => moduleIds.Contains(s.ModuleId))
-            .ToListAsync();
+        var moduleIds = modules.Select(m => m.ModuleId).ToList(); 
+        Console.WriteLine($"Total Modules: {moduleIds.Count}");
+        var statsMods = new List<StatistiqueModule>(); 
+        // Utilisation de Any avec une condition alternative pour le filtrage
+        // Formater la liste des ModuleIds pour une utilisation dans une requête SQL
+        foreach (var moduleId in moduleIds)
+        {
+            // Utiliser FirstOrDefault pour récupérer le premier enregistrement correspondant à chaque moduleId
+            var statistiqueModule = await _db.StatistiquesModules
+                .FirstOrDefaultAsync(s => s.ModuleId == moduleId);  // Recherche par ModuleId
+
+            if (statistiqueModule != null)
+            {
+                // Si un résultat est trouvé, l'ajouter à la liste
+                statsMods.Add(statistiqueModule);
+                Console.WriteLine($"Module trouvé: ModuleId = {statistiqueModule.ModuleId}");
+            }
+            else
+            {
+                // Si aucun résultat n'est trouvé pour ce ModuleId
+                Console.WriteLine($"Aucun module trouvé pour ModuleId = {moduleId}");
+            }
+        }
+
+        Console.WriteLine($"Total Modules: {statsMods.Count}");
+        Console.WriteLine($"Total stats: {statsMods.Count}");
 
         // 3) Agrège les indicateurs
         var moyennes    = statsMods
                             .Where(s => s.AverageNotes.HasValue)
-                            .Select(s => s.AverageNotes!.Value);
+                            .Select(s => s.AverageNotes!.Value); 
+        Console.WriteLine(moyennes);
         var ratings     = statsMods
                             .Where(s => s.AverageRating.HasValue)
-                            .Select(s => s.AverageRating!.Value);
+                            .Select(s => s.AverageRating!.Value); 
+        Console.WriteLine(ratings);
         var passRates   = statsMods
                             .Select(s => s.PassRate ?? 0);
 
@@ -157,12 +184,12 @@ private readonly IModuleClient _moduleClient;
 
         var maxPassStat  = statsMods.OrderByDescending(s => s.PassRate ?? 0)
                                     .First();
-        var minPassStat  = statsMods.OrderBy(s            => s.PassRate ?? 0)
+       var minPassStat  = statsMods.OrderBy(s            => s.PassRate ?? 0)
                                     .First();
         var MaxRatedModule = statsMods.OrderByDescending(s => s.AverageNotes ?? 0)
                                     .First();
 
-        // 4) Récupère (ou crée) la ligne StatistiqueFiliere
+        // 4 Récupère (ou crée) la ligne StatistiqueFiliere
         var filiereStats = await _db.StatistiquesFilieres
             .FirstOrDefaultAsync(f => f.FiliereName == FiliereName);
             
@@ -175,7 +202,7 @@ private readonly IModuleClient _moduleClient;
                                          .ModuleName;
         filiereStats.ModuleMinPass   = modules
                                          .First(m => m.ModuleId == minPassStat.ModuleId)
-                                         .ModuleName;
+                                         .ModuleName; 
         filiereStats.MaxModuleRated         = modules
                                          .First(m => m.ModuleId == MaxRatedModule.ModuleId)
                                          .ModuleName;
@@ -205,7 +232,7 @@ private readonly IModuleClient _moduleClient;
             throw new InvalidOperationException($"Pas de note pour moduleId = {FiliereId}");
 
         // 2) Calculer la moyenne
-        double avg = scores.Average();
+        double avg = Math.Round(scores.Average(), 2);
 
         // 3) Récupérer l'entité StatistiqueModule correspondante
         var statFiliere = await _db.StatistiquesFilieres

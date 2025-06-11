@@ -3,6 +3,7 @@ using System;
 using AnalyticsService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalyticsService.Migrations
 {
     [DbContext(typeof(AnalyticsDbContext))]
-    partial class AnalyticsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250610223823_Initial45555555555554455555")]
+    partial class Initial45555555555554455555
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,7 +68,6 @@ namespace AnalyticsService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<byte[]>("RapportPdf")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");
@@ -99,9 +101,6 @@ namespace AnalyticsService.Migrations
                     b.Property<string>("ModuleMinPass")
                         .HasColumnType("text");
 
-                    b.Property<double?>("NegativeFeedBackPct")
-                        .HasColumnType("double precision");
-
                     b.Property<double?>("NoteMax")
                         .HasColumnType("double precision");
 
@@ -109,9 +108,6 @@ namespace AnalyticsService.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<double?>("PassRate")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("PositiveFeedBackPct")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Rapport")

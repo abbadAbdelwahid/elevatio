@@ -15,10 +15,11 @@ public class StatistiqueEnsService : IStatistiqueUserService<StatistiqueEnseigna
     private readonly IModuleClient _modClient;
 
 
-    public StatistiqueEnsService(AnalyticsDbContext db, INoteClient noteClient)
+    public StatistiqueEnsService(AnalyticsDbContext db, INoteClient noteClient, IModuleClient modClient)
     {
         _db = db;
-        _noteClient = noteClient;
+        _noteClient = noteClient; 
+        _modClient = modClient;
     }
     public async Task<StatistiqueEnseignant> CreateAsync(int EnsId)
     {
@@ -65,20 +66,27 @@ public class StatistiqueEnsService : IStatistiqueUserService<StatistiqueEnseigna
 
         var moyennes = moduleStats.Where(s => s.AverageRating.HasValue)
             .Select(s => s.AverageRating.Value)
+            .ToList(); 
+        var maxes = moduleStats.Where(s => s.NoteMax.HasValue)
+            .Select(s => s.NoteMax.Value)
+            .ToList(); 
+        var mines = moduleStats.Where(s => s.NoteMin.HasValue)
+            .Select(s => s.NoteMin.Value)
             .ToList();
 
         var passRates = moduleStats.Where(s => s.PassRate.HasValue)
             .Select(s => s.PassRate.Value)
-            .ToList();
+            .ToList(); 
 
         // 3) Appliquer les nouveaux calculs directement sur statEns
-        statEns.AverageM = moyennes.Any() ? moyennes.Average() : 0;
+        statEns.AverageM = moyennes.Any() ? Math.Round(moyennes.Average(), 2) : 0;
         statEns.MedianNotes = CalculateMedian(moyennes);
         statEns.NoteMax = moyennes.Any() ? moyennes.Max() : 0;
         statEns.NoteMin = moyennes.Any() ? moyennes.Min() : 0;
-        statEns.PassRate = passRates.Any() ? passRates.Average() : 0;
+        statEns.PassRate = passRates.Any() ? Math.Round(passRates.Average(), 2) : 0;
         statEns.CreatedAt = DateTime.UtcNow; // ou UpdatedAt
-
+        statEns.NoteMax = maxes.Any() ? maxes.Max() : 0; 
+        statEns.NoteMin = mines.Any() ? mines.Max() : 0;
         // 4) Enregistrer les changements
         await _db.SaveChangesAsync();
 

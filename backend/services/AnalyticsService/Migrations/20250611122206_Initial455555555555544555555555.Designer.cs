@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalyticsService.Migrations
 {
     [DbContext(typeof(AnalyticsDbContext))]
-    [Migration("20250610200122_Initial45555555555555")]
-    partial class Initial45555555555555
+    [Migration("20250611122206_Initial455555555555544555555555")]
+    partial class Initial455555555555544555555555
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,7 @@ namespace AnalyticsService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<byte[]>("RapportPdf")
+                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");
@@ -86,7 +87,7 @@ namespace AnalyticsService.Migrations
                     b.Property<double?>("AverageM")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("MaxModuleRated")
@@ -101,6 +102,9 @@ namespace AnalyticsService.Migrations
                     b.Property<string>("ModuleMinPass")
                         .HasColumnType("text");
 
+                    b.Property<double?>("NegativeFeedBackPct")
+                        .HasColumnType("double precision");
+
                     b.Property<double?>("NoteMax")
                         .HasColumnType("double precision");
 
@@ -110,12 +114,13 @@ namespace AnalyticsService.Migrations
                     b.Property<double?>("PassRate")
                         .HasColumnType("double precision");
 
+                    b.Property<double?>("PositiveFeedBackPct")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("Rapport")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<byte[]>("RapportPdf")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<double?>("StdEv")
@@ -146,13 +151,13 @@ namespace AnalyticsService.Migrations
                     b.Property<double?>("Median")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("NoteMax")
+                    b.Property<double?>("NoteMax")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("NoteMin")
+                    b.Property<double?>("NoteMin")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("NoteMoyenne")
+                    b.Property<double?>("NoteMoyenne")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Observation")
@@ -162,7 +167,6 @@ namespace AnalyticsService.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<byte[]>("RapportPdf")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<int>("StudentId")
@@ -261,7 +265,7 @@ namespace AnalyticsService.Migrations
                     b.Property<double?>("AverageRating")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<double?>("MedianNotes")

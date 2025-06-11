@@ -7,7 +7,8 @@ using iText.Kernel.Font;
 using iText.Layout;
 using Microsoft.EntityFrameworkCore;
 using MigraDocCore.DocumentObjectModel;
-using PdfSharpCore.Drawing.Layout; 
+using PdfSharpCore.Drawing.Layout;
+using PuppeteerSharp.Media;
 using SelectPdf;
 
 
@@ -41,7 +42,7 @@ using System.Threading.Tasks;
 using iText.Kernel.Geom ;  
 using AnalyticsService.ExternalClients.ClientInterfaces;
 
-public class ReportService : IReportService
+public class ReportPropertyService : IReportPropertyService
 {
     private readonly IGroqAIClient _groqAi;
     private readonly AnalyticsDbContext _db;
@@ -51,7 +52,7 @@ public class ReportService : IReportService
     private readonly IModuleClient _moduleClient; 
     private readonly IQuestionnaireClient _questionnaireClient;
 
-    public ReportService(IGroqAIClient groqAi, AnalyticsDbContext db, IAnswerClient ansClient,
+    public ReportPropertyService(IGroqAIClient groqAi, AnalyticsDbContext db, IAnswerClient ansClient,
         IQuestionClient quesClient, IModuleClient moduleClient, IFiliereClient filiereClient)
     {
         _groqAi = groqAi;
@@ -151,8 +152,7 @@ Le NPS  reflète la fidélité des étudiants : quelles modifications méthodolo
         return text;
     } 
     public static byte[] GeneratePdf(string htmlContent)
-    { 
-        // Encapsuler le titre et le contenu dans un document HTML
+    { // Encapsuler le titre et le contenu dans un document HTML
         
 
         // Créer une instance de l'objet HtmlToPdf
@@ -181,15 +181,19 @@ Le NPS  reflète la fidélité des étudiants : quelles modifications méthodolo
             return null;
         }  
     
-    }
+    } 
+   // Méthode pour générer un PDF à partir du HTML et retourner un Task<byte[]>
+  
+      
 
     public async Task<byte[]> GenerateModuleReportPdfAsync(int moduleId)
     {
         try
         {
-            // 1) Récupérer les statistiques du module
-            var stat = await _db.StatistiquesModules.FindAsync(moduleId)
-                       ?? throw new KeyNotFoundException("Module introuvable"); 
+            // On récupère la ligne stats pour le module
+            var stat = await _db.StatistiquesModules
+                .FirstOrDefaultAsync(s => s.ModuleId == moduleId);
+
               
 
             ModuleDto module = await _moduleClient.GetModuleByIdAsync(moduleId);
@@ -252,7 +256,7 @@ Texte4 : {ResponseNpsScore}";
     </head>
     <body>
         <!-- Titre -->
-        <h1>Rapport sur l'Évaluation du Module '{{ModuleName}}' de la Filière '{{FiliereName}}'</h1>
+        <h1>Rapport sur l'Évaluation du Module '{ModuleName}' de la Filière '{FiliereName}'</h1>
 
         <!-- Introduction -->
         <p><strong>Introduction :</strong><br>
@@ -281,7 +285,7 @@ Texte4 : {ResponseNpsScore}";
             Console.Write("------------------------------");
             Console.Write(htmlContent);
             // 4) Créer le PDF 
-            return ReportService.GeneratePdf(htmlContent );
+            return ReportPropertyService.GeneratePdf(htmlContent );
 
 
         }
@@ -306,7 +310,7 @@ public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
         {
             // 1) Récupérer les statistiques du module
             var stat = await _db.StatistiquesFilieres.FindAsync(filiereId)
-                       ?? throw new KeyNotFoundException("Module introuvable"); 
+                       ?? throw new KeyNotFoundException("Filiere introuvable"); 
               
 
             FiliereDto filiere = await _filiereClient.GetFiliereByIdAsync(filiereId);
@@ -398,7 +402,7 @@ public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
             Console.Write(Conclusion);
             
             // 4) Créer le PDF 
-            return ReportService.GeneratePdf(htmlContent );
+            return ReportPropertyService.GeneratePdf(htmlContent );
 
         }
         catch (KeyNotFoundException ex)
@@ -501,7 +505,8 @@ Selon la norme ISO 29990, indique :
             sb.AppendLine("<hr/>");
 
             // Analyse IA
-            string analysis = await GroqQuestionAnalyzer(question, questionnaire);
+            string analysis = await GroqQuestionAnalyzer(question, questionnaire); 
+            Console.WriteLine(analysis);
             sb.AppendLine($"<p>{WebUtility.HtmlEncode(analysis)}</p>");      
         } 
         // 3) Pied de page HTML

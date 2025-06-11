@@ -8,11 +8,11 @@ using AnalyticsService.Services.Implementations;
 [ApiController]
 public class ModuleReportController : ControllerBase
 {
-    private readonly IReportService _reportService;
+    private readonly IReportPropertyService _reportPropertyService;
 
-    public ModuleReportController(IReportService reportService)
+    public ModuleReportController(IReportPropertyService reportPropertyService)
         {
-            _reportService = reportService;
+            _reportPropertyService = reportPropertyService;
         }
 
         // POST api/moduleReport/generate
@@ -21,7 +21,7 @@ public class ModuleReportController : ControllerBase
         {
             try
             {
-                var pdfBytes = await _reportService.GenerateModuleReportPdfAsync(ModuleId); 
+                var pdfBytes = await _reportPropertyService.GenerateModuleReportPdfAsync(ModuleId); 
                 // Si le PDF est vide ou null, on renvoie 404
                 // if (pdfBytes == null || pdfBytes.Length == 0)
                 //     return NotFound("Le PDF est vide ou introuvable.");
@@ -33,13 +33,13 @@ public class ModuleReportController : ControllerBase
             }
         }  
         // POST api/rapportquestionnaire/generate
-        [HttpPost("generate/{ModuleId}/{QuestionId}")]
+        [HttpPost("generate/{ModuleId}/{QuestionnaireId}")]
         public async Task<IActionResult> GenerateRapportQuestionnaire(int ModuleId, int QuestionnaireId)
         {
             try
             {
                 // 1) Utiliser le service pour générer le rapport et l'enregistrer dans la base de données
-                var pdfBytes = await _reportService.GenerateMQReportPdfAsync(ModuleId, QuestionnaireId);
+                var pdfBytes = await _reportPropertyService.GenerateMQReportPdfAsync(ModuleId, QuestionnaireId);
 
                 // 2) Retourner le PDF généré
                 return File(pdfBytes, "application/pdf", $"RapportQuestionnaire_{QuestionnaireId}_Module_{ModuleId}.pdf");

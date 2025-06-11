@@ -9,11 +9,11 @@ using AnalyticsService.Services.Implementations;
 
 public class FiliereReportController: ControllerBase
 {
-    private readonly IReportService _reportService;
+    private readonly IReportPropertyService _reportPropertyService;
 
-    public FiliereReportController(IReportService reportService)
+    public FiliereReportController(IReportPropertyService reportPropertyService)
     {
-        _reportService = reportService;
+        _reportPropertyService = reportPropertyService;
         
     }  
     // POST api/moduleReport/generate
@@ -22,10 +22,11 @@ public class FiliereReportController: ControllerBase
     {
         try
         {
-            var pdfBytes = await _reportService.GenerateFiliereReportPdfAsync(FiliereID);
+            var pdfBytes = await _reportPropertyService.GenerateFiliereReportPdfAsync(FiliereID); 
+            
             return File(pdfBytes, "application/pdf", $"FiliereReport{FiliereID}.pdf");
         }
-        catch (Exception ex)
+        catch (Exception ex) 
         {
             return StatusCode(500, new { message = ex.Message });
         }
@@ -37,7 +38,7 @@ public class FiliereReportController: ControllerBase
         try
         {
             // 1) Utiliser le service pour générer le rapport et l'enregistrer dans la base de données
-            var pdfBytes = await _reportService.GenerateFQReportPdfAsync(FiliereId, QuestionnaireId);
+            var pdfBytes = await _reportPropertyService.GenerateFQReportPdfAsync(FiliereId, QuestionnaireId);
 
             // 2) Retourner le PDF généré
             return File(pdfBytes, "application/pdf", $"RapportQuestionnaire_{QuestionnaireId}_Filiere_{FiliereId}.pdf");

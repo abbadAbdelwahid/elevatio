@@ -9,9 +9,12 @@ public class ModuleDto
     public string ModuleDescription { get; set; }  // Description du module
     public int ModuleDuration { get; set; }  // Durée du module (en heures)
     public string FiliereName { get; set; }  // Nom de la filière associée
-    public int TeacherId { get; set; }  // ID de l'enseignant
+    public int TeacherId { get; set; }  // ID de l'enseignant 
+    public string TeacherFullName { get; set; }
     public DateTime CreatedAt { get; set; }  // Date de création
-    public DateTime UpdatedAt { get; set; }  // Date de mise à jour
+    public DateTime UpdatedAt { get; set; }  // Date de mise à jour 
+    public bool Evaluated { get; set; }
+    public string ProfileImageUrl { get; set; }
     [JsonExtensionData]
     public Dictionary<string, JsonElement> ExtraData { get; set; }
 }

@@ -22,8 +22,23 @@ public class StatModuleController : ControllerBase
                     // Si les statistiques ne sont pas trouvées, retourne 404
                     return NotFound(new { message = $"Module avec id {id} non trouvé." });
                 }
+                return Ok(stats); 
+                
+            }
+
+            [HttpGet("{id}/MarksStats")]
+            public async Task<ActionResult<StatistiqueModule>> RefreshMarksStats(int id)
+            {
+                var stats = await _service.CalculateMarksStats(id);
+                if (stats == null)
+                {
+                    // Si les statistiques ne sont pas trouvées, retourne 404
+                    return NotFound(new { message = $"Module avec id {id} non trouvé." });
+                }
+
                 return Ok(stats);
-            } 
+            }
+
             [HttpPost("Create/{ModuleId}")]
             public async Task<IActionResult> Create(int ModuleId)
             {

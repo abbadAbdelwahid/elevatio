@@ -21,7 +21,7 @@ public class StatistiqueModule
     public double?   PositiveFeedbackPct    { get; set; }  // % positifs
     public double?  NegativeFeedbackPct    { get; set; }  // % négatifs
   
-    public DateTime CreatedAt              { get; set; }  // Date de génération   
+    public DateTime? CreatedAt              { get; set; }  // Date de génération   
     public String? Rapport       { get; set; } 
     [Column(TypeName = "bytea")] 
     public byte[]? RapportPdf { get; set; } 
