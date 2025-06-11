@@ -16,7 +16,7 @@ function NavComponent() {
 
 
 
-                    <Link href="/frontend/public" className="flex items-center space-x-2">
+                    <Link href="/" className="flex items-center space-x-2">
                         <Image
                             src={logo} // Use the imported logo
                             width={32}  // Obligatoire (correspond à w-8 en Tailwind)
@@ -74,10 +74,10 @@ function NavComponent() {
                         <div className="flex flex-col space-y-4 py-4">
                             <Link href="#home" className="text-gray-600 dark:text-gray-200">Home</Link>
                             <Link href="#about" className="text-gray-600 dark:text-gray-200">About</Link>
-                            {/*<Link href="#" className="text-gray-600 dark:text-gray-200">Services</Link>*/}
+                            <Link href="#testimonials" className="text-gray-600 dark:text-gray-200">testimonials</Link>
                             <Link href="#contact" className="text-gray-600 dark:text-gray-200">Contact</Link>
                             <div className="flex flex-col space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <Link href="#" className="text-purple-600 dark:text-purple-400">Sign Up</Link>
+                                {/*<Link href="#" className="text-purple-600 dark:text-purple-400">Sign Up</Link>*/}
                                 <Link href="/login" className="bg-purple-600 text-white py-2 px-4 rounded-full text-center">
                                     Login
                                 </Link>
