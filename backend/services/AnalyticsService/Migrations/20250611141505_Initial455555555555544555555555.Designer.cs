@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AnalyticsService.Migrations
 {
     [DbContext(typeof(AnalyticsDbContext))]
-    [Migration("20250611122206_Initial455555555555544555555555")]
+    [Migration("20250611141505_Initial455555555555544555555555")]
     partial class Initial455555555555544555555555
     {
         /// <inheritdoc />
@@ -221,6 +221,9 @@ namespace AnalyticsService.Migrations
 
                     b.Property<string>("ModuleMinPass")
                         .HasColumnType("text");
+
+                    b.Property<double?>("MoyenneMax")
+                        .HasColumnType("double precision");
 
                     b.Property<int?>("NbrEtds")
                         .HasColumnType("integer");
