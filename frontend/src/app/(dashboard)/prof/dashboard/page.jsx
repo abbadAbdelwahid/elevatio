@@ -1,6 +1,7 @@
 'use client'
 import { Calendar } from "@/components/student/dashboard/calendar"
-import { RecentEvaluations } from "@/components/student/dashboard/recent-evaluations"
+import { RecentEvaluations } from "@/components/prof/recent-evaluations"
+
 import { StatsCards } from "@/components/prof/stats-cards"
 import { WelcomeBanner } from "@/components/prof/welcome-banner"
 import {SearchHeader} from "@/components/layout/search-header";

@@ -1,5 +1,5 @@
 "use client"
-
+import html2pdf from "html2pdf.js"
 import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -50,6 +50,35 @@ export function CoursesTable() {
             )
         )
     }
+
+
+    const generatePdfFromModule = async (moduleId, moduleName) => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ANALYTICS_URL}/api/ModuleReport/generateHtml/${moduleId}`)
+            const html = await res.text()
+
+            const container = document.createElement("div")
+            container.innerHTML = html
+            document.body.appendChild(container)
+
+            await html2pdf()
+                .set({
+                    margin: 0.5,
+                    filename: `Rapport_${moduleName}.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+                })
+                .from(container)
+                .save()
+
+            document.body.removeChild(container)
+        } catch (error) {
+            console.error("Erreur PDF :", error)
+            alert("❌ Impossible de générer le rapport PDF.")
+        }
+    }
+
 
     const openReportDialog = (course) => {
         setSelectedCourse(course)
@@ -123,10 +152,11 @@ export function CoursesTable() {
                                     <Button
                                         variant="outline"
                                         className="text-xs"
-                                        onClick={() => openReportDialog(course)}
+                                        onClick={() => generatePdfFromModule(course.moduleId, course.moduleName)}
                                     >
                                         Générer
                                     </Button>
+
                                 </TableCell>
                             </TableRow>
                         ))
