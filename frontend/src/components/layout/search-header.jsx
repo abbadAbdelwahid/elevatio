@@ -11,20 +11,20 @@ export function SearchHeader() {
     const [notifications, setNotifications] = useState([
         {
             id: 1,
-            message: "You have an appointment today at 13:00",
-            date: "2023-10-04 13:00",
+            message: "Un nouveau questionnaire interne est disponible à remplir.",
+            date: "2025-06-12 10:15",
             read: false,
         },
         {
             id: 2,
-            message: "Un rendez-vous demandé par le patient [John Doe] a été refusé par l'assistant médical",
-            date: "2023-10-03 09:30",
+            message: "Votre réponse au questionnaire ‘Satisfaction Module Java’ a été enregistrée avec succès.",
+            date: "2025-06-11 14:30",
             read: false,
         },
         {
             id: 3,
-            message: "Un rappel pour votre rendez-vous avec le patient [Jane Smith] prévu pour demain à 15:00.",
-            date: "2023-10-03 16:00",
+            message: "Un rappel : vous avez un questionnaire en attente dans la filière Génie Informatique.",
+            date: "2025-06-10 08:45",
             read: false,
         },
     ]);
@@ -62,7 +62,7 @@ export function SearchHeader() {
     return (
         <div className="mb-8 bg-white rounded-3xl">
             <div className="flex items-center justify-between px-10 py-4">
-                <h3 className="text-md font-semibold">Welcome to CPS</h3>
+                <h3 className="text-md font-semibold">Welcome to Elevatio </h3>
                 <div className="flex items-center gap-4">
                     <div className="relative">
                         <Input placeholder="Search" className="w-74 rounded-full bg-gray-100 pl-4 pr-10 border-0" />

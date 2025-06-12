@@ -95,9 +95,9 @@ export default function DashboardPage() {
                 <SearchHeader />
                 <WelcomeBanner fullName={userName} />
                 <StatsCards stats={stats}  />
+
                 <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
                     <Calendar />
-                    <RecentEvaluations  evaluations={evaluations}  />
                 </div>
             </div>
         </div>
