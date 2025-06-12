@@ -15,7 +15,7 @@ export function WelcomeBanner({ fullName }) {
                     <div className="space-y-2 p-10 ms-3">
                         <p className="text-sm text-white/80">{getFormattedDate()}</p>
                         <h2 className="text-2xl font-bold">Welcome back, {fullName}!</h2>
-                        <p className="text-sm">Always stay updated in your student portal</p>
+                        <p className="text-sm">Always stay updated in your admin portal</p>
                     </div>
                     <div className="flex pt-0  me-20">
 

@@ -2,13 +2,11 @@
 import { Building, School, Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
-export  function StatsCards({stats}) {
-
-    console.log(stats)
+export function StatsCards({ stats }) {
+    console.log(stats);
     return (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-           
-            {/* Carte Participation */}
+            {/* Carte Satisfaction */}
             <Card className="relative overflow-hidden border-0 bg-white shadow-[0px_6px_30px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0px_10px_40px_rgba(0,0,0,0.1)]">
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-400 to-red-300" />
                 <CardContent className="flex items-center gap-6 p-8">
@@ -17,17 +15,18 @@ export  function StatsCards({stats}) {
                     </div>
                     <div className="space-y-2">
                         <p className="text-md font-bold uppercase tracking-widest text-[#0E2C75]">
-                            satisfactionRate
+                            SATISFACTION RATE
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">{stats.satisfactionRate}79%</span>
-
+                            <span className="text-3xl font-bold text-gray-800">
+                                {stats?.satisfactionRate != null ? `${stats.satisfactionRate}%` : "72%"}
+                            </span>
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
-            {/* Carte Évaluation */}
+            {/* Carte Moyenne /20 */}
             <Card className="relative overflow-hidden border-0 bg-white shadow-[0px_6px_30px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0px_10px_40px_rgba(0,0,0,0.1)]">
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-400 to-blue-300" />
                 <CardContent className="flex items-center gap-6 p-8">
@@ -36,17 +35,19 @@ export  function StatsCards({stats}) {
                     </div>
                     <div className="space-y-2">
                         <p className="text-md font-bold uppercase tracking-widest text-[#0E2C75]">
-                            AVERAGE RATING
+                            AVERAGE SCORE
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">10</span>
-                            <span className="text-lg font-medium text-blue-600">/15</span>
+                            <span className="text-3xl font-bold text-gray-800">
+                                {stats?.averageMoyenne != null ? stats.averageMoyenne : "14.6"}
+                            </span>
+                            <span className="text-lg font-medium text-blue-600">/20</span>
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
-            {/* Carte Cours Évalués */}
+            {/* Carte Moyenne /5 */}
             <Card className="relative overflow-hidden border-0 bg-white shadow-[0px_6px_30px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0px_10px_40px_rgba(0,0,0,0.1)]">
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-green-400 to-green-300" />
                 <CardContent className="flex items-center gap-6 p-8">
@@ -55,15 +56,19 @@ export  function StatsCards({stats}) {
                     </div>
                     <div className="space-y-2">
                         <p className="text-md font-bold uppercase tracking-widest text-[#0E2C75]">
-                            EVALUATED COURSES
+                            AVERAGE RATING
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800"></span>
-                            <span className="text-lg font-medium text-green-600">/</span>
+                            <span className="text-3xl font-bold text-gray-800">
+                                {stats?.averageRating != null ? stats.averageRating : "4.2"}
+                            </span>
+                            <span className="text-lg font-medium text-blue-600">/5</span>
                         </div>
                     </div>
                 </CardContent>
             </Card>
+
+
         </div>
-    )
+    );
 }
