@@ -224,10 +224,9 @@ export default function QuestionnairesManager({
                               : "bg-purple-100 text-purple-800"
                       }`}
                   >
-                    {question.standardQuestion.text}
+                    {question.text}
                   </span>
                                 </div>
-                                <p className="text-sm font-medium text-gray-900">{question.text}</p>
 
                                 {/* Affichage des réponses */}
                                 <div>
@@ -278,7 +277,7 @@ export default function QuestionnairesManager({
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label className="text-sm font-medium text-gray-700">Type (Module / Filiere) *</Label>
+                                <Label className="text-sm font-medium text-gray-700">Type (EDT / Filiere) *</Label>
                                 <select
                                     className="w-full rounded-md border-gray-300"
                                     value={currentQ?.typeModuleFiliere || ""}

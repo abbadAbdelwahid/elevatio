@@ -5,17 +5,12 @@ import { RecentEvaluations } from "@/components/admin/dashboard/recent-evaluatio
 import { StatsCards } from "@/components/admin/dashboard/stats-cards"
 import { WelcomeBanner } from "@/components/admin/dashboard/welcome-banner"
 import {SearchHeader} from "@/components/layout/search-header";
-import {getRoleFromCookie} from "@/lib/utils";
+import {getRoleFromCookie, getUserIdFromCookie} from "@/lib/utils";
 
 
 export default function DashboardPage() {
     const [userName, setUserName] = useState("")
-    const [stats, setStats] = useState({
-        participationRate: 0,
-        averageRating: 0,
-        evaluatedCourses: 0,
-        totalCourses: 0
-    })
+    const [stats, setStats] = useState(null)
     const [evaluations, setEvaluations] = useState([])
 
     useEffect(() => {
@@ -25,17 +20,29 @@ export default function DashboardPage() {
         console.log(roleFromCookie);
 
         const fetchStatistics = async () => {
+            const baseUrl = process.env.NEXT_PUBLIC_API_ANALYTICS_URL;
+            const FiliereId=1
+            const token = localStorage.getItem("accessToken"); // Assurez-vous que vous récupérez bien le token
+
             try {
-                const res = await fetch(`${baseUrl}/statistics`, {
+
+                const res = await fetch(`${baseUrl}/api/StatFiliere/${FiliereId}`, {
                     method: "GET",
                     headers: {
-                        "Content-Type": "application/json",
-                        Authorization: token ? `Bearer ${token}` : ""
+                        "Authorization": `Bearer ${token}`,  // Ajoutez le token d'authentification si nécessaire
+                        "Content-Type": "application/json"
                     }
                 });
-                if (!res.ok) throw new Error("Erreur lors de la récupération des statistiques");
+
+                if (!res.ok) {
+                    const errorResponse = await res.json();  // Si l'API renvoie un message d'erreur
+                    console.error('Backend Error:', errorResponse);
+                    throw new Error(`Erreur lors de la récupération des statistiques: ${res.status} - ${errorResponse.message}`);
+                }
+
                 const data = await res.json();
-                setStats(data);
+                console.log('data stat: ', data);
+                setStats(data); // Mettez à jour le state avec les données récupérées
             } catch (error) {
                 console.error("Stats error:", error.message);
             }
@@ -75,7 +82,7 @@ export default function DashboardPage() {
         //     }
         // };
 
-        // fetchStatistics();
+        fetchStatistics();
         fetchUser();
         // fetchRecentEvaluations();
     }, []);

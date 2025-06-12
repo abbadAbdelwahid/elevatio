@@ -19,6 +19,7 @@ import {
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {getUserIdFromCookie} from "@/lib/utils";
 
 
     export default function ProfsTable() {
@@ -130,6 +131,37 @@ import { Label } from "@/components/ui/label";
             }
         };
 
+        const generatePdf = async (idProf,nameProf) => {
+           console.log(idProf,nameProf);
+            try {
+                if (typeof window === "undefined") return;
+
+                // ✅ dynamically load html2pdf ONLY on client
+                const html2pdf = (await import('html2pdf.js')).default;
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ANALYTICS_URL}/api/EnsReport/generate-PerformanceReportHtml/${idProf}`)
+                const html = await res.text()
+
+                const container = document.createElement("div")
+                container.innerHTML = html
+                document.body.appendChild(container)
+
+               const datahtml= await html2pdf()
+                    .set({
+                        margin: 0.5,
+                        filename: `Rapport_${nameProf}.pdf`,
+                        image: { type: "jpeg", quality: 0.98 },
+                        html2canvas: { scale: 2 },
+                        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+                    })
+                    .from(container)
+                    .save()
+                    console.log(datahtml);
+                document.body.removeChild(container)
+            } catch (error) {
+                console.error("Erreur PDF :", error)
+                alert("❌ Impossible de générer le rapport PDF.")
+            }
+        }
         return (
             <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-x-auto">
                 <Table>
@@ -197,26 +229,17 @@ import { Label } from "@/components/ui/label";
                                             voir les rapports <ChevronDown width={'14'} height={'14'}/>
                                         </summary>
                                         <ul className="mt-3 space-y-2 border-t border-blue-50 pt-2 max-h-20 overflow-auto">
-                                            {rapports.filter(r => r.profId === prof.id).map((r, i) => (
-                                                <li
-                                                    key={i}
+                                                <li onClick={()=>generatePdf(prof.id,prof.firstName)}
                                                     className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-1.5 text-sm text-blue-800 transition-all hover:bg-blue-100"
                                                 >
                                                     <File className="h-4 w-4 text-blue-600"/>
                                                     <a
-                                                        href={r.url}
                                                         className="hover:underline hover:decoration-blue-600"
                                                         download
                                                     >
-                                                        {r.name}
+                                                        rapport
                                                     </a>
                                                 </li>
-                                            ))}
-                                            {rapports.filter(r => r.profId === prof.id).length === 0 && (
-                                                <li className="text-sm text-gray-500 px-3 py-1.5">
-                                                    Aucun rapport disponible
-                                                </li>
-                                            )}
                                         </ul>
                                     </details>
                                 </TableCell>
