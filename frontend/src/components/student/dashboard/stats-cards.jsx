@@ -3,8 +3,8 @@ import { Building, School, Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
 export  function StatsCards({stats}) {
-
-    console.log(stats.participationRate)
+  console.log('stats')
+    console.log(stats)
     return (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
            
@@ -17,11 +17,11 @@ export  function StatsCards({stats}) {
                     </div>
                     <div className="space-y-2">
                         <p className="text-md font-bold uppercase tracking-widest text-[#0E2C75]">
-                            OVERALL PARTICIPATION RATE
+                            Note Max
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">{stats.participationRate}%</span>
-
+                            <span className="text-3xl font-bold text-gray-800">{stats.noteMax}</span>
+                            <span className="text-lg font-medium text-blue-600">/20</span>
                         </div>
                     </div>
                 </CardContent>
@@ -36,11 +36,10 @@ export  function StatsCards({stats}) {
                     </div>
                     <div className="space-y-2">
                         <p className="text-md font-bold uppercase tracking-widest text-[#0E2C75]">
-                            AVERAGE RATING
+                            passRate
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">{stats.averageRating}</span>
-                            <span className="text-lg font-medium text-blue-600">/5</span>
+                            <span className="text-3xl font-bold text-gray-800">{stats.passRate}</span>
                         </div>
                     </div>
                 </CardContent>
@@ -55,11 +54,11 @@ export  function StatsCards({stats}) {
                     </div>
                     <div className="space-y-2">
                         <p className="text-md font-bold uppercase tracking-widest text-[#0E2C75]">
-                            EVALUATED COURSES
+                            Note min
                         </p>
                         <div className="flex items-end gap-3">
-                            <span className="text-3xl font-bold text-gray-800">{stats.evaluatedCourses}</span>
-                            <span className="text-lg font-medium text-green-600">/{stats.totalCourses}</span>
+                            <span className="text-3xl font-bold text-gray-800">{stats.noteMin}</span>
+                            <span className="text-lg font-medium text-blue-600">/20</span>
                         </div>
                     </div>
                 </CardContent>

@@ -6,7 +6,7 @@ import {usePathname, useRouter} from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import { getRoleFromCookie } from "@/lib/utils"
-
+import logo from "../../app/logo/logo.png";
 export function Sidebar() {
     const pathname = usePathname()
     const [role, setRole] = useState('')
@@ -55,9 +55,9 @@ export function Sidebar() {
         <div className="flex h-screen w-[220px] flex-col bg-[#4a2a5a] text-white">
             <div className="flex h-26 items-center justify-center border-b border-[#5a3a6a]">
                 <Link  href={role === "admin" ? "/admin/dashboard" : "/etu/dashboard"} className="flex items-center">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
-                        <BookOpen className="h-6 w-6 text-[#4a2a5a]" />
-                    </div>
+
+
+                        <Image src={logo} alt="Icon" width={90} height={90} />
                 </Link>
             </div>
 

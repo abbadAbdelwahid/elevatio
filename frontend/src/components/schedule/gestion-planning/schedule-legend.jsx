@@ -14,10 +14,6 @@ export function ScheduleLegend() {
         <div className="h-4 w-4 rounded bg-green-200"></div>
         <span className="text-xs">TP</span>
       </div>
-      <div className="flex items-center gap-1">
-        <div className="h-4 w-4 rounded bg-pink-200"></div>
-        <span className="text-xs">DG</span>
-      </div>
     </div>
   )
 }
