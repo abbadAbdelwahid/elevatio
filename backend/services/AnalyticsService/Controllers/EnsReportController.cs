@@ -14,13 +14,13 @@ public class EnsReportController : ControllerBase
         _reportUserService = reportUserService; 
 
     }   
-     [HttpGet("generate-PrerformanceReport/{teacherId}")]
+     [HttpGet("generate-PerformanceReport/{teacherId}")]
         public async Task<IActionResult> GeneratePerformanceReport(int teacherId)
         {
             try
             {
                 // Appeler la méthode pour générer le rapport
-                byte[] reportData = await _reportUserService.GenerateEnsReportPassAvgdfAsync(teacherId);
+                byte[] reportData = await _reportUserService.GenerateUserPerformanceReport(teacherId);
     
                 // Retourner le fichier généré (ici, on suppose que c'est un PDF)
                 return File(reportData, "application/pdf", $"rapport_performance_enseignant_Id{teacherId}.pdf");

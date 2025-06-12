@@ -13,7 +13,7 @@ public class StatModuleController : ControllerBase
                 _service = service; 
             }
     
-            [HttpGet("{id}/stats")]
+           /* [HttpGet("{id}/stats")]
             public async Task<ActionResult<StatistiqueModule>> RefreshStandardStats(int id)
             {
                 var stats = await _service.CalculateStandardStats(id); 
@@ -24,7 +24,7 @@ public class StatModuleController : ControllerBase
                 }
                 return Ok(stats); 
                 
-            }
+            }*/ 
 
             [HttpGet("{id}/MarksStats")]
             public async Task<ActionResult<StatistiqueModule>> RefreshMarksStats(int id)

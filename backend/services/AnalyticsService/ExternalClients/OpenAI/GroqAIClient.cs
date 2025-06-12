@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace AnalyticsService.ExternalClients.OpenAI;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers; 
@@ -54,7 +56,10 @@ public class GroqAIClient : IGroqAIClient
             if (doc.RootElement.TryGetProperty("choices", out var choices) &&
                 choices[0].TryGetProperty("message", out var message))
             {
-                return message.GetProperty("content").GetString().Replace("*" ,"  " ).Replace("#","  ");;
+                var M = message.GetProperty("content").GetString().Replace("*" ,"  " ).Replace("#","  ");;
+                string pattern = @"\{int\}\."; 
+                string result = Regex.Replace(M,pattern, "\n$&");
+                return result;
             }
             else
             {

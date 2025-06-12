@@ -33,7 +33,7 @@ public class ModuleReportController : ControllerBase
             }
         }  
         // POST api/rapportquestionnaire/generate
-        [HttpPost("generate/{ModuleId}/{QuestionnaireId}")]
+     /*   [HttpPost("generate/{ModuleId}/{QuestionnaireId}")]
         public async Task<IActionResult> GenerateRapportQuestionnaire(int ModuleId, int QuestionnaireId)
         {
             try
@@ -49,7 +49,7 @@ public class ModuleReportController : ControllerBase
                 // En cas d'erreur, retourner un message d'erreur
                 return StatusCode(500, new { message = ex.Message });
             }
-        }
+        }*/
     }
 
    

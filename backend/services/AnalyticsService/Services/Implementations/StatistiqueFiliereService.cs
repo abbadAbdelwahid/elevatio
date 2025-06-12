@@ -8,7 +8,7 @@ using AnalyticsService.Models;
 using AnalyticsService.ExternalClients.DTO; 
 using AnalyticsService.Data;
 
-public class StatistiqueFiliereService:IStatistiqueService<StatistiqueFiliere>
+public class StatistiqueFiliereService:IStatistiqueFiliereService<StatistiqueFiliere>
 {
 private readonly IEvaluationClient _evalClient; 
 private readonly IModuleClient _moduleClient;

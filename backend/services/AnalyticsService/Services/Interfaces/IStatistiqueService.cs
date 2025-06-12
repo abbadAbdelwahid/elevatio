@@ -1,6 +1,6 @@
 namespace AnalyticsService.Services.Interfaces;
 using AnalyticsService.Models;
-public interface IStatistiqueService<T>
+public interface IStatistiqueFiliereService<T>
 {
      Task<T> CreateAsync(int Id,String FiliereName); 
      Task<T> GetByPropertyAsync(int Id);

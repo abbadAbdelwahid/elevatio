@@ -2,7 +2,11 @@ using AnalyticsService.Data;
 using AnalyticsService.ExternalClients.ClientInterfaces;
 using AnalyticsService.ExternalClients.OpenAI;
 using AnalyticsService.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore; 
+using System.Diagnostics;
+using System.IO;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
 using SelectPdf;
 
 namespace AnalyticsService.Services.Implementations;
@@ -27,11 +31,10 @@ public class ReportEnsService : IReportUserService
         _moduleClient = moduleClient;
         _filiereClient = filiereClient;
     }
-
-    public static byte[] GeneratePdf(string htmlContent)
-    {
-        // Encapsuler le titre et le contenu dans un document HTML
-
+   
+public static byte[] GeneratePdf(string htmlContent)
+    { // Encapsuler le titre et le contenu dans un document HTML
+        
 
         // Créer une instance de l'objet HtmlToPdf
         HtmlToPdf converter = new HtmlToPdf();
@@ -47,7 +50,7 @@ public class ReportEnsService : IReportUserService
             {
                 doc.Save(memoryStream);
                 doc.Close();
-
+                
                 // Retourner le tableau d'octets du PDF
                 return memoryStream.ToArray();
             }
@@ -57,10 +60,9 @@ public class ReportEnsService : IReportUserService
             // Gérer les erreurs
             Console.WriteLine("Erreur lors de la génération du PDF : " + ex.Message);
             return null;
-        }
-
-    }
-
+        }  
+    
+    } 
     public async Task<string> PassAvgAnalyse(double? avg, double? pass)
     {
 
@@ -80,17 +82,14 @@ public class ReportEnsService : IReportUserService
 
     }
 
-    public async Task<byte[]> GenerateEnsReportPassAvgdfAsync(int teacherId)
+    public async Task<byte[]> GenerateUserPerformanceReport(int teacherId)
     {
         try
         {
             // 1) Récupérer les statistiques de l'enseignant
             var stat = await _db.StatistiquesEnseignants.FirstOrDefaultAsync(s => s.TeacherId == teacherId)
                        ?? throw new KeyNotFoundException("Enseignant introuvable");
-
-
-
-
+            
             var Response = (stat.AverageM != null && stat.PassRate != 0)
                 ? await PassAvgAnalyse(stat.AverageM, stat.PassRate)
                 : null;
@@ -162,7 +161,8 @@ public class ReportEnsService : IReportUserService
             </div>
         </body>
     </html>";
-            var pdfBytes = ReportEnsService.GeneratePdf(htmlContent);
+            var pdfBytes =  ReportEnsService.GeneratePdf(htmlContent);
+           
             return pdfBytes;
 
         }
@@ -182,4 +182,106 @@ public class ReportEnsService : IReportUserService
             throw new Exception("Une erreur est survenue lors de la génération du rapport PDF.", ex);
         }
     }
-}
+
+    public async Task<string> GenerateUserPerformanceReporthtml(int UserId)
+    {
+          try 
+        {
+            // 1) Récupérer les statistiques de l'enseignant
+            var stat = await _db.StatistiquesEnseignants.FirstOrDefaultAsync(s => s.TeacherId == UserId)
+                       ?? throw new KeyNotFoundException("Enseignant introuvable");
+            
+            var Response = (stat.AverageM != null && stat.PassRate != 0)
+                ? await PassAvgAnalyse(stat.AverageM, stat.PassRate)
+                : null;
+            Console.Write(Response);
+
+
+            string htmlContent = $@"
+    
+<html>
+        <head>
+            <title>Rapport de Performance de l'Enseignant</title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                }}
+                h1 {{
+                    color: #2C3E50;
+                    text-align: center;
+                }}
+                .section {{
+                    margin: 20px 0;
+                    padding: 10px;
+                    background-color: #F4F6F7;
+                    border-radius: 8px;
+                }}
+                .section h2 {{
+                    color: #34495E;
+                }}
+                .recommendations {{
+                    background-color: #E8F8F5;
+                    padding: 10px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                }}
+                .analysis {{
+                    background-color: #FFFAF0;
+                    padding: 10px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                }}
+            </style>
+        </head>
+        <body>
+            <h1>Rapport de Performance de l'Enseignant</h1>
+
+            <div class='section'>
+                <h2>Analyse des Performances</h2>
+                <div class='analysis'>
+                    <p>{Response}</p>
+                </div>
+            </div>
+
+            <div class='section'>
+                <h2>Recommandations</h2>
+                <div class='recommendations'>
+                    <p>Basé sur l'analyse ci-dessus, voici les recommandations adaptées :</p>
+                    <ul>
+                        <li>Améliorer la préparation des étudiants avant les évaluations.</li>
+                        <li>Réviser les critères d'évaluation pour garantir des résultats plus équitables.</li>
+                        <li>Fournir davantage de ressources pédagogiques pour les étudiants en difficulté.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class='section'>
+                <h2>Conclusion</h2>
+                <p>Ce rapport présente une analyse détaillée des statistiques de l'enseignant et propose des recommandations pratiques pour améliorer l'enseignement et la réussite des étudiants.</p>
+            </div>
+        </body>
+    </html>";
+            
+           
+            return htmlContent;
+
+        }
+        catch (KeyNotFoundException ex)
+        {
+            // Gérer le cas où l'enseignant n'est pas trouvé
+            throw new Exception("L'enseignant spécifié n'a pas été trouvé dans la base de données.", ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Gérer le cas où le texte généré est invalide
+            throw new Exception("Erreur lors de la génération du rapport : " + ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            // Gérer d'autres exceptions générales
+            throw new Exception("Une erreur est survenue lors de la génération du rapport PDF.", ex);
+        }
+    }
+
+    }
