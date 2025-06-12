@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -27,7 +27,7 @@ export function ScheduleGrid({
             await Promise.all(
                 uniqueIds.map(async (id) => {
                     try {
-                        const baseUrl=process.env.NEXT_PUBLIC_API_COURSE_URL
+                        const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL
                         const res = await fetch(`${baseUrl}/api/Module/${id}`)
                         if (res.ok) {
                             const data = await res.json()
@@ -57,6 +57,17 @@ export function ScheduleGrid({
         const startTime = timeSlots.indexOf(start)
         const endTime = timeSlots.indexOf(end)
         return endTime - startTime
+    }
+
+    // Fonction pour déterminer le type de module et la couleur de fond
+    const getModuleBackgroundColor = (moduleId) => {
+        if (moduleId < 20) {
+            return "bg-purple-200"; // Cours
+        } else if (moduleId < 40) {
+            return "bg-yellow-200"; // TD
+        } else {
+            return "bg-green-200"; // TP
+        }
     }
 
     return (
@@ -113,10 +124,11 @@ export function ScheduleGrid({
                                     }
 
                                     const rowSpan = getCourseTimeSpan(course.start, course.end)
+                                    const moduleColor = getModuleBackgroundColor(course.moduleId)
 
                                     return (
                                         <td key={dayIndex} className="relative border p-1 m-1" rowSpan={rowSpan}>
-                                            <div className="bg-gray-200 border border-gray-300 group p-1 rounded">
+                                            <div className={`${moduleColor} border border-gray-300 group p-1 rounded`}>
                                                 <div className="flex flex-col items-center justify-center text-center">
                                                     <div className="mb-1 w-full rounded px-1 py-0.5 text-xs bg-gray-300">
                                                         {course.start} - {course.end}
@@ -125,39 +137,9 @@ export function ScheduleGrid({
                                                         {moduleNames[course.moduleId] || `Module ${course.moduleId}`}
                                                     </div>
                                                     <div className="text-xs">{course.location}</div>
+                                                    <div className="text-xs">{course.teacherFullName}</div>
+                                                    <div className="text-xs mt-1">{course.moduleId < 20 ? 'Cours' : course.moduleId < 40 ? 'TD' : 'TP'}</div>
                                                 </div>
-
-                                                {mode === "update" && (
-                                                    <div className="absolute top-1 right-1 flex gap-1">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="h-6 w-6 rounded-full bg-white p-1 hover:bg-gray-100"
-                                                            onClick={() => {
-                                                                setSelectedCourse(course)
-                                                                setIsEditDialogOpen(true)
-                                                            }}
-                                                        >
-                                                            <Edit className="h-4 w-4 text-blue-500" />
-                                                        </Button>
-                                                    </div>
-                                                )}
-
-                                                {mode === "delete" && (
-                                                    <div className="absolute top-1 right-1 flex gap-1">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="h-6 w-6 rounded-full bg-white p-1 hover:bg-gray-100"
-                                                            onClick={() => {
-                                                                setSelectedCourse(course)
-                                                                setIsDeleteDialogOpen(true)
-                                                            }}
-                                                        >
-                                                            <Trash2 className="h-4 w-4 text-red-500" />
-                                                        </Button>
-                                                    </div>
-                                                )}
                                             </div>
                                         </td>
                                     )

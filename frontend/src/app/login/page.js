@@ -19,8 +19,6 @@ export default function LoginPage() {
         return pattern.test(value);
     };
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -203,12 +201,7 @@ export default function LoginPage() {
                         </button>
                     </form>
 
-                    <div className="text-center text-sm text-gray-600 mt-6">
-                        Don&apos;`t have an account?{" "}
-                        <Link href="/signup" className="text-purple-600 hover:underline font-medium">
-                            Sign up
-                        </Link>
-                    </div>
+
                 </div>
 
                 {/* Right - Illustration */}
@@ -217,8 +210,8 @@ export default function LoginPage() {
                         <Image
                             src="/images/login/login.svg"
                             alt="Login illustration"
-                            width={400}
-                            height={500}
+                            width={500}
+                            height={1000}
                             className="object-contain"
                         />
                     </div>

@@ -7,13 +7,7 @@ import { useEffect, useState } from "react";
 import {getRoleFromCookie, getUserIdFromCookie} from "@/lib/utils";
 
 export default function SettingsPage() {
-    const [userDetails, setUserDetails] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        image: "",
-    });
+    const [userDetails, setUserDetails] = useState('');
     const [role, setRole] = useState({});
 
     useEffect(() => {
@@ -25,13 +19,10 @@ export default function SettingsPage() {
                 const roleFromCookie = getRoleFromCookie()
                 const userIdFromCookie=getUserIdFromCookie()
                 setRole(roleFromCookie)
-                console.log('userId: ',userIdFromCookie)
-                console.log("Role from cookie:", roleFromCookie)
                 const test=`${baseUrl}/${roleFromCookie}s/me`
-                console.log(test)
                 let res=undefined;
                 if(roleFromCookie==='Admin'){
-                    res = await fetch(`${baseUrl}/api/auth/Admin/me`, {
+                    res = await fetch(`${baseUrl}/api/auth/me/info`, {
                         method: "GET",
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -53,7 +44,6 @@ export default function SettingsPage() {
                 }
 
                 const data = await res.json();
-                console.log(data);
                 // Si la réponse est un tableau, on prend le premier élément, sinon on l'utilise directement
                 setUserDetails(data[0] || data); // Si c'est un tableau, on prend le premier élément
 
@@ -64,7 +54,7 @@ export default function SettingsPage() {
 
         fetchUserData();
     }, []);
-
+console.log(userDetails);
     return (
         <div className="flex min-h-screen max-h-screen overflow-y-auto bg-blue-50">
             <div className="container flex-1 p-8">
@@ -72,7 +62,7 @@ export default function SettingsPage() {
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                     <div className="space-y-6 md:col-span-1">
-                        <UserProfileCard user={userDetails} />
+                        <UserProfileCard user={userDetails} setUser={setUserDetails} />
                         <UserInfoCard user={userDetails} />
                     </div>
 

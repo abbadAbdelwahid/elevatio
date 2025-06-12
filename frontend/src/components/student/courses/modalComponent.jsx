@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -11,19 +11,20 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
-import {getUserIdFromCookie} from "@/lib/utils";
+import { getUserIdFromCookie } from "@/lib/utils"
+import { toast } from "sonner"
 
-export function DialogDemo({ title, course ,score,commentaire,idEval }) {
-
+export function DialogDemo({ title, course, score = 0, commentaire = "", idEval = 0, onSuccess }) {
     const [rating, setRating] = useState(score)
-
     const [comment, setComment] = useState(commentaire)
-   console.log('idEval: ',title,score,commentaire,rating)
-    const [successMessage, setSuccessMessage] = useState("") // Nouveau state pour message de succès
-    const [isSubmitting, setIsSubmitting] = useState(false) // Nouveau state pour la soumission en cours
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const triggerRef = useRef(null)
-    const contentRef = useRef(null)
     const [position, setPosition] = useState({ top: 0, left: 0 })
+
+    useEffect(() => {
+        setRating(score)
+        setComment(commentaire)
+    }, [score, commentaire])
 
     const calculatePosition = () => {
         if (!triggerRef.current) return
@@ -32,76 +33,68 @@ export function DialogDemo({ title, course ,score,commentaire,idEval }) {
         const windowWidth = window.innerWidth
         const windowHeight = window.innerHeight
         const formWidth = 400
-        const formHeight = 320
+        const formHeight = 400
 
-        // Position horizontale
-        let leftPosition = triggerRect.right + 10 // 10px de marge à droite du bouton
-        if (leftPosition + formWidth > windowWidth) {
-            leftPosition = triggerRect.left - formWidth - 10 // 10px de marge à gauche du bouton
+        let left = triggerRect.left - formWidth / 2 + triggerRect.width / 2
+        let top = triggerRect.bottom + 10
+
+        if (left + formWidth > windowWidth) {
+            left = windowWidth - formWidth - 10
+        } else if (left < 10) {
+            left = 10
         }
 
-        // Position verticale
-        let topPosition = triggerRect.top
-        const spaceBelow = windowHeight - triggerRect.bottom
-        if (spaceBelow < formHeight) {
-            topPosition = triggerRect.top - formHeight
+        if (top + formHeight > windowHeight) {
+            top = triggerRect.top - formHeight - 10
         }
-
-        // Contraintes finales
-        topPosition = Math.max(10, Math.min(topPosition, windowHeight - formHeight - 10))
-        leftPosition = Math.max(10, Math.min(leftPosition, windowWidth - formWidth - 10))
 
         setPosition({
-            top: topPosition + window.scrollY, // Ajout du scroll vertical
-            left: leftPosition
+            top: Math.max(10, top) + window.scrollY,
+            left: Math.max(10, left)
         })
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        const evaluationData = {
-            respondentUserId: getUserIdFromCookie(), // ID de l'utilisateur
-            comment: comment, // Commentaire saisi par l'utilisateur
-            type: 'Module',  // Type d'évaluation (peut être "Module" ou "Filiere")
-            filiereId: 0,    // ID de la filière (mettre à 0 si non utilisé)
-            moduleId: course.moduleId, // ID du module
-            score: rating,  // Score de l'évaluation (basé sur le rating)
-        };
+        e.preventDefault()
+        setIsSubmitting(true)
 
         try {
-            const apiUrl = `${process.env.NEXT_PUBLIC_API_EVALUATION_URL}/api/evaluations`;
-            const url = course.score>0 ? `${apiUrl}/updateEvaluation/${idEval}` : `${apiUrl}/addEvaluation`;
+            const evaluationData = {
+                respondentUserId: getUserIdFromCookie(),
+                comment,
+                type: 'Module',
+                filiereId: 0,
+                moduleId: course.moduleId,
+                score: rating,
+            }
 
-            const method = course.score >0 ? "PUT" : "POST"; // PUT pour la mise à jour, POST pour l'ajout
+            const baseUrl = process.env.NEXT_PUBLIC_API_EVALUATION_URL
+            const url = idEval
+                ? `${baseUrl}/api/evaluations/updateEvaluation`
+                : `${baseUrl}/api/evaluations/addEvaluation`
+
+            const method = idEval ? "PUT" : "POST"
 
             const res = await fetch(url, {
-                method: method,
+                method,
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Authentification
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                 },
                 body: JSON.stringify(evaluationData),
-            });
+            })
 
-            if (res.ok) {
-                setSuccessMessage(course.score ? "Évaluation modifiée avec succès !" : "Évaluation soumise avec succès !");
-                setTimeout(() => {
-                    setSuccessMessage("");
-                    setIsSubmitting(false);
-                }, 3000);
-            } else {
-                console.error("Erreur lors de la soumission de l'évaluation");
-                setIsSubmitting(false);
-            }
+            if (!res.ok) throw new Error(await res.text())
+
+            toast.success(idEval ? "Évaluation mise à jour" : "Évaluation enregistrée")
+            if (onSuccess) onSuccess()
         } catch (error) {
-            console.error("Erreur réseau:", error);
-            setIsSubmitting(false);
+            console.error("Erreur:", error)
+            toast.error("Erreur lors de l'enregistrement")
+        } finally {
+            setIsSubmitting(false)
         }
-    };
-
-
+    }
 
     return (
         <Dialog>
@@ -110,67 +103,70 @@ export function DialogDemo({ title, course ,score,commentaire,idEval }) {
                     ref={triggerRef}
                     onClick={calculatePosition}
                     className="rounded-md bg-purple-600 px-3 py-1 text-xs text-white hover:bg-purple-700"
+                    size="sm"
                 >
                     {title}
                 </Button>
             </DialogTrigger>
 
             <DialogContent
-                ref={contentRef}
-                className="bg-white shadow-xl w-[400px]"
+                className="bg-white shadow-xl w-[400px] p-6"
                 style={{
                     position: 'fixed',
-                    top: position.top,
-                    left: position.left,
-                    maxHeight: '90vh',
-                    overflowY: 'auto',
+                    top: `${position.top}px`,
+                    left: `${position.left}px`,
                     transform: 'none',
-                    margin: 0
+                    margin: 0,
+                    borderRadius: '0.5rem'
                 }}
             >
                 <DialogHeader>
-                    <DialogTitle className="text-purple-600">
-                        Évaluer {course.moduleName}
+                    <DialogTitle className="text-purple-600 text-lg">
+                        {course.moduleName}
                     </DialogTitle>
-                    <DialogDescription className="text-sm">
-                        {course.teacherFullName}
+                    <DialogDescription className="text-sm text-gray-600">
+                        Professeur: {course.teacherFullName}
                     </DialogDescription>
                 </DialogHeader>
 
-                {successMessage && (
-                    <div className="bg-green-100 text-green-800 p-2 mb-4 rounded">
-                        {successMessage}
+                <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Note
+                        </label>
+                        <div className="flex gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                    key={star}
+                                    type="button"
+                                    onClick={() => setRating(star)}
+                                    className={`text-3xl transition-colors ${star <= rating ? 'text-yellow-400' : 'text-gray-300'} hover:text-yellow-500`}
+                                >
+                                    ★
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                )}
 
-                <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-                    <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <button
-                                key={star}
-                                type="button"
-                                onClick={() => setRating(star)}
-                                className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-gray-300'} hover:text-yellow-500`}
-                            >
-                                ★
-                            </button>
-                        ))}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Commentaire
+                        </label>
+                        <Textarea
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            placeholder="Votre expérience avec ce module..."
+                            className="min-h-[120px]"
+                        />
                     </div>
 
-                    <Textarea
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        placeholder="Partagez votre expérience..."
-                        className="min-h-[100px]"
-                    />
-
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-2 pt-2">
                         <Button
                             type="submit"
                             className="bg-purple-600 hover:bg-purple-700 px-4 py-2 text-sm"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? "Envoi en cours..." : "Soumettre"}
+                            {isSubmitting ? "Envoi..." : "Envoyer"}
                         </Button>
                     </div>
                 </form>

@@ -20,30 +20,31 @@ export default function DashboardPage() {
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");
-        const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
+
         const roleFromCookie = getRoleFromCookie();
         console.log(roleFromCookie);
 
-        // const fetchStatistics = async () => {
-        //     try {
-        //         const res = await fetch(`${baseUrl}/statistics`, {
-        //             method: "GET",
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: token ? `Bearer ${token}` : ""
-        //             }
-        //         });
-        //         if (!res.ok) throw new Error("Erreur lors de la récupération des statistiques");
-        //         const data = await res.json();
-        //         setStats(data);
-        //     } catch (error) {
-        //         console.error("Stats error:", error.message);
-        //     }
-        // };
+        const fetchStatistics = async () => {
+            try {
+                const res = await fetch(`${baseUrl}/statistics`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token ? `Bearer ${token}` : ""
+                    }
+                });
+                if (!res.ok) throw new Error("Erreur lors de la récupération des statistiques");
+                const data = await res.json();
+                setStats(data);
+            } catch (error) {
+                console.error("Stats error:", error.message);
+            }
+        };
 
         const fetchUser = async () => {
+            const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
             try {
-                const res = await fetch(`${baseUrl}/api/auth/admin/me`, {
+                const res = await fetch(`${baseUrl}/api/auth/me/info`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -51,7 +52,6 @@ export default function DashboardPage() {
                 });
                 if (!res.ok) throw new Error("Erreur lors de la récupération de l'utilisateur");
                 const data = await res.json();
-                console.log("User data:", data);
                 setUserName(`${data.firstName || ""} ${data.lastName || ""}`.trim());
             } catch (error) {
                 console.error("User error:", error.message);
