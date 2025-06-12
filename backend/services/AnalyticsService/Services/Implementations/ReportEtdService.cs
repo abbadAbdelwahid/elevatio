@@ -168,5 +168,91 @@ fais moi un analyse de ces donneees ainsi que des conseils afin d'améliorer son
             // Gérer d'autres exceptions générales
             throw new Exception("Une erreur est survenue lors de la génération du rapport PDF.", ex);
         }
+    } 
+     public async Task<string> GenerateUserPerformanceReporthtml(int etdId)
+    {
+        try
+        {
+            // 1) Récupérer les statistiques de l'enseignant
+            var stat = await _db.StatistiquesEtudiants.FirstOrDefaultAsync(s => s.StudentId== etdId)
+                       ?? throw new KeyNotFoundException("Etudiant not found");
+            
+            var Response = (stat.NoteMoyenne != null && stat.NoteMax != null && stat.NoteMin != null && stat.PassRate != null)
+                ? await EtdAnalyse(stat.NoteMoyenne,stat.PassRate, stat.NoteMax,stat.NoteMin)
+                : null;
+            Console.Write(Response); 
+            
+
+
+            string htmlContent = $@"
+    
+<html>
+        <head>
+            <title>Rapport de Performance de l'Etudiant </title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                }}
+                h1 {{
+                    color: #2C3E50;
+                    text-align: center;
+                }}
+                .section {{
+                    margin: 20px 0;
+                    padding: 10px;
+                    background-color: #F4F6F7;
+                    border-radius: 8px;
+                }}
+                .section h2 {{
+                    color: #34495E;
+                }}
+                .recommendations {{
+                    background-color: #E8F8F5;
+                    padding: 10px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                }}
+                .analysis {{
+                    background-color: #FFFAF0;
+                    padding: 10px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                }}
+            </style>
+        </head>
+        <body>
+            <h1>Rapport de Performance de l'Etudiant</h1>
+
+            <div class='section'>
+                <h2>Analyse des Performances</h2>
+                <div class='analysis'>
+                    <p>{Response}</p>
+                </div>
+            </div>
+
+           
+
+           
+        </body>
+    </html>";
+            return htmlContent; 
+
+        }
+        catch (KeyNotFoundException ex)
+        {
+            // Gérer le cas où l'enseignant n'est pas trouvé
+            throw new Exception("L'enseignant spécifié n'a pas été trouvé dans la base de données.", ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Gérer le cas où le texte généré est invalide
+            throw new Exception("Erreur lors de la génération du rapport : " + ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            // Gérer d'autres exceptions générales
+            throw new Exception("Une erreur est survenue lors de la génération du rapport PDF.", ex);
+        }
     }
 }
