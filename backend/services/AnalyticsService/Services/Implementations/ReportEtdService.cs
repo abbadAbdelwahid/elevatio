@@ -73,7 +73,7 @@ public class ReportEtdService : IReportEtdService
 -Note max : {NoteMax:F1}/20 
 -Note min: {NoteMin:F1}/20 
 fais moi un analyse de ces donneees ainsi que des conseils afin d'améliorer son niveau, répond directement sans introduction
-
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!
    "; 
         var response = await _groqAi.SendChatAsync(prompt);
         return response; 
@@ -134,7 +134,7 @@ fais moi un analyse de ces donneees ainsi que des conseils afin d'améliorer son
             </style>
         </head>
         <body>
-            <h1>Rapport de Performance de l'Etudiant</h1>
+            <h1>Rapport de Performance de l'Etudiante Amina Bouz</h1>
 
             <div class='section'>
                 <h2>Analyse des Performances</h2>
@@ -188,7 +188,7 @@ fais moi un analyse de ces donneees ainsi que des conseils afin d'améliorer son
     
 <html>
         <head>
-            <title>Rapport de Performance de l'Etudiant </title>
+            <title>Rapport de Performance de l'Etudiante Amina Bouz  </title>
             <style>
                 body {{
                     font-family: Arial, sans-serif;
@@ -222,7 +222,7 @@ fais moi un analyse de ces donneees ainsi que des conseils afin d'améliorer son
             </style>
         </head>
         <body>
-            <h1>Rapport de Performance de l'Etudiant</h1>
+            <h1>Rapport de Performance de l'Etudiante Amina Bouz</h1>
 
             <div class='section'>
                 <h2>Analyse des Performances</h2>

@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AnalyticsService.ExternalClients.OpenAI;
@@ -26,7 +27,10 @@ public class GroqAIClient : IGroqAIClient
     }
 
     public async Task<string> SendChatAsync(string prompt)
-    {
+    {    
+        StringBuilder sb = new StringBuilder();
+
+        
         var payload = new
         {
             model = "meta-llama/llama-4-scout-17b-16e-instruct",
