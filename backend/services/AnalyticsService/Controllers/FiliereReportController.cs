@@ -48,5 +48,23 @@ public class FiliereReportController: ControllerBase
             // En cas d'erreur, retourner un message d'erreur
             return StatusCode(500, new { message = ex.Message });
         }
-    }*/
+    }*/  
+  [HttpGet("generateHtml/{FiliereId}")]
+  public async Task<IActionResult> GeneratePerformanceReportHtml(int FiliereId)
+  {
+      try
+      {
+          // Appeler la méthode pour générer le rapport
+          var Html= await _reportPropertyService.GenerateFiliereReportPdfAsyncHtml(FiliereId);
+
+          // Retourner le fichier généré (ici, on suppose que c'est un PDF)
+          return Ok(Html);
+      }
+      catch (Exception ex)
+      {
+          // Gérer les erreurs (par exemple, si l'enseignant n'existe pas ou s'il y a un problème de génération)
+          return BadRequest($"Une erreur est survenue lors de la génération du html : {ex.Message}");
+      }
+  }
+  
 }

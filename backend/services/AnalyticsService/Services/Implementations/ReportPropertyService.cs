@@ -401,7 +401,6 @@ Texte4 : {ResponseNpsScore}";
             Console.Write(Conclusion);
             Console.Write("------------------------------");
             Console.Write(htmlContent);
-            
             return htmlContent; 
 
 

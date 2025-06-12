@@ -30,6 +30,24 @@ public class EtdReportController : ControllerBase
             // Gérer les erreurs (par exemple, si l'enseignant n'existe pas ou s'il y a un problème de génération)
             return BadRequest($"Une erreur est survenue lors de la génération du rapport : {ex.Message}");
         }
+    } 
+    
+    [HttpGet("generate-PerformanceReportHtml/{etdId}")]
+    public async Task<IActionResult> GeneratePerformanceReportHtml(int etdId)
+    {
+        try
+        {
+            // Appeler la méthode pour générer le rapport
+            var Html= await _reportEtdService.GenerateUserPerformanceReporthtml(etdId);
+
+            // Retourner le fichier généré (ici, on suppose que c'est un PDF)
+            return Ok(Html);
+        }
+        catch (Exception ex)
+        {
+            // Gérer les erreurs (par exemple, si l'enseignant n'existe pas ou s'il y a un problème de génération)
+            return BadRequest($"Une erreur est survenue lors de la génération du html : {ex.Message}");
+        }
     }
     
 }
