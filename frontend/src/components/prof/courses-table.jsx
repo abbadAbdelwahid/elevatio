@@ -1,5 +1,4 @@
 "use client"
-import html2pdf from "html2pdf.js"
 import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -54,12 +53,17 @@ export function CoursesTable() {
 
     const generatePdfFromModule = async (moduleId, moduleName) => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ANALYTICS_URL}/api/ModuleReport/generateHtml/${moduleId}`)
-            const html = await res.text()
+            if (typeof window === "undefined") return; // skip on server
+            const html2pdf = (await import('html2pdf.js')).default;
 
-            const container = document.createElement("div")
-            container.innerHTML = html
-            document.body.appendChild(container)
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ANALYTICS_URL}/api/ModuleReport/generateHtml/${moduleId}`);
+            const html = await res.text();
+
+            const container = document.createElement("div");
+            container.innerHTML = html;
+            container.style.position = "fixed";
+            container.style.top = "-10000px";
+            document.body.appendChild(container);
 
             await html2pdf()
                 .set({
@@ -70,14 +74,16 @@ export function CoursesTable() {
                     jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
                 })
                 .from(container)
-                .save()
+                .save();
 
-            document.body.removeChild(container)
+            document.body.removeChild(container);
         } catch (error) {
-            console.error("Erreur PDF :", error)
-            alert("❌ Impossible de générer le rapport PDF.")
+            console.error("Erreur PDF :", error);
+            alert("❌ Impossible de générer le rapport PDF.");
         }
-    }
+    };
+
+
 
 
     const openReportDialog = (course) => {

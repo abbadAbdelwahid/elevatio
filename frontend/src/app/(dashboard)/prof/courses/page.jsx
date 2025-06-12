@@ -1,4 +1,4 @@
-
+'use client';
 import { SearchHeader } from "@/components/layout/search-header"
 import {CoursesTable} from "@/components/prof/courses-table";
 
