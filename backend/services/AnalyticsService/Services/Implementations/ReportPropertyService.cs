@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using MigraDocCore.DocumentObjectModel;
 using PdfSharpCore.Drawing.Layout;
 using PuppeteerSharp.Media;
-using SelectPdf;
+using SelectPdf; 
+using IronPython.Hosting;
 
 
 namespace AnalyticsService.Services.Implementations;
@@ -302,9 +303,124 @@ Texte4 : {ResponseNpsScore}";
 
     }
 
+    public async Task<string> GenerateModuleReportPdfAsyncHtml(int moduleId)
+    {
+       try
+        {
+            // On récupère la ligne stats pour le module
+            var stat = await _db.StatistiquesModules
+                .FirstOrDefaultAsync(s => s.ModuleId == moduleId);
+
+              
+
+            ModuleDto module = await _moduleClient.GetModuleByIdAsync(moduleId);
+            string ModuleName = module.ModuleName;
+            string FiliereName = module.FiliereName; 
+            string MF = $"{ModuleName} de la filiere {FiliereName}";
+            
+            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, MF) : null;
+            Console.Write(ResponseAVG);
+// Créer le prompt pour la statistique "Médiane des notes"
+            var ResponseMedian = (stat.MedianNotes != null && stat.MedianNotes != 0) ? await GroqMedianRating(stat.MedianNotes.Value, MF) : null;
+// Créer le prompt pour la statistique "Taux de participation"
+            Console.Write(ResponseMedian);
+            var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, MF) : null;
+// Créer le prompt pour la statistique "Net Promoter Score"
+            Console.Write(ResponseParticipation);
+            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, MF) : null;
+            Console.Write(ResponseNpsScore);
+            // 2) Créer le prompt pour générer le rapport avec GroqAI
+            var prompt =
+                $@"Donne moi une conclusion générale de ces textes en une paragraphe : 
+Texte1 : {ResponseAVG} 
+Texte2 : {ResponseMedian}
+Texte3 : {ResponseParticipation}
+Texte4 : {ResponseNpsScore}";
+
+            // 3) Générer le texte du rapport avec GroqAI
+            var Conclusion = await _groqAi.SendChatAsync(prompt);
+
+            // Vérifier si le texte généré est valide
+            if (string.IsNullOrWhiteSpace(Conclusion))
+            {
+                throw new InvalidOperationException("Le texte du rapport généré est vide ou invalide.");
+            }
+
+            var htmlContent =
+                $@"
+<html>
+    <head>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                font-size: 12pt;
+                line-height: 1.6;
+                margin: 20px;
+            }}
+            h1 {{
+                text-align: center;
+                color: #4CAF50;
+                font-size: 24pt;
+            }}
+            h2 {{
+                color: #333;
+                font-size: 18pt;
+            }}
+            p {{
+                margin-bottom: 15px;
+            }}
+        </style>
+    </head>
+    <body>
+        <!-- Titre -->
+        <h1>Rapport sur l'Évaluation du Module '{ModuleName}' de la Filière '{FiliereName}'</h1>
+
+        <!-- Introduction -->
+        <p><strong>Introduction :</strong><br>
+        Ce rapport vise à analyser l'efficacité du {MF}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
+
+        <!-- Moyenne des Notes -->
+        <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
+       {ResponseAVG}</p>
+        <!-- Médiane des Notes -->
+        <p><strong>Médiane des Notes : {stat.MedianNotes}</strong><br>
+     {ResponseMedian}</p>
+        <!-- Net Promoter Score (NPS) -->
+        <p><strong>Net Promoter Score (NPS) :{stat.NpsScore}</strong><br>
+     {ResponseNpsScore}</p>
+        <!-- Taux de Participation -->
+        <p><strong>Taux de Participation :{stat.ParticipationRate}</strong><br>
+       {ResponseParticipation}</p>
+
+        <!-- Conclusion -->
+        <p><strong>Conclusion :</strong><br>
+      {Conclusion}</p>
+    </body>
+</html>
+"; 
+            Console.Write(Conclusion);
+            Console.Write("------------------------------");
+            Console.Write(htmlContent);
+            
+            return htmlContent; 
 
 
-public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
+        }
+        catch (KeyNotFoundException ex)
+        {
+            // Gérer le cas où le module n'est pas trouvé
+            throw new Exception("Le module spécifié n'a pas été trouvé dans la base de données.", ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Gérer le cas où le texte généré est invalide
+            throw new Exception("Erreur lors de la génération du rapport : " + ex.Message, ex);
+        }
+
+    }
+
+
+    public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
 {
    try
         {
@@ -418,7 +534,121 @@ public async Task<byte[]> GenerateFiliereReportPdfAsync(int filiereId)
 
 }
 
-/*    public async Task<byte[]> GenerateEnsReportPdfAsync(int teacherId)
+    public async Task<string> GenerateFiliereReportPdfAsyncHtml(int FiliereId)
+    {
+         try
+        {
+            // 1) Récupérer les statistiques du module
+            var stat = await _db.StatistiquesFilieres.FindAsync(FiliereId)
+                       ?? throw new KeyNotFoundException("Filiere introuvable"); 
+              
+
+            FiliereDto filiere = await _filiereClient.GetFiliereByIdAsync(FiliereId);
+         
+            string FiliereName = filiere.FiliereName; 
+           
+            
+            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, FiliereName) : null;
+
+// Créer le prompt pour la statistique "Médiane des notes"
+            var ResponseMedian = (stat.MedianRating != null && stat.MedianRating != 0) ? await GroqMedianRating(stat.MedianRating.Value, FiliereName) : null;
+// Créer le prompt pour la statistique "Taux de participation"
+            var ResponseParticipation = (stat.SatisfactionRate!= null && stat.SatisfactionRate != 0) ? await GroqParticipationRate(stat.SatisfactionRate.Value, FiliereName) : null;
+// Créer le prompt pour la statistique "Net Promoter Score"
+            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, FiliereName) : null;
+
+            // 2) Créer le prompt pour générer le rapport avec GroqAI
+            var prompt =
+                $@"Donne moi une conclusion générale ou résumé sans répétion de ces textes en une paragraphe : 
+{ResponseAVG} 
+ 
+{ResponseMedian}
+
+{ResponseParticipation}
+
+{ResponseNpsScore}";
+
+            // 3) Générer le texte du rapport avec GroqAI
+            var Conclusion = await _groqAi.SendChatAsync(prompt);
+
+            // Vérifier si le texte généré est valide
+            if (string.IsNullOrWhiteSpace(Conclusion))
+            {
+                throw new InvalidOperationException("Le texte du rapport généré est vide ou invalide.");
+            }
+
+            var htmlContent =
+                $@"
+<html>
+    <head>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                font-size: 12pt;
+                line-height: 1.6;
+                margin: 20px;
+            }}
+            h1 {{
+                text-align: center;
+                color: #4CAF50;
+                font-size: 24pt;
+            }}
+            h2 {{
+                color: #333;
+                font-size: 18pt;
+            }}
+            p {{
+                margin-bottom: 15px;
+            }}
+        </style>
+    </head>
+    <body>
+        <!-- Titre -->
+        <h1>Rapport sur l'Évaluation de la filière {FiliereName}'</h1>
+
+        <!-- Introduction -->
+        <p><strong>Introduction :</strong><br>
+        Ce rapport vise à analyser l'efficacité du {FiliereName}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
+
+        <!-- Moyenne des Notes -->
+        <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
+       {ResponseAVG}</p>
+        <!-- Médiane des Notes -->
+        <p><strong>Médiane des Notes : {stat.MedianRating}</strong><br>
+     {ResponseMedian}</p>
+        <!-- Net Promoter Score (NPS) -->
+        <p><strong>Net Promoter Score (NPS) :{stat.NpsScore}</strong><br>
+     {ResponseNpsScore}</p>
+        <!-- Taux de Participation -->
+        <p><strong>Taux de Participation :{stat.SatisfactionRate}</strong><br>
+       {ResponseParticipation}</p>
+
+        <!-- Conclusion -->
+        <p><strong>Conclusion :</strong><br>
+      {Conclusion}</p>
+    </body>
+</html>
+"; 
+            Console.Write(Conclusion);
+            
+            // 4) Créer le PDF 
+            return htmlContent; 
+
+        }
+        catch (KeyNotFoundException ex)
+        {
+            // Gérer le cas où le module n'est pas trouvé
+            throw new Exception("Le module spécifié n'a pas été trouvé dans la base de données.", ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Gérer le cas où le texte généré est invalide
+            throw new Exception("Erreur lors de la génération du rapport : " + ex.Message, ex);
+        }
+
+    }
+
+    /*    public async Task<byte[]> GenerateEnsReportPdfAsync(int teacherId)
 {
     try
     {

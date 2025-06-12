@@ -22,11 +22,12 @@ var config = builder.Configuration.GetSection("EvaluationService");
 // 3) Enregistrement du service de statistiques pour le module
 builder.Services.AddScoped<IStatistiqueModuleService<StatistiqueModule>, StatistiqueModuleService>();
 // 3) Enregistrement du service de statistiques pour le module
-builder.Services.AddScoped<IStatistiqueService<StatistiqueFiliere>, StatistiqueFiliereService>();
+builder.Services.AddScoped<IStatistiqueFiliereService<StatistiqueFiliere>, StatistiqueFiliereService>();
 builder.Services.AddScoped<IStatistiqueUserService<StatistiqueEtudiant>, StatistiqueEtdService>();
 builder.Services.AddScoped<IStatistiqueUserService<StatistiqueEnseignant>, StatistiqueEnsService>();
 builder.Services.AddScoped<IReportPropertyService, ReportPropertyService>(); 
 builder.Services.AddScoped<IReportUserService, ReportEnsService>();
+builder.Services.AddScoped<IReportEtdService, ReportEtdService>();
 
 
 // Ajouter les services HTTP avec l'URL de base

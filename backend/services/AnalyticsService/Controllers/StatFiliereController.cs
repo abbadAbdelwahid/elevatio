@@ -6,8 +6,8 @@ using AnalyticsService.Models;
 [Route("api/[controller]")]
 public class StatFiliereController:ControllerBase
 {
-    private readonly IStatistiqueService<StatistiqueFiliere> _service;
-    public StatFiliereController(IStatistiqueService<StatistiqueFiliere> svc)
+    private readonly IStatistiqueFiliereService<StatistiqueFiliere> _service;
+    public StatFiliereController(IStatistiqueFiliereService<StatistiqueFiliere> svc)
         => _service = svc;
 
     [HttpGet("{id}/StandardStats")] 
@@ -33,7 +33,7 @@ public class StatFiliereController:ControllerBase
             return NotFound(new { Message = $"Aucune statistique trouvée pour la filiere {FiliereId}." });
         }
     } 
-    [HttpGet("{id}/RatingStats")]
+    /*[HttpGet("{id}/RatingStats")]
     public async Task<ActionResult<StatistiqueFiliere>> RefreshRatingStats(int id)
     {
         var stats = await _service.CalculateAndStoreAverageRatingAsync(id); 
@@ -43,7 +43,7 @@ public class StatFiliereController:ControllerBase
             return NotFound(new { message = $"Filiere avec id {id} non trouvé." });
         }
         return Ok(stats);
-    }  
+    } */ 
     [HttpGet("{FiliereName}/MarksStats")]
     public async Task<ActionResult<StatistiqueModule>> RefreshMarksStats(String FiliereName)
     {

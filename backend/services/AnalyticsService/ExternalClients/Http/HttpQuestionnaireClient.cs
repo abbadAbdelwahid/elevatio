@@ -26,7 +26,8 @@ public class HttpQuestionnaireClient:IQuestionnaireClient
         var response = await _http.GetAsync(requestUri);
         response.EnsureSuccessStatusCode();
         
-        var quest = await response.Content.ReadFromJsonAsync<IEnumerable<QuestionnaireDto>>();
+        var quest = await response.Content.ReadFromJsonAsync<IEnumerable<QuestionnaireDto>>(); 
+       
         return quest; 
     } 
     // Récupérer les questionnaires pour un module spécifique

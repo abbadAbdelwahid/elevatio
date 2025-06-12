@@ -4,9 +4,11 @@ namespace AnalyticsService.Services.Interfaces;
 
 public interface IReportPropertyService
 {
-    Task<byte[]> GenerateModuleReportPdfAsync(int moduleId); 
+    Task<byte[]> GenerateModuleReportPdfAsync(int moduleId);  
+    Task<string> GenerateModuleReportPdfAsyncHtml(int moduleId);
+    
     Task<byte[]> GenerateFiliereReportPdfAsync(int FiliereId); 
+    Task<string> GenerateFiliereReportPdfAsyncHtml(int FiliereId);  
    //  Task<byte[]> GenerateEnsReportPdfAsync(int EnsId);
-    Task<byte[]> GenerateFQReportPdfAsync(int filiereId, int questionnaireId);
-    Task<byte[]> GenerateMQReportPdfAsync(int moduleId, int questionnaireId); 
+    
 }

@@ -32,7 +32,7 @@ public class FiliereReportController: ControllerBase
         }
     }   
     // POST api/rapportquestionnaire/generate
-    [HttpPost("generate/{FiliereId}/{QuestionnaireId}")]
+  /*  [HttpPost("generate/{FiliereId}/{QuestionnaireId}")]
     public async Task<IActionResult> GenerateRapportQuestionnaire(int FiliereId, int QuestionnaireId)
     {
         try
@@ -48,5 +48,5 @@ public class FiliereReportController: ControllerBase
             // En cas d'erreur, retourner un message d'erreur
             return StatusCode(500, new { message = ex.Message });
         }
-    }
+    }*/
 }
