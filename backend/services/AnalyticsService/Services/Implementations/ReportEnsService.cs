@@ -29,7 +29,7 @@ public class ReportEnsService : IReportUserService
         _ansClient = ansClient;
         _quesClient = quesClient;
         _moduleClient = moduleClient;
-        _filiereClient = filiereClient;
+        _filiereClient = filiereClient; 
     }
    
 public static byte[] GeneratePdf(string htmlContent)
@@ -75,7 +75,8 @@ public static byte[] GeneratePdf(string htmlContent)
     Cet enseignant enseigne dans une école d'ingénieur.
 
    fais moi une analyse 
-   en interprétant comment l'un peut affecter l'autre stat et fais des recommandations pour que les stats soient conformes ";
+   en interprétant comment l'un peut affecter l'autre stat et fais des recommandations pour que les stats soient conformes 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!  ";
         // Générer la réponse via GroqAI
         var response = await _groqAi.SendChatAsync(prompt);
         return response; 
@@ -95,8 +96,122 @@ public static byte[] GeneratePdf(string htmlContent)
                 : null;
             Console.Write(Response);
 
-
             string htmlContent = $@"
+<!DOCTYPE html>
+<html lang=""fr"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Rapport de Performance de l'Enseignant Ali Ben </title>
+    <!-- Roboto depuis Google Fonts -->
+    <link href=""https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"" rel=""stylesheet"">
+    <style>
+        :root {{
+            --primary:   #2C3E50;
+            --secondary: #34495E;
+            --bg:        #F4F6F7;
+            --accent:    #E8F8F5;
+            --highlight: #FFFAF0;
+            --radius:    8px;
+            --transition: 0.3s ease;
+        }}
+
+        * {{
+            box-sizing: border-box;
+        }}
+        body {{
+            margin: 0;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            color: var(--primary);
+            background-color: #fff;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }}
+        h1 {{
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }}
+        .section {{
+            background-color: var(--bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: box-shadow var(--transition);
+        }}
+        .section:hover {{
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }}
+        .section h2 {{
+            margin-top: 0;
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }}
+        .analysis, .recommendations {{
+            padding: 15px;
+            border-radius: var(--radius);
+            transition: background-color var(--transition);
+        }}
+        .analysis {{
+            background-color: var(--highlight);
+        }}
+        .recommendations {{
+            background-color: var(--accent);
+        }}
+        ul {{
+            padding-left: 1.2em;
+            margin: 0.5em 0 0 0;
+        }}
+        ul li {{
+            margin-bottom: 0.5em;
+            line-height: 1.4;
+        }}
+        /* Footer léger */
+        footer {{
+            text-align: center;
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 40px;
+        }}
+    </style>
+</head>
+<body>
+
+    <h1>Rapport de Performance de l'Enseignant</h1>
+
+    <div class=""section"">
+        <h2>Analyse des Performances</h2>
+        <div class=""analysis"">
+            <p>{Response}</p>
+        </div>
+    </div>
+
+    <div class=""section"">
+        <h2>Recommandations</h2>
+        <div class=""recommendations"">
+            <p>Basé sur l'analyse ci-dessus, voici les recommandations adaptées :</p>
+            <ul>
+                <li>Améliorer la préparation des étudiants avant les évaluations.</li>
+                <li>Réviser les critères d'évaluation pour garantir des résultats plus équitables.</li>
+                <li>Fournir davantage de ressources pédagogiques pour les étudiants en difficulté.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class=""section"">
+        <h2>Conclusion</h2>
+        <p>Ce rapport présente une analyse détaillée des statistiques de l'enseignant et propose des recommandations pratiques pour améliorer l'enseignement et la réussite des étudiants.</p>
+    </div>
+
+    
+
+</body>
+</html>
+"; 
+           /* string htmlContent = $@"
     
 <html>
         <head>
@@ -160,7 +275,7 @@ public static byte[] GeneratePdf(string htmlContent)
                 <p>Ce rapport présente une analyse détaillée des statistiques de l'enseignant et propose des recommandations pratiques pour améliorer l'enseignement et la réussite des étudiants.</p>
             </div>
         </body>
-    </html>";
+    </html>"; */
             var pdfBytes =  ReportEnsService.GeneratePdf(htmlContent);
            
             return pdfBytes;
@@ -201,7 +316,7 @@ public static byte[] GeneratePdf(string htmlContent)
     
 <html>
         <head>
-            <title>Rapport de Performance de l'Enseignant</title>
+            <title>Rapport de Performance de l'Enseignant Ali Ben </title>
             <style>
                 body {{
                     font-family: Arial, sans-serif;
