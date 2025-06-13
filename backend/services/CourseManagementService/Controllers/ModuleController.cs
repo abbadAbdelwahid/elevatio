@@ -147,6 +147,15 @@ namespace CourseManagementService.Controllers
             return Ok(new { teacherFullName = fullName });
         }
 
+        // GET api/module/teacher/{teacherId}
+        [HttpGet("teacher/{teacherId}")]
+        public async Task<ActionResult<IEnumerable<ModuleDto>>> GetModulesByTeacherId(int teacherId)
+        {
+            var modules = await _service.GetModulesByTeacherIdAsync(teacherId);
+            return Ok(modules);
+        }
+
+
 
 
 

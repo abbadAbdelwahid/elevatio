@@ -20,6 +20,7 @@ namespace CourseManagementService.Services.Interfaces
         Task<bool> AssignModulesToTeacherAsync(int teacherId, List<int> moduleIds);
 
         Task<string?> GetTeacherFullNameByModuleIdAsync(int moduleId);
+         Task<IEnumerable<ModuleDto>> GetModulesByTeacherIdAsync(int teacherId);
 
 
     }
