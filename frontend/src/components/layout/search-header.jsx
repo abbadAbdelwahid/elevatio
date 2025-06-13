@@ -1,10 +1,11 @@
 'use client'
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Notifications } from "@/components/notification/notifications";
-import { Bell, Mail, Search } from "lucide-react";  // Icône de recherche
+import { Bell, Mail, Search } from "lucide-react";
+import {getRoleFromCookie, getUserIdFromCookie} from "@/lib/utils";  // Icône de recherche
 
 export function SearchHeader() {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false); // État pour gérer l'ouverture du panel
@@ -28,7 +29,53 @@ export function SearchHeader() {
             read: false,
         },
     ]);
+    const [userDetails, setUserDetails] = useState('');
+    const [role, setRole] = useState({});
+    const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
 
+                // Si l'API nécessite un token d'authentification (par exemple dans un en-tête Authorization)
+                const token = localStorage.getItem("accessToken"); // ou une autre méthode pour récupérer le token
+                const roleFromCookie = getRoleFromCookie()
+                const userIdFromCookie=getUserIdFromCookie()
+                setRole(roleFromCookie)
+                const test=`${baseUrl}/${roleFromCookie}s/me`
+                let res=undefined;
+                if(roleFromCookie==='Admin'){
+                    res = await fetch(`${baseUrl}/api/auth/me/info`, {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                }else{
+                    res = await fetch(`${baseUrl}/api/${roleFromCookie}s/me`, {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                }
+
+
+                // Vérifier si la réponse est correcte avant de la traiter
+                if (!res.ok) {
+                    throw new Error("Erreur de récupération des données");
+                }
+
+                const data = await res.json();
+                // Si la réponse est un tableau, on prend le premier élément, sinon on l'utilise directement
+                setUserDetails(data[0] || data); // Si c'est un tableau, on prend le premier élément
+
+            } catch (error) {
+                console.error("Erreur de récupération des données", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
     // Ouvrir ou fermer le panel des notifications
     const toggleNotifications = () => {
         setIsNotificationsOpen(!isNotificationsOpen);
@@ -85,7 +132,7 @@ export function SearchHeader() {
                     </Button>
 
                     <Avatar>
-                        <AvatarImage src="/images/profil.svg" />
+                        <AvatarImage  src={`${baseUrl}${userDetails.profileImageUrl}`} />
                         <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                 </div>

@@ -95,10 +95,11 @@ export function UserProfileCard({ user,setUser }) {
                     <img
                         src={`${baseUrl.replace(/\/$/, '')}/${user.profileImageUrl.replace(/^\//, '')}`}
                         alt="User profile"
-                        width={160}
-                        height={160}
+                        width="160"
+                        height="160"
                         className="object-cover"
                     />
+
                     {/* Icône de caméra */}
                     <label
                         htmlFor="profileImageInput"
