@@ -21,6 +21,7 @@ namespace CourseManagementService.Services.Interfaces
 
         Task<string?> GetTeacherFullNameByModuleIdAsync(int moduleId);
 
+        Task<IEnumerable<ModuleDto>> GetModulesByTeacherIdAsync(int teacherId);
 
     }
 }

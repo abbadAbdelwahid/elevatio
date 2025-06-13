@@ -329,6 +329,37 @@ namespace CourseManagementService.Services.Implementations
         }
     return results;}
 
-    
+        public async Task<IEnumerable<ModuleDto>> GetModulesByTeacherIdAsync(int teacherId)
+        {
+            var modules = await _context.Modules
+                .Include(m => m.Filiere)
+                .Where(m => m.TeacherId == teacherId)
+                .ToListAsync();
+
+            var results = new List<ModuleDto>();
+
+            foreach (var m in modules)
+            {
+                var teacherName = await _authHttp.GetTeacherFullNameAsync(m.TeacherId);
+
+                results.Add(new ModuleDto
+                {
+                    ModuleId = m.ModuleId,
+                    ModuleName = m.ModuleName,
+                    ModuleDescription = m.ModuleDescription,
+                    ModuleDuration = m.ModuleDuration,
+                    FiliereName = m.Filiere.FiliereName,
+                    TeacherId = m.TeacherId,
+                    TeacherFullName = teacherName,
+                    ProfileImageUrl = m.ProfileImageUrl,
+                    CreatedAt = m.CreatedAt,
+                    UpdatedAt = m.UpdatedAt,
+                    Evaluated = m.Evaluated
+                });
+            }
+
+            return results;
+        }
+
     }
 }
