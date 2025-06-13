@@ -48,32 +48,32 @@ export default function QuestionnairesManager({
     const [viewingQuestions, setViewingQuestions] = useState(null);
     const [modules, setModules] = useState(null);
 
-    useEffect(() => {
-        const fetchModules = async () => {
-            try {
-                const token =  localStorage.getItem("accessToken")
-                const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL
-                const res = await fetch(`${baseUrl}/api/Module/teacher/${getUserIdFromCookie()}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: token ? `Bearer ${token}` : "",
-                    },
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    console.log(data);
-                    setModules(data); // Sauvegarde les questionnaires récupérés
-                } else {
-                    console.error("Erreur lors du fetch initial");
-                }
-            } catch (err) {
-                console.error("Erreur serveur:", err);
-            }
-        };
-
-        fetchModules();
-    }, []);
+    // useEffect(() => {
+    //     const fetchModules = async () => {
+    //         try {
+    //             const token =  localStorage.getItem("accessToken")
+    //             const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL
+    //             const res = await fetch(`${baseUrl}/api/Module/teacher/${getUserIdFromCookie()}`, {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     Authorization: token ? `Bearer ${token}` : "",
+    //                 },
+    //             });
+    //
+    //             if (res.ok) {
+    //                 const data = await res.json();
+    //                 console.log(data);
+    //                 setModules(data); // Sauvegarde les questionnaires récupérés
+    //             } else {
+    //                 console.error("Erreur lors du fetch initial");
+    //             }
+    //         } catch (err) {
+    //             console.error("Erreur serveur:", err);
+    //         }
+    //     };
+    //
+    //     fetchModules();
+    // }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

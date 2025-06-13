@@ -61,7 +61,7 @@ export function UserProfileCard({ user,setUser }) {
 
                 try {
                     // Envoyer le fichier au serveur
-                    const response = await fetch(`${baseUrl}/api/Etudiants/${getUserIdFromCookie()}/profile-image`, {
+                    const response = await fetch(`${baseUrl}/api/${getRoleFromCookie()}s/${getUserIdFromCookie()}/profile-image`, {
                         method: 'PUT',  // ou 'POST' selon ton API
                         headers: {
                             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Si tu utilises un token
