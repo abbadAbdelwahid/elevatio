@@ -21,13 +21,15 @@ export const CourseCard = memo(({ course, evaluations, onRefresh }) => {
     return (
         <div className="overflow-hidden rounded-lg border border-gray-200 shadow-sm transition-all hover:shadow-md">
             <div className="relative h-48 w-full overflow-hidden">
-                <Image
-                    src={course.profileImageUrl ? `${baseUrl}${course.profileImageUrl}` : "/placeholder.svg"}
+                <img
+                    src={course.profileImageUrl
+                        ? `${baseUrl.replace(/\/$/, '')}/${course.profileImageUrl.replace(/^\//, '')}`
+                        : "/placeholder.svg"}
                     alt={course.moduleName}
-                    fill
-                    className="object-cover"
+                    className="object-cover w-full h-full"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
+
             </div>
             <div className="p-4">
                 <h3 className="mb-2 font-medium line-clamp-2">{course.moduleName}</h3>
