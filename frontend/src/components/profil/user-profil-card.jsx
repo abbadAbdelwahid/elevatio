@@ -92,8 +92,8 @@ export function UserProfileCard({ user,setUser }) {
             <CardContent className="flex flex-col items-center p-8">
                 {/* Photo de profil */}
                 <div className="relative mb-6 h-40 w-40 overflow-hidden rounded-full border-4 border-purple-100">
-                    <Image
-                        src={`${baseUrl}${user.profileImageUrl}`}
+                    <img
+                        src={`${baseUrl.replace(/\/$/, '')}/${user.profileImageUrl.replace(/^\//, '')}`}
                         alt="User profile"
                         width={160}
                         height={160}
