@@ -82,71 +82,78 @@ public class ReportPropertyService : IReportPropertyService
         sb.AppendLine(" rédige un résumé des résultats de cette question ");
         
 
-        // 3) Appeler OpenAI
+        // 3) Appeler OpenAI 
+        sb.AppendLine(
+            "Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!");
         var prompt = sb.ToString();  
         
         
         return await _groqAi.SendChatAsync(prompt);
     } 
-    public  async Task<string> GroqAverageRating(double? averageRating, string NomModule)
+    public  async Task<string> GroqAverageRating(double? averageRating, string Nom , string type)
     {
         // Créer le prompt pour GroqAI
         string prompt = $@"
-    Le module '{NomModule}' a une moyenne de rating  de {averageRating}/5.  
-Réponds moi strictement a ces questions dans une paragraphe  en prenant en cosidération CE {NomModule} et son contenu(ne mentionne pas prquoi tu genere ce message)
-ne donne pas des reponses generales mais des reponses qui sont dans de corps de {NomModule} 
+    {type}  '{Nom}' a une moyenne de rating  de {averageRating}/5.  
+Réponds moi strictement a ces questions dans une paragraphe  en prenant en cosidération CE {Nom} et son contenu(ne mentionne pas prquoi tu genere ce message)
+ne donne pas des reponses generales mais des reponses qui sont dans de corps de {Nom} 
 
 Comment ajuster les évaluations pour mieux refléter la progression des étudiants ?
 
-Comment corriger les tendances de faibles performances (par exemple, revoir le contenu ou ajuster les évaluations) ?";
+Comment corriger les tendances de faibles performances (par exemple, revoir le contenu ou ajuster les évaluations) ? 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!";
 
         // Utiliser GroqAI pour générer le texte du rapport
         var text = await _groqAi.SendChatAsync(prompt);
 
         return text;
     } 
-    public  async Task<string> GroqMedianRating(double? medianRating, string NomModule)
+    public  async Task<string> GroqMedianRating(double? medianRating, string NomModule, string type)
     {
         // Créer le prompt pour GroqAI
         string prompt = $@" 
-    Le module '{NomModule}' a une mediane des notes de {medianRating}/5.  
+    Le {type} '{NomModule}' a une mediane des notes de {medianRating}/20.  
 Réponds moi strictement a ces questions dans une paragraphe en prenant en cosidération CE {NomModule} et son contenu(ne mentionne pas prquoi tu genere ce message)
 ne donne pas des reponses generales mais des reponses qui sont dans de corps de {NomModule} 
 La médiane de {medianRating}/5 indique que la moitié des étudiants obtient au moins ce score. Quelles stratégies de remédiation ciblée proposeriez-vous pour aider ceux en-dessous de la médian ?
-comment adapteriez-vous les supports (vidéos, fiches, tutoriels , prend ces elements en considération mais ne les mentionne pas directement)  pour homogénéiser les performances autour de ce point central ? "; 
+comment adapteriez-vous les supports (vidéos, fiches, tutoriels , prend ces elements en considération mais ne les mentionne pas directement)  pour homogénéiser les performances autour de ce point central ? 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html! "; 
 
         // Utiliser GroqAI pour générer le texte du rapport
         var text = await _groqAi.SendChatAsync(prompt);
 
         return text;
-    } 
-    public  async Task<string> GroqParticipationRate(double? PR, string NomModule)
+    }
+
+    public async Task<string> GroqParticipationRate(double? PR, string NomModule,string type )
     {
         // Créer le prompt pour GroqAI
         string prompt = $@"
-    Le module '{NomModule}' a une participationRate  de {PR}/1.  
+    dans une ecole d'ingénieur , le {type}{NomModule}' a une participationRate  de {PR}/1.  
 Réponds moi strictement a ces questions dans une paragraphe en prenant en cosidération CE {NomModule} et son contenu(ne mentionne pas prquoi tu genere ce message) 
 ne donne pas des reponses generales mais des reponses qui sont dans de corps de {NomModule}  
 
 Un taux de participation  révèle le degré d’engagement. Quels formats (quiz en direct, ateliers, forums) permettraient de faire évoluer ce taux à la hausse
 
- À {PR} de participation, quels obstacles (durée des séances, complexité, manque d’incitations) , prend ces element en considération mais ne les mentionne pas directement , semblent freiner les étudiants, et comment les lever ?";
+ À {PR} de participation, quels obstacles (durée des séances, complexité, manque d’incitations) , prend ces element en considération mais ne les mentionne pas directement , semblent freiner les étudiants, et comment les lever ? 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!";
 
         // Utiliser GroqAI pour générer le texte du rapport
         var text = await _groqAi.SendChatAsync(prompt);
 
         return text;
     } 
-    public  async Task<string> GroqNpsScore(double? NPS, string NomModule)
+    public  async Task<string> GroqNpsScore(double? NPS, string NomModule, string type)
     {
         // Créer le prompt pour GroqAI
         string prompt = $@"
-    '{NomModule}' a une NpsScore des notes de {NPS}/100.  
+    le {type}'{NomModule}' a une NpsScore des notes de {NPS}/100.  
 Réponds moi strictement a ces questions dans une paragraphe  en prenant en cosidération CE {NomModule} et son contenu(ne mentionne pas prquoi tu genere ce message)
 ne donne pas des reponses generales mais des reponses qui sont dans de corps de {NomModule} 
 Avec ce NPS  , quels éléments spécifiques du module (rythme, clarté, interactivité) , prend ces element en considération mais ne les mentionne pas directement ,expliquent ce niveau de recommandation, et comment les renforcer ?
 
-Le NPS  reflète la fidélité des étudiants : quelles modifications méthodologiques pourraient faire grimper ce score ? ?";
+Le NPS  reflète la fidélité des étudiants : quelles modifications méthodologiques pourraient faire grimper ce score ? ? 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!";
 // Utiliser GroqAI pour générer le texte du rapport
         var text = await _groqAi.SendChatAsync(prompt);
 
@@ -201,25 +208,26 @@ Le NPS  reflète la fidélité des étudiants : quelles modifications méthodolo
             string ModuleName = module.ModuleName;
             string FiliereName = module.FiliereName; 
             string MF = $"{ModuleName} de la filiere {FiliereName}";
-            
-            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, MF) : null;
+            string type = "module"; 
+            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, MF,type ) : null;
             Console.Write(ResponseAVG);
 // Créer le prompt pour la statistique "Médiane des notes"
-            var ResponseMedian = (stat.MedianNotes != null && stat.MedianNotes != 0) ? await GroqMedianRating(stat.MedianNotes.Value, MF) : null;
+            var ResponseMedian = (stat.MedianNotes != null && stat.MedianNotes != 0) ? await GroqMedianRating(stat.MedianNotes.Value, MF ,type) : null;
 // Créer le prompt pour la statistique "Taux de participation"
             Console.Write(ResponseMedian);
-            var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, MF) : null;
+            var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, MF , type) : null;
 // Créer le prompt pour la statistique "Net Promoter Score"
             Console.Write(ResponseParticipation);
-            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, MF) : null;
+            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, MF , type) : null;
             Console.Write(ResponseNpsScore);
             // 2) Créer le prompt pour générer le rapport avec GroqAI
             var prompt =
-                $@"Donne moi une conclusion générale de ces textes en une paragraphe : 
+                $@"Donne moi une conclusion générale en une paragraphe : 
 Texte1 : {ResponseAVG} 
 Texte2 : {ResponseMedian}
 Texte3 : {ResponseParticipation}
-Texte4 : {ResponseNpsScore}";
+Texte4 : {ResponseNpsScore} 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!";
 
             // 3) Générer le texte du rapport avec GroqAI
             var Conclusion = await _groqAi.SendChatAsync(prompt);
@@ -232,55 +240,100 @@ Texte4 : {ResponseNpsScore}";
 
             var htmlContent =
                 $@"
-<html>
-    <head>
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                font-size: 12pt;
-                line-height: 1.6;
-                margin: 20px;
-            }}
-            h1 {{
-                text-align: center;
-                color: #4CAF50;
-                font-size: 24pt;
-            }}
-            h2 {{
-                color: #333;
-                font-size: 18pt;
-            }}
-            p {{
-                margin-bottom: 15px;
-            }}
-        </style>
-    </head>
-    <body>
-        <!-- Titre -->
-        <h1>Rapport sur l'Évaluation du Module '{ModuleName}' de la Filière '{FiliereName}'</h1>
+<!DOCTYPE html>
+<html lang=""fr"">
+<head>
+  <meta charset=""UTF-8"">
+  <title>Rapport d'Évaluation</title>
+  <style>
+    :root {{
+      --bg-color:    #fafafa;
+      --text-color:  #333;
+      --heading:     #111;
+      --subheading:  #444;
+      --accent:      #007acc;
+    }}
 
-        <!-- Introduction -->
-        <p><strong>Introduction :</strong><br>
-        Ce rapport vise à analyser l'efficacité du {MF}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
+    body {{
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 20px auto;
+      max-width: 800px;
+      padding: 0 15px;
+    }}
 
-        <!-- Moyenne des Notes -->
-        <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
-       {ResponseAVG}</p>
-        <!-- Médiane des Notes -->
-        <p><strong>Médiane des Notes : {stat.MedianNotes}</strong><br>
-     {ResponseMedian}</p>
-        <!-- Net Promoter Score (NPS) -->
-        <p><strong>Net Promoter Score (NPS) :{stat.NpsScore}</strong><br>
-     {ResponseNpsScore}</p>
-        <!-- Taux de Participation -->
-        <p><strong>Taux de Participation :{stat.ParticipationRate}</strong><br>
-       {ResponseParticipation}</p>
+    h1 {{
+      text-align: center;
+      color: var(--heading);
+      font-size: 2rem;
+      margin-bottom: 0.5em;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }}
+    h1::after {{
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      margin: 6px auto 0;
+      border-radius: 2px;
+    }}
 
-        <!-- Conclusion -->
-        <p><strong>Conclusion :</strong><br>
-      {Conclusion}</p>
-    </body>
+    h2 {{
+      color: var(--subheading);
+      font-size: 1.4rem;
+      margin: 1.5em 0 0.5em;
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }}
+
+    p {{
+      margin-bottom: 1em;
+      text-align: justify;
+    }}
+
+    strong {{
+      color: var(--heading);
+    }}
+  </style>
+</head>
+<body>
+  <!-- Titre -->
+  <h1>Rapport sur l'Évaluation du Module '{ModuleName}' de la Filière '{FiliereName}'</h1>
+
+  <!-- Introduction -->
+  <p><strong>Introduction :</strong><br>
+  Ce rapport vise à analyser l'efficacité du {MF}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
+
+  <!-- Moyenne des Notes -->
+  <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
+  {ResponseAVG}</p>
+
+  <!-- Médiane des Notes -->
+  <p><strong>Médiane des Notes : {stat.MedianNotes}</strong><br>
+  {ResponseMedian}</p>
+
+  <!-- Net Promoter Score (NPS) -->
+  <p><strong>Net Promoter Score (NPS) : {stat.NpsScore}</strong><br>
+  {ResponseNpsScore}</p>
+
+  <!-- Taux de Participation -->
+  <p><strong>Taux de Participation : {stat.ParticipationRate}</strong><br>
+  {ResponseParticipation}</p>
+
+  <!-- Conclusion -->
+  <p><strong>Conclusion :</strong><br>
+  {Conclusion}</p>
+</body>
 </html>
+
 "; 
             Console.Write(Conclusion);
             Console.Write("------------------------------");
@@ -311,31 +364,32 @@ Texte4 : {ResponseNpsScore}";
             var stat = await _db.StatistiquesModules
                 .FirstOrDefaultAsync(s => s.ModuleId == moduleId);
 
-              
 
+            string type = "module"; 
             ModuleDto module = await _moduleClient.GetModuleByIdAsync(moduleId);
             string ModuleName = module.ModuleName;
             string FiliereName = module.FiliereName; 
             string MF = $"{ModuleName} de la filiere {FiliereName}";
             
-            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, MF) : null;
+            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, MF, type) : null;
             Console.Write(ResponseAVG);
 // Créer le prompt pour la statistique "Médiane des notes"
-            var ResponseMedian = (stat.MedianNotes != null && stat.MedianNotes != 0) ? await GroqMedianRating(stat.MedianNotes.Value, MF) : null;
+            var ResponseMedian = (stat.MedianNotes != null && stat.MedianNotes != 0) ? await GroqMedianRating(stat.MedianNotes.Value, MF ,type) : null;
 // Créer le prompt pour la statistique "Taux de participation"
             Console.Write(ResponseMedian);
-            var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, MF) : null;
+            var ResponseParticipation = (stat.ParticipationRate != null && stat.ParticipationRate != 0) ? await GroqParticipationRate(stat.ParticipationRate.Value, MF ,type) : null;
 // Créer le prompt pour la statistique "Net Promoter Score"
             Console.Write(ResponseParticipation);
-            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, MF) : null;
+            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, MF ,type) : null;
             Console.Write(ResponseNpsScore);
             // 2) Créer le prompt pour générer le rapport avec GroqAI
             var prompt =
-                $@"Donne moi une conclusion générale de ces textes en une paragraphe : 
+                $@"Donne moi une conclusion générale  en une paragraphe : 
 Texte1 : {ResponseAVG} 
 Texte2 : {ResponseMedian}
 Texte3 : {ResponseParticipation}
-Texte4 : {ResponseNpsScore}";
+Texte4 : {ResponseNpsScore} 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!";
 
             // 3) Générer le texte du rapport avec GroqAI
             var Conclusion = await _groqAi.SendChatAsync(prompt);
@@ -348,54 +402,98 @@ Texte4 : {ResponseNpsScore}";
 
             var htmlContent =
                 $@"
-<html>
-    <head>
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                font-size: 12pt;
-                line-height: 1.6;
-                margin: 20px;
-            }}
-            h1 {{
-                text-align: center;
-                color: #4CAF50;
-                font-size: 24pt;
-            }}
-            h2 {{
-                color: #333;
-                font-size: 18pt;
-            }}
-            p {{
-                margin-bottom: 15px;
-            }}
-        </style>
-    </head>
-    <body>
-        <!-- Titre -->
-        <h1>Rapport sur l'Évaluation du Module '{ModuleName}' de la Filière '{FiliereName}'</h1>
+<!DOCTYPE html>
+<html lang=""fr"">
+<head>
+  <meta charset=""UTF-8"">
+  <title>Rapport d'Évaluation</title>
+  <style>
+    :root {{
+      --bg-color:    #fafafa;
+      --text-color:  #333;
+      --heading:     #111;
+      --subheading:  #444;
+      --accent:      #007acc;
+    }}
 
-        <!-- Introduction -->
-        <p><strong>Introduction :</strong><br>
-        Ce rapport vise à analyser l'efficacité du {MF}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
+    body {{
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 20px auto;
+      max-width: 800px;
+      padding: 0 15px;
+    }}
 
-        <!-- Moyenne des Notes -->
-        <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
-       {ResponseAVG}</p>
-        <!-- Médiane des Notes -->
-        <p><strong>Médiane des Notes : {stat.MedianNotes}</strong><br>
-     {ResponseMedian}</p>
-        <!-- Net Promoter Score (NPS) -->
-        <p><strong>Net Promoter Score (NPS) :{stat.NpsScore}</strong><br>
-     {ResponseNpsScore}</p>
-        <!-- Taux de Participation -->
-        <p><strong>Taux de Participation :{stat.ParticipationRate}</strong><br>
-       {ResponseParticipation}</p>
+    h1 {{
+      text-align: center;
+      color: var(--heading);
+      font-size: 2rem;
+      margin-bottom: 0.5em;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }}
+    h1::after {{
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      margin: 6px auto 0;
+      border-radius: 2px;
+    }}
 
-        <!-- Conclusion -->
-        <p><strong>Conclusion :</strong><br>
-      {Conclusion}</p>
-    </body>
+    h2 {{
+      color: var(--subheading);
+      font-size: 1.4rem;
+      margin: 1.5em 0 0.5em;
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }}
+
+    p {{
+      margin-bottom: 1em;
+      text-align: justify;
+    }}
+
+    strong {{
+      color: var(--heading);
+    }}
+  </style>
+</head>
+<body>
+  <!-- Titre -->
+  <h1>Rapport sur l'Évaluation du Module '{ModuleName}' de la Filière '{FiliereName}'</h1>
+
+  <!-- Introduction -->
+  <p><strong>Introduction :</strong><br>
+  Ce rapport vise à analyser l'efficacité du {MF}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
+
+  <!-- Moyenne des Notes -->
+  <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
+  {ResponseAVG}</p>
+
+  <!-- Médiane des Notes -->
+  <p><strong>Médiane des Notes : {stat.MedianNotes}</strong><br>
+  {ResponseMedian}</p>
+
+  <!-- Net Promoter Score (NPS) -->
+  <p><strong>Net Promoter Score (NPS) : {stat.NpsScore}</strong><br>
+  {ResponseNpsScore}</p>
+
+  <!-- Taux de Participation -->
+  <p><strong>Taux de Participation : {stat.ParticipationRate}</strong><br>
+  {ResponseParticipation}</p>
+
+  <!-- Conclusion -->
+  <p><strong>Conclusion :</strong><br>
+  {Conclusion}</p>
+</body>
 </html>
 "; 
             Console.Write(Conclusion);
@@ -426,32 +524,33 @@ Texte4 : {ResponseNpsScore}";
             // 1) Récupérer les statistiques du module
             var stat = await _db.StatistiquesFilieres.FindAsync(filiereId)
                        ?? throw new KeyNotFoundException("Filiere introuvable"); 
-              
+              string type = "filiere" ; 
 
             FiliereDto filiere = await _filiereClient.GetFiliereByIdAsync(filiereId);
          
             string FiliereName = filiere.FiliereName; 
            
             
-            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, FiliereName) : null;
+            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, FiliereName , type) : null;
 
 // Créer le prompt pour la statistique "Médiane des notes"
-            var ResponseMedian = (stat.MedianRating != null && stat.MedianRating != 0) ? await GroqMedianRating(stat.MedianRating.Value, FiliereName) : null;
+            var ResponseMedian = (stat.MedianRating != null && stat.MedianRating != 0) ? await GroqMedianRating(stat.MedianRating.Value, FiliereName , type) : null;
 // Créer le prompt pour la statistique "Taux de participation"
-            var ResponseParticipation = (stat.SatisfactionRate!= null && stat.SatisfactionRate != 0) ? await GroqParticipationRate(stat.SatisfactionRate.Value, FiliereName) : null;
+            var ResponseParticipation = (stat.SatisfactionRate!= null && stat.SatisfactionRate != 0) ? await GroqParticipationRate(stat.SatisfactionRate.Value, FiliereName, type) : null;
 // Créer le prompt pour la statistique "Net Promoter Score"
-            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, FiliereName) : null;
+            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, FiliereName , type) : null;
 
             // 2) Créer le prompt pour générer le rapport avec GroqAI
             var prompt =
-                $@"Donne moi une conclusion générale ou résumé sans répétion de ces textes en une paragraphe : 
+                $@"Donne moi une conclusion générale ou résumé sans répétion  en une paragraphe : 
 {ResponseAVG} 
  
 {ResponseMedian}
 
 {ResponseParticipation}
 
-{ResponseNpsScore}";
+{ResponseNpsScore} 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!";
 
             // 3) Générer le texte du rapport avec GroqAI
             var Conclusion = await _groqAi.SendChatAsync(prompt);
@@ -509,7 +608,7 @@ Texte4 : {ResponseNpsScore}";
        {ResponseParticipation}</p>
 
         <!-- Conclusion -->
-        <p><strong>Conclusion :</strong><br>
+        <p>
       {Conclusion}</p>
     </body>
 </html>
@@ -536,7 +635,8 @@ Texte4 : {ResponseNpsScore}";
     public async Task<string> GenerateFiliereReportPdfAsyncHtml(int FiliereId)
     {
          try
-        {
+         {
+             string type = "filiere"; 
             // 1) Récupérer les statistiques du module
             var stat = await _db.StatistiquesFilieres.FindAsync(FiliereId)
                        ?? throw new KeyNotFoundException("Filiere introuvable"); 
@@ -547,25 +647,26 @@ Texte4 : {ResponseNpsScore}";
             string FiliereName = filiere.FiliereName; 
            
             
-            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, FiliereName) : null;
+            var ResponseAVG = (stat.AverageRating != null && stat.AverageRating != 0) ? await GroqAverageRating(stat.AverageRating.Value, FiliereName , type) : null;
 
 // Créer le prompt pour la statistique "Médiane des notes"
-            var ResponseMedian = (stat.MedianRating != null && stat.MedianRating != 0) ? await GroqMedianRating(stat.MedianRating.Value, FiliereName) : null;
+            var ResponseMedian = (stat.MedianRating != null && stat.MedianRating != 0) ? await GroqMedianRating(stat.MedianRating.Value, FiliereName , type) : null;
 // Créer le prompt pour la statistique "Taux de participation"
-            var ResponseParticipation = (stat.SatisfactionRate!= null && stat.SatisfactionRate != 0) ? await GroqParticipationRate(stat.SatisfactionRate.Value, FiliereName) : null;
+            var ResponseParticipation = (stat.SatisfactionRate!= null && stat.SatisfactionRate != 0) ? await GroqParticipationRate(stat.SatisfactionRate.Value, FiliereName , type) : null;
 // Créer le prompt pour la statistique "Net Promoter Score"
-            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, FiliereName) : null;
+            var ResponseNpsScore = (stat.NpsScore != null && stat.NpsScore != 0) ? await GroqNpsScore(stat.NpsScore.Value, FiliereName,type) : null;
 
             // 2) Créer le prompt pour générer le rapport avec GroqAI
             var prompt =
-                $@"Donne moi une conclusion générale ou résumé sans répétion de ces textes en une paragraphe : 
+                $@"Donne moi une conclusion générale ou résumé sans répétion  en une paragraphe : 
 {ResponseAVG} 
  
 {ResponseMedian}
 
 {ResponseParticipation}
 
-{ResponseNpsScore}";
+{ResponseNpsScore} 
+Ta réponse doit etre générée comme une paragraphe dans un fichier html ,tu peux utiliser css pour styler  , ne fais pas mention dans le message que tu genere html, genere la reponse normalement juste comme une paragraphe dans un html un utilisant la balise <p> et quand tu sautes la ligne saute en utilisant le syntaxe de html , ainsi que pour les titres utilise les syntaxe html!";
 
             // 3) Générer le texte du rapport avec GroqAI
             var Conclusion = await _groqAi.SendChatAsync(prompt);
@@ -607,7 +708,7 @@ Texte4 : {ResponseNpsScore}";
 
         <!-- Introduction -->
         <p><strong>Introduction :</strong><br>
-        Ce rapport vise à analyser l'efficacité du {FiliereName}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
+        Ce rapport vise à analyser l'efficacité de la filière {FiliereName}. L'objectif est de comprendre les performances des étudiants en fonction des statistiques clés telles que la moyenne des notes, la médiane, le Net Promoter Score (NPS), et le taux de participation. Ce rapport fournit également des recommandations basées sur l'analyse de ces données.</p>
 
         <!-- Moyenne des Notes -->
         <p><strong>Moyenne des Notes : {stat.AverageRating}</strong><br>
