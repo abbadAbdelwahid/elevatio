@@ -303,7 +303,7 @@ export default function QuestionnairesManager({
                                 <Input
                                     required
                                     value={currentQ?.title || ""}
-                                    onChange={(e) => setCurrentQ({ ...currentQ, title: e.target.value,typeModuleFiliere:'Module' })}
+                                    onChange={(e) => setCurrentQ({ ...currentQ, title: e.target.value,typeModuleFiliere:'Module' ,moduleId:1})}
                                 />
                             </div>
                             {/*<div className="space-y-2">*/}
