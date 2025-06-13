@@ -14,7 +14,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { getUserIdFromCookie } from "@/lib/utils"
 import { toast } from "sonner"
 
-export function DialogDemo({ title, course, score = 0, commentaire = "", idEval = 0, onSuccess }) {
+export function DialogDemo({ title, course, score , commentaire , idEval , onSuccess }) {
+
+    console.log(idEval)
+
     const [rating, setRating] = useState(score)
     const [comment, setComment] = useState(commentaire)
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -67,6 +70,15 @@ export function DialogDemo({ title, course, score = 0, commentaire = "", idEval 
                 moduleId: course.moduleId,
                 score: rating,
             }
+            const evaluationDataUpdate= {
+                evaluationId: idEval,
+                respondentUserId: getUserIdFromCookie(),
+                comment,
+                type: 'Module',
+                filiereId: 0,
+                moduleId: course.moduleId,
+                score: rating,
+            }
 
             const baseUrl = process.env.NEXT_PUBLIC_API_EVALUATION_URL
             const url = idEval
@@ -74,15 +86,31 @@ export function DialogDemo({ title, course, score = 0, commentaire = "", idEval 
                 : `${baseUrl}/api/evaluations/addEvaluation`
 
             const method = idEval ? "PUT" : "POST"
+            let res=null
+            if(method === "POST") {
+                 res = await fetch(url, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                    body: JSON.stringify(evaluationData),
+                })
+            }
+            if(method === "PUT") {
+                res = await fetch(url, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                    body: JSON.stringify(evaluationDataUpdate),
+                })
+            }
 
-            const res = await fetch(url, {
-                method,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                },
-                body: JSON.stringify(evaluationData),
-            })
+
+
+
 
             if (!res.ok) throw new Error(await res.text())
 

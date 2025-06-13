@@ -67,12 +67,12 @@ export function CoursesTable() {
     useEffect(() => {
         const fetchCoursesAndEvaluations = async () => {
             try {
-                const baseUrl = process.env.NEXT_PUBLIC_API_COURSE_URL
-                const token = localStorage.getItem("accessToken")
 
-                let courseUrl = `${baseUrl}/api/Module?filter=All`
+                const token = localStorage.getItem("accessToken")
+                  const baseUrl1=process.env.NEXT_PUBLIC_API_COURSE_URL
+                let courseUrl = `${baseUrl1}/api/Module?filter=All`
                 if (selectedFiliere !== "all") {
-                    courseUrl = `${baseUrl}/api/Module/filiere/${selectedFiliere}`
+                    courseUrl = `${baseUrl1}/api/Module/filiere/${selectedFiliere}`
                 }
 
                 const courseRes = await fetch(courseUrl, {
@@ -82,20 +82,21 @@ export function CoursesTable() {
                     },
                 })
                 const coursesData = await courseRes.json()
-
-                const evalRes = await fetch(`http://localhost:3001/evaluations`, {
+                const baseUrl2=process.env.NEXT_PUBLIC_API_EVALUATION_URL
+                const evalRes = await fetch(`${baseUrl2}/api/evaluations/getAllEvaluations`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
                 })
                 const evalsData = await evalRes.json()
+                console.log(evalsData)
 
                 const merged = coursesData.map(course => {
-                    const evalItem = evalsData.find(e => e.courseId === course.id)
+                    const evalItem = evalsData.find(e => e.moduleId === course.id)
                     return {
                         ...course,
-                        evaluation: evalItem ? evalItem.rating : 0
+                        evaluation: evalItem ? evalItem.score : 0
                     }
                 })
 
@@ -200,7 +201,7 @@ export function CoursesTable() {
             <Table>
                 <TableHeader className="bg-[#f8f9fa]">
                     <TableRow className="border-b border-gray-200">
-                        {["Course", "Duration", "Status", "Professor", "Filiere", "Evaluation", "Action"].map((header) => (
+                        {["Course", "Duration", "Professor", "Filiere", "Evaluation", "Action"].map((header) => (
                             <TableHead key={header} className="px-4 py-3 text-sm font-medium text-gray-700">
                                 {header}
                             </TableHead>
@@ -216,15 +217,6 @@ export function CoursesTable() {
                             </TableCell>
                             <TableCell className="px-4 py-3 text-sm text-gray-600">
                                 {course.moduleDuration}
-                            </TableCell>
-                            <TableCell className="px-4 py-3">
-                                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                                    course.status === 'in progress'
-                                        ? 'bg-yellow-100 text-yellow-800'
-                                        : 'bg-green-100 text-green-800'
-                                }`}>
-                                    {course.status}
-                                </span>
                             </TableCell>
                             <TableCell className="px-4 py-3 text-sm text-gray-600">
                                 {course.teacherFullName}
