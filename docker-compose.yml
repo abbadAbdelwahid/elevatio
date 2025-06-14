@@ -3,10 +3,15 @@ version: '3.8'
 services:
   analytics-db:
     image: postgres:15
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
-      POSTGRES_DB: analyticsdb
-      POSTGRES_USER: analyticsuser
-      POSTGRES_PASSWORD: analyticspass
+      POSTGRES_DB: analytics_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: S3cureP@ssw0rd!2025
     volumes:
       - analytics-data:/var/lib/postgresql/data
 
@@ -14,17 +19,23 @@ services:
     build:
       context: ./backend/services/AnalyticsService
     ports:
-      - "5202:8080"  # Expose analytics service
+      - "5202:8080"
     environment:
-      DB_HOST: analytics-db
-      DB_NAME: analyticsdb
-      DB_USER: analyticsuser
-      DB_PASSWORD: analyticspass
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__AnalyticsDb: "Host=analytics-db;Port=5432;Database=analytics_db;Username=postgres;Password=S3cureP@ssw0rd!2025"
+      Groq__ApiKey: "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"
+      EvaluationService__BaseUrl: "http://evaluation-service:8080/"
+      CourseManagementService__BaseUrl: "http://course-management-service:8080"
     depends_on:
-      - analytics-db
-
+      analytics-db:
+        condition: service_healthy
   auth-db:
     image: postgres:15
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_DB: auth_db
       POSTGRES_USER: postgres
@@ -41,7 +52,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: "Host=auth-db;Port=5432;Database=auth_db;Username=postgres;Password=S3cureP@ssw0rd!2025"
     depends_on:
-      - auth-db
+      auth-db:
+       condition: service_healthy
 
   course-management-db:
     image: postgres:15
@@ -73,6 +85,11 @@ services:
 
   evaluation-db:
     image: postgres:15
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_DB: evaluation_formations
       POSTGRES_USER: postgres
@@ -95,17 +112,24 @@ services:
       RabbitMQ__Pass: "guest"
       RabbitMQ__Exchange: "evaluations.exchange"
       AI__Endpoint: "https://api.groq.com/openai/v1/chat/completions"
-      AI__ApiKey: "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"
-      Other-Microservices-EndPoints__AuthService-EndPoint: "http://auth-service:5244"
-      Other-Microservices-EndPoints__CoursesManagementService-EndPoint: "http://course-management-service:5201"
+      AI__ApiKey: "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"
+      Other-Microservices-EndPoints__AuthService-EndPoint: "http://auth-service:8080"
+      Other-Microservices-EndPoints__CoursesManagementService-EndPoint: "http://course-management-service:8080"
     depends_on:
-      - evaluation-db
+      evaluation-db:
+          condition: service_healthy
 
   frontend:
     build:
       context: ./frontend
     ports:
       - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_AUTH_URL: "http://auth-service:8080"
+      NEXT_PUBLIC_API_COURSE_URL: "http://course-management-service:8080"
+      NEXT_PUBLIC_API_EVALUATION_URL: "http://evaluation-service:8080"
+      NEXT_PUBLIC_API_ANALYTICS_URL: "http://analytics-service:8080"
+
 
 volumes:
   analytics-data:

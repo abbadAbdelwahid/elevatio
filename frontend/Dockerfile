@@ -1,6 +1,10 @@
 # 🧱 Stage 1: Build the app
 FROM node:18-alpine AS builder
 
+
+# Copy env file explicitly
+COPY .env.production .env.production
+
 # Set working directory
 WORKDIR /app
 
@@ -11,6 +15,7 @@ RUN npm install
 # Copy the rest of the app
 COPY . .
 
+RUN rm -f .env.local
 # Build the app for production
 RUN npm run build
 

@@ -1,0 +1,90 @@
+name: CI/CD Pipeline for Dockerized App
+
+on:
+  push:
+    branches:
+      - develop  # Trigger on push to the 'develop' branch
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up AWS CLI
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Step 3: Log in to ECR
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_ANALYTICS_SERVICE_URI }}
+
+      # Step 4: Build and push Docker images to ECR
+      - name: Build and push Docker images
+        run: |
+          # Build and tag images
+          docker build -t sys-eval-front ./frontend
+          docker build -t auth-service ./backend/services/AuthService
+          docker build -t evaluation-service ./backend/services/EvaluationService
+          docker build -t course-management-service ./backend/services/CourseManagementService
+          docker build -t analytics-service ./backend/services/AnalyticsService
+          
+          # Tag images for ECR
+          docker tag sys-eval-front:latest ${{ secrets.ECR_FRONTEND_URI }}:latest
+          docker tag auth-service:latest ${{ secrets.ECR_AUTH_SERVICE_URI }}:latest
+          docker tag evaluation-service:latest ${{ secrets.ECR_EVALUATION_SERVICE_URI }}:latest
+          docker tag course-management-service:latest ${{ secrets.ECR_COURSE_MANAGEMENT_SERVICE_URI }}:latest
+          docker tag analytics-service:latest ${{ secrets.ECR_ANALYTICS_SERVICE_URI }}:latest
+          
+          # Push images to ECR
+          docker push ${{ secrets.ECR_FRONTEND_URI }}:latest
+          docker push ${{ secrets.ECR_AUTH_SERVICE_URI }}:latest
+          docker push ${{ secrets.ECR_EVALUATION_SERVICE_URI }}:latest
+          docker push ${{ secrets.ECR_COURSE_MANAGEMENT_SERVICE_URI }}:latest
+          docker push ${{ secrets.ECR_ANALYTICS_SERVICE_URI }}:latest
+
+      # Step 5: SSH into EC2 and update services
+      # Step 5: SSH into EC2 and update services
+      - name: SSH into EC2 and update services
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_INSTANCE_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Ensure the SSH key has the correct permissions
+            echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+
+            # Add EC2 IP to known hosts to avoid SSH warnings
+            ssh-keyscan -H ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
+
+            # Change to the directory containing Docker Compose file
+            cd sys-eval
+
+            # Login to ECR for all 5 repositories
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_ANALYTICS_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_AUTH_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_COURSE_MANAGEMENT_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_EVALUATION_SERVICE_URI }}
+            sudo aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_FRONTEND_URI }}
+
+            # Stop and remove running containers
+            sudo docker-compose down
+
+            # 🔥 Remove ALL Docker images
+            sudo docker rmi -f $(sudo docker images -q) || true
+
+            # Pull the latest images from ECR
+            sudo docker-compose pull
+
+            # Recreate containers with the latest pulled images
+            sudo docker-compose up -d --force-recreate

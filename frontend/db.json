@@ -1,0 +1,462 @@
+{
+  "professors": [
+    {
+      "id": "1",
+      "nom": "Ahmed Bouziani",
+      "email": "ahmed.bouziane@example.com"
+    },
+    {
+      "id": "2",
+      "nom": "Nadia Lahlou",
+      "email": "nadia.lahlou@example.com"
+    }
+  ],
+  "modules": [
+    {
+      "id": "1",
+      "name": "Math",
+      "profId": 1
+    },
+    {
+      "id": "2",
+      "name": "Algorithmique",
+      "profId": 1
+    },
+    {
+      "id": "3",
+      "name": "Réseaux",
+      "profId": 2
+    },
+    {
+      "id": "4",
+      "name": "Sécurité",
+      "profId": 2
+    }
+  ],
+  "reports": [
+    {
+      "id": "1",
+      "name": "rapport1.pdf",
+      "profId": 1,
+      "url": "/files/rapport1.pdf"
+    },
+    {
+      "id": "2",
+      "name": "rapport2.pdf",
+      "profId": 1,
+      "url": "/files/rapport2.pdf"
+    },
+    {
+      "id": "3",
+      "name": "rapportA.pdf",
+      "profId": 2,
+      "url": "/files/rapportA.pdf"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "firstName": "Émilie",
+      "lastName": "Martin",
+      "email": "emilie.martin@example.com",
+      "phone": "+33 6 12 34 56 78",
+      "image": "images/profil.svg",
+      "password": "emilie123"
+    },
+    {
+      "id": "2",
+      "firstName": "Pierre",
+      "lastName": "Lefebvre",
+      "email": "pierre.lefebvre@test.com",
+      "phone": "+32 456 78 90 12",
+      "image": "",
+      "password": "pierre456"
+    },
+    {
+      "id": "3",
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "test.user@demo.com",
+      "phone": "+1 555-123-4567",
+      "image": null,
+      "password": "test789"
+    }
+  ],
+  "statistics": {
+    "participationRate": 60,
+    "averageRating": 4.2,
+    "evaluatedCourses": 3,
+    "totalCourses": 8
+  },
+  "recentEvaluations": [
+    {
+      "id": "1",
+      "courseId": "C++",
+      "rating": "Pr.Haddad",
+      "time": "today"
+    },
+    {
+      "id": "2",
+      "courseId": "Project Management",
+      "rating": "Pr.Fissoune",
+      "time": "10:30 AM"
+    },
+    {
+      "id": "3",
+      "courseId": "Introduction to Web Development",
+      "rating": "Pr.amechnoue",
+      "time": "01:00 PM"
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "title": "Programming Language C++",
+      "image": "/images/acceuil/about.svg",
+      "duration": "19h 30m",
+      "professor": "Pr. Fissoune",
+      "evaluated": true,
+      "status": "in progress",
+      "date": "2023-05-01",
+      "filiere": "GINF1"
+    },
+    {
+      "id": "2",
+      "title": "Data Science Basics",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4.2,
+      "duration": "15h 0m",
+      "professor": "Pr. Amechnoune",
+      "evaluated": false,
+      "status": "terminé",
+      "date": "2023-06-01",
+      "filiere": "GINF2"
+    },
+    {
+      "id": "3",
+      "title": "Introduction to Web Development",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4.8,
+      "duration": "25h 0m",
+      "students": "60+ Students",
+      "professor": "Pr. Haddad",
+      "evaluated": true,
+      "status": "in progress",
+      "date": "2023-04-01",
+      "filiere": "GINF1"
+    },
+    {
+      "id": "4",
+      "title": "Introduction to Python",
+      "image": "/images/acceuil/about.svg",
+      "rating": 3.9,
+      "duration": "19h 30m",
+      "students": "40+ Students",
+      "professor": "Pr. Benali",
+      "evaluated": false,
+      "status": "in progress",
+      "date": "2023-07-01",
+      "filiere": "GINF3"
+    },
+    {
+      "id": "5",
+      "title": "Advanced JavaScript",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4.3,
+      "duration": "18h 0m",
+      "students": "80+ Students",
+      "professor": "Pr. Dali",
+      "evaluated": true,
+      "status": "in progress",
+      "date": "2023-05-15",
+      "filiere": "GINF2"
+    },
+    {
+      "id": "6",
+      "title": "Cloud Computing Basics",
+      "image": "/images/acceuil/about.svg",
+      "rating": 4,
+      "duration": "20h 0m",
+      "students": "35+ Students",
+      "professor": "Pr. Lhafi",
+      "evaluated": false,
+      "status": "in progress",
+      "date": "2023-06-20",
+      "filiere": "GINF3"
+    }
+  ],
+  "evaluations": [
+    {
+      "course_id": "1",
+      "rating": 2,
+      "comment": "just now",
+      "id": "4e35"
+    },
+    {
+      "id": "504c",
+      "course_id": 2,
+      "rating": 4,
+      "comment": "ccccccccc"
+    },
+    {
+      "id": "331e",
+      "course_id": "2",
+      "rating": 3,
+      "comment": ""
+    },
+    {
+      "id": "6e41",
+      "course_id": "1",
+      "rating": 3,
+      "comment": "hhh"
+    },
+    {
+      "id": "7e60",
+      "course_id": "1",
+      "rating": 2,
+      "comment": ""
+    },
+    {
+      "id": "cc8d",
+      "course_id": "1",
+      "rating": 4,
+      "comment": ""
+    }
+  ],
+  "plannings": [
+    {
+      "group": "GINF2",
+      "year": "2025",
+      "week": "21",
+      "courses": [
+        {
+          "id": 1,
+          "day": 0,
+          "startTime": "09:00",
+          "endTime": "10:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 2,
+          "day": 0,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 3,
+          "day": 0,
+          "startTime": "13:30",
+          "endTime": "15:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 4,
+          "day": 0,
+          "startTime": "15:30:00",
+          "endTime": "17:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 5,
+          "day": 1,
+          "startTime": "09:00",
+          "endTime": "10:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TD"
+        },
+        {
+          "id": 6,
+          "day": 1,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TD"
+        },
+        {
+          "id": 6,
+          "day": 1,
+          "startTime": "13:30",
+          "endTime": "15:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 8,
+          "day": 1,
+          "startTime": "15:30:00",
+          "endTime": "17:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 9,
+          "day": 2,
+          "startTime": "09:00",
+          "endTime": "10:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TP"
+        },
+        {
+          "id": 10,
+          "day": 2,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "SECURITE DES SYSTEMES",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        },
+        {
+          "id": 11,
+          "day": 2,
+          "startTime": "13:30",
+          "endTime": "15:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "TP"
+        },
+        {
+          "id": 12,
+          "day": 2,
+          "startTime": "15:30:00",
+          "endTime": "17:00",
+          "name": "C++",
+          "instructor": "EL ALAMI",
+          "room": "SALLE B2",
+          "type": "CM"
+        }
+      ],
+      "id": "7da2"
+    },
+    {
+      "group": "GINF2",
+      "year": "2025",
+      "week": "22",
+      "courses": [
+        {
+          "id": 1,
+          "day": 2,
+          "startTime": "11:00",
+          "endTime": "12:30",
+          "name": "MATHEMATIQUES",
+          "instructor": "PROF X",
+          "room": "SALLE A1",
+          "type": "TD"
+        }
+      ],
+      "id": "87e2"
+    },
+    {
+      "group": "GINF1",
+      "year": "2025",
+      "week": "21",
+      "courses": [
+        {
+          "id": 1,
+          "day": 1,
+          "startTime": "14:00",
+          "endTime": "15:30",
+          "name": "ALGORITHMIQUE",
+          "instructor": "PROF Y",
+          "room": "SALLE A2",
+          "type": "TP"
+        }
+      ],
+      "id": "ce0e"
+    }
+  ],
+  "questionnaires": [
+    {
+      "id": 1,
+      "title": "Évaluation du module Java",
+      "type": "EDT",
+      "status": true,
+      "created": "2024-03-15",
+      "questions": [
+        {
+          "id": 101,
+          "question_text": "Qu'est-ce qu'une classe en Java ?",
+          "question_type": "ouverte",
+          "responses": [
+            {
+              "userId": "user1",
+              "answer": "Une classe est un modèle définissant les propriétés et comportements d'un objet."
+            },
+            {
+              "userId": "user2",
+              "answer": "C'est une structure qui encapsule données et méthodes."
+            }
+          ]
+        },
+        {
+          "id": 102,
+          "question_text": "Java est-il compilé ou interprété ?",
+          "question_type": "choix_multiple",
+          "options": ["Compilé", "Interprété", "Les deux"],
+          "responses": [
+            {
+              "userId": "user1",
+              "answer": [2]
+            },
+            {
+              "userId": "user2",
+              "answer": [0, 1]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Sondage filière GINF3",
+      "type": "Filière",
+      "status": false,
+      "created": "2024-04-01",
+      "questions": [
+        {
+          "id": 201,
+          "question_text": "Avez-vous aimé le module d’optimisation ?",
+          "question_type": "choix_multiple",
+          "options": ["Oui", "Non", "Moyennement"],
+          "responses": [
+            {
+              "userId": "user3",
+              "answer": [0]
+            },
+            {
+              "userId": "user4",
+              "answer": [2]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+}
+
+

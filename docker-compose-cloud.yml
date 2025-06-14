@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  auth-service:
+    image: 149536475819.dkr.ecr.us-east-1.amazonaws.com/auth-service:latest
+    ports:
+      - "5244:8080"
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:8080   # <-- Added this line
+      ConnectionStrings__DefaultConnection: "Host=sys-evaluation-db.cg5ksoeei3fn.us-east-1.rds.amazonaws.com;Port=5432;Database=auth_db;Username=postgres;Password=PGadmin_Ev4l!2025"
+
+  evaluation-service:
+    image: 149536475819.dkr.ecr.us-east-1.amazonaws.com/evaluation-service:latest
+    ports:
+      - "5000:8080"
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:8080   # <-- Added this line
+      ConnectionStrings__Postgres: "Host=sys-evaluation-db.cg5ksoeei3fn.us-east-1.rds.amazonaws.com;Port=5432;Database=evaluation_formations;Username=postgres;Password=PGadmin_Ev4l!2025"
+      Auth__Authority: "https://auth-ms"
+      Auth__Audience: "ms_evaluations"
+      RabbitMQ__Host: "rabbitmq.local"
+      RabbitMQ__User: "guest"
+      RabbitMQ__Pass: "guest"
+      RabbitMQ__Exchange: "evaluations.exchange"
+      AI__Endpoint: "https://api.groq.com/openai/v1/chat/completions"
+      AI__ApiKey: "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"
+      Other-Microservices-EndPoints__AuthService-EndPoint: "http://auth-service:8080"
+      Other-Microservices-EndPoints__CoursesManagementService-EndPoint: "http://course-management-service:8080"
+
+  course-management-service:
+    image: 149536475819.dkr.ecr.us-east-1.amazonaws.com/course-management-service:latest
+    ports:
+      - "5201:8080"
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:8080   # <-- Added this line
+      ConnectionStrings__DefaultConnection: "Host=sys-evaluation-db.cg5ksoeei3fn.us-east-1.rds.amazonaws.com;Port=5432;Database=gestion_formation;Username=postgres;Password=PGadmin_Ev4l!2025"
+
+  analytics-service:
+    image: 149536475819.dkr.ecr.us-east-1.amazonaws.com/analytics-service:latest
+    ports:
+      - "5202:8080"
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:8080   # <-- Added this line
+      ConnectionStrings__AnalyticsDb: "Host=sys-evaluation-db.cg5ksoeei3fn.us-east-1.rds.amazonaws.com;Port=5432;Database=analytics_db;Username=postgres;Password=PGadmin_Ev4l!2025"
+      OpenAI__ApiKey: ""
+      EvaluationService__BaseUrl: "http://evaluation-service:8080"
+      CourseManagementService__BaseUrl: "http://course-management-service:8080"
+
+  frontend:
+    image: 149536475819.dkr.ecr.us-east-1.amazonaws.com/sys-eval-front:latest
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_AUTH_URL: "http://auth-service:8080"
+      NEXT_PUBLIC_API_COURSE_URL: "http://course-management-service:8080"
+      NEXT_PUBLIC_API_EVALUATION_URL: "http://evaluation-service:8080"
+      NEXT_PUBLIC_API_ANALYTICS_URL: "http://analytics-service:8080"
+

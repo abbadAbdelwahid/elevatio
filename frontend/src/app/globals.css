@@ -1,26 +1,64 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@layer utilities {
+    .nav-link::after {
+        content: '';
+        @apply block w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transition-all duration-300;
+    }
+    .nav-link:hover::after {
+        @apply w-full;
+    }
+}
+@keyframes progress {
+    0% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.animate-progress {
+    animation: progress 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
+/*:root {*/
+/*  --background: #ffffff;*/
+/*  --foreground: #171717;*/
+/*}*/
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/*@theme inline {*/
+/*  --color-background: var(--background);*/
+/*  --color-foreground: var(--foreground);*/
+/*  --font-sans: var(--font-geist-sans);*/
+/*  --font-mono: var(--font-geist-mono);*/
+/*}*/
+
+/*@media (prefers-color-scheme: dark) {*/
+/*  :root {*/
+/*    --background: #0a0a0a;*/
+/*    --foreground: #ededed;*/
+/*  }*/
+/*}*/
+
+/*body {*/
+/*  background: var(--background);*/
+/*  color: var(--foreground);*/
+/*  font-family: Arial, Helvetica, sans-serif;*/
+/*}*/
+
+.profil-card .details input{
+    height: 50px;
+    background-color: #cccccc;
+    border: 1px solid #d1d5db;       /* border-gray-300 */
+    border-radius: 8px;              /* rounded-sm = 0.125rem */
+
 }
+.profil-card .password input{
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+     height: 50px;
+     /*background-color: #cccccc;*/
+     border: 1px solid #d1d5db;       /* border-gray-300 */
+     border-radius: 8px;
+
+ }
+
+
+.profil-card input:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #4a2a5a;   /* focus:ring-1 + ring color */
 }
