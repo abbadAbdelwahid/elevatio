@@ -68,8 +68,7 @@ export default function Home() {
                                 <div>
                                     <h2 className="text-lg font-semibold mb-2">Give Feedback Easily</h2>
                                     <p className="text-sm text-gray-200 font-roboto">
-                                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a BC,
-                                        making it over 2000 years old.
+                                        Students and faculty can share feedback with just a few clicks, helping institutions continuously improve the quality of education and training.
                                     </p>
                                 </div>
                             </div>
